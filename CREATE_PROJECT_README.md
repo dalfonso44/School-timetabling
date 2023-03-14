@@ -2,7 +2,8 @@
 
 * install nvm
 * `nvm ls`
-* install yarn with nvm
+* install nodejs with nvm
+* install yarn
 * [installing quasar cli](https://quasar.dev/start/quasar-cli)
 * `yarn global add @quasar/cli`
 
@@ -25,7 +26,7 @@ export PATH="$(yarn global bin):$PATH"
 7. ESLint
 8. Pinia
 9. Axios for connect to services
-10. Vue-I18n for internationalization 
+10. Vue-I18n for internationalization
 11. Prettier for ESLint
 12. Use yarn for package manager
 13. ENJOY !!!

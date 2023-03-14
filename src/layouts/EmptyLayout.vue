@@ -14,6 +14,7 @@ export default defineComponent({
   components: {},
 
   setup() {
+    console.log('Calling inside empty layout');
     return {};
   },
 });

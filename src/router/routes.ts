@@ -9,7 +9,10 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/timetabling/',
     component: () => import('layouts/EmptyLayout.vue'),
-    children: [{ path: '', component: () => import('pages/TablingPage.vue') }],
+    children: [
+      { path: '', component: () => import('pages/TablingPage.vue') },
+      { path: 'test/', component: () => import('pages/TestPage.vue') },
+    ],
   },
 
   // Always leave this as last one,
