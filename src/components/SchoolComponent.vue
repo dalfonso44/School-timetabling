@@ -1,12 +1,15 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md full-width">
     <q-table
-      title="Horario C111"
+      title="Horario"
       :rows="rows"
       :columns="columns"
       row-key="name"
       separator = "cell"
-      binary-state-sort
+      :pagination="{
+        rowsPerPage: -1
+      }"
+      hide-pagination
     >
       <template v-slot:header>
         <q-tr>

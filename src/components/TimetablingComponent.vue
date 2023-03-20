@@ -1,58 +1,27 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md full-width">
     <q-table
       title="Horario C111"
       :rows="rows"
       :columns="columns"
       row-key="name"
       separator = "cell"
-      binary-state-sort
+      :pagination="{
+        rowsPerPage: -1
+      }"
+      hide-pagination
     >
       <template v-slot:body="props">
         <q-tr :props="props">
 
           <q-td key="turn" :props="props">{{ props.row.turn }}</q-td>
           
-          <q-td key = "monday" :props="props">
-            <q-field>
-              <q-input type="text" v-model="props.row.monday" maxLength=6
-              @blur="$v.form.$each[props.row.__index].monday.$touch()" 
-              @change="changedField(props)" />
-            </q-field>
+          <q-td  :props="props"
+            v-for="(item) in fieldForEditing"
+            :key="item" 
+          >
+            <q-input v-if="props.rowIndex != 3" type="text" v-model="props.row[item]" input-class="text-center" maxLength=6 />
           </q-td>
-
-          <q-td key = "tuesday" :props="props">
-            <q-field>
-              <q-input type="text" v-model="props.row.tuesday" maxLength=6
-              @blur="$v.form.$each[props.row.__index].tuesday.$touch()" 
-              @change="changedField(props)" />
-            </q-field>
-          </q-td>
-
-          <q-td key = "wednesday" :props="props">
-            <q-field>
-              <q-input type="text" v-model="props.row.wednesday" maxLength=6
-              @blur="$v.form.$each[props.row.__index].wednesday.$touch()" 
-              @change="changedField(props)" />
-            </q-field>
-          </q-td>
-
-          <q-td key = "thursday" :props="props">
-            <q-field>
-              <q-input type="text" v-model="props.row.thursday" maxLength=6
-              @blur="$v.form.$each[props.row.__index].thursday.$touch()" 
-              @change="changedField(props)" />
-            </q-field>
-          </q-td>
-          
-          <q-td key = "friday" :props="props">
-            <q-field>
-              <q-input type="text" v-model="props.row.friday" maxLength=6
-              @blur="$v.form.$each[props.row.__index].friday.$touch()" 
-              @change="changedField(props)" />
-            </q-field>
-          </q-td>
-
         </q-tr>
       </template>
     </q-table>
@@ -72,7 +41,9 @@ const columns = [
   
 ]
 
-const rows = [
+const fieldForEditing = columns.filter((c) => c.name !== "turn").map((c) => c.name)
+
+const rows = ref([
   {
     turn: '1',
     monday: '',
@@ -129,13 +100,14 @@ const rows = [
     thursday: '',
     friday: ''
   }
-]
+])
 
 export default {
   setup () {
     return {
       columns,
-      rows: ref(rows)
+      rows,
+      fieldForEditing
     }
   }
 }

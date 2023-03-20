@@ -1,8 +1,10 @@
 <template>
+  
   <q-page class="row items-center justify-evenly">
     <timetabling-component />
     <school-component />
   </q-page>
+
 </template>
 
 <script lang="ts">
