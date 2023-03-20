@@ -35,10 +35,21 @@
       </template>
     </q-banner>
   </div>
+
+  <div v-for="(item,index) in array" :key="index" >
+    <div v-if="item !== 'Diamis'"> {{ index }} - {{ item }} </div>
+  </div>
+
+  <div v-for="item in n" :key="item" >
+    <div v-if="item % 2 === 0"> {{ item }}</div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+
+const array = ['Diamis', 'Alain', 'Dali'];
+const n = 10;
 
 export default defineComponent({
   name: 'HelloName',
@@ -64,6 +75,8 @@ export default defineComponent({
     return {
       hi,
       onClickWifi,
+      array,
+      n,
     };
   },
 });

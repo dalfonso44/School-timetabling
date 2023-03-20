@@ -11,6 +11,27 @@
       }"
       hide-pagination
     >
+      <template v-slot:top-right>
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Salvar"
+          no-caps
+          rounded
+          class="q-mr-md"
+          @click="onSave"
+        />
+        <q-btn
+          color="warning"
+          icon-right="close"
+          label="Limpiar"
+          no-caps
+          outline
+          rounded
+          @click="onClear"
+        />
+        
+      </template>
       <template v-slot:header>
         <q-tr>
           <q-th colspan="1"></q-th>
@@ -273,6 +294,7 @@
 
 <script>
 import { ref } from 'vue'
+import { schoolTableData } from 'src/hooks/PersistanceDB.hooks'
 
 const columns = [
   { name: 'turn', align: 'center', field: 'turn'},
@@ -308,86 +330,105 @@ const columns = [
   { name: 'friday6', align: 'center', label: '6', field: 'friday6' }
 ]
 
-const rows = [
-  {
-    turn: '1',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '2',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '3',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '4',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '5',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '6',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '7',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '8',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '9',
+const emptyState = ['1', '2', '3', 'Receso', '4', '5', '6', '7', '8', '9'].map((v) => {
+  return {
+    turn: v,
     monday: '',
     tuesday: '',
     wednesday: '',
     thursday: '',
     friday: ''
   }
-]
+})
+
+const rows = ref(schoolTableData.loadData() || emptyState)
+//  [
+//   {
+//     turn: '1',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '2',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '3',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '4',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '5',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '6',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '7',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '8',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   },
+//   {
+//     turn: '9',
+//     monday: '',
+//     tuesday: '',
+//     wednesday: '',
+//     thursday: '',
+//     friday: ''
+//   }
+// ])
 
 export default {
   setup () {
     return {
       columns,
-      rows: ref(rows)
+      rows,
+      onSave(){
+        schoolTableData.saveData(rows.value)
+      },
+      onClear(){
+        rows.value=emptyState
+        schoolTableData.cleanData()
+      }
     }
   }
 }

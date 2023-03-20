@@ -11,6 +11,27 @@
       }"
       hide-pagination
     >
+      <template v-slot:top-right>
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Salvar"
+          no-caps
+          rounded
+          class="q-mr-md"
+          @click="onSave"
+        />
+        <q-btn
+          color="warning"
+          icon-right="close"
+          label="Limpiar"
+          no-caps
+          outline
+          rounded
+          @click="onClear"
+        />
+        
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props">
 
@@ -30,6 +51,7 @@
 
 <script>
 import { ref } from 'vue'
+import {  timeTableData } from 'src/hooks/PersistanceDB.hooks'
 
 const columns = [
   { name: 'turn', align: 'center', field: 'turn'},
@@ -41,73 +63,34 @@ const columns = [
   
 ]
 
-const fieldForEditing = columns.filter((c) => c.name !== "turn").map((c) => c.name)
-
-const rows = ref([
-  {
-    turn: '1',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '2',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '3',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: 'Receso',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '4',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '5',
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: ''
-  },
-  {
-    turn: '6',
+const emptyState = ['1', '2', '3', 'Receso', '4', '5', '6'].map((v) => {
+  return {
+    turn: v,
     monday: '',
     tuesday: '',
     wednesday: '',
     thursday: '',
     friday: ''
   }
-])
+})
+
+const fieldForEditing = columns.filter((c) => c.name !== "turn").map((c) => c.name)
+
+const rows = ref(timeTableData.loadData() || emptyState)
 
 export default {
   setup () {
     return {
       columns,
       rows,
-      fieldForEditing
+      fieldForEditing,
+      onSave() {
+        timeTableData.saveData(rows.value)
+      },
+      onClear() {
+        rows.value = emptyState
+        timeTableData.cleanData()
+      }
     }
   }
 }
