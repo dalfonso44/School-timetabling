@@ -5,9 +5,9 @@
       :rows="rows"
       :columns="columns"
       row-key="name"
-      separator = "cell"
+      separator="cell"
       :pagination="{
-        rowsPerPage: -1
+        rowsPerPage: -1,
       }"
       hide-pagination
     >
@@ -30,18 +30,32 @@
           rounded
           @click="onClear"
         />
-        
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
-
-          <q-td key="turn" :props="props">{{ props.row.turn }}</q-td>
-          
-          <q-td  :props="props"
-            v-for="(item) in fieldForEditing"
-            :key="item" 
+          <q-td
+            key="turn"
+            :props="props"
+            :class="props.rowIndex == 3 && 'bg-grey-3'"
           >
-            <q-input v-if="props.rowIndex != 3" type="text" v-model="props.row[item]" input-class="text-center" maxLength=6 />
+            {{ props.row.turn }}
+          </q-td>
+
+          <q-td
+            :props="props"
+            v-for="item in fieldForEditing"
+            :key="item"
+            :class="props.rowIndex == 3 && 'bg-grey-3'"
+            style="padding-bottom: 0 !important"
+          >
+            <q-input
+              v-if="props.rowIndex != 3"
+              type="text"
+              dense
+              borderless
+              v-model="props.row[item]"
+              input-class="text-center"
+            />
           </q-td>
         </q-tr>
       </template>
@@ -50,48 +64,54 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import {  timeTableData } from 'src/hooks/PersistanceDB.hooks'
+import { ref } from 'vue';
+import { timeTableData } from 'src/hooks/PersistanceDB.hooks';
 
 const columns = [
-  { name: 'turn', align: 'center', field: 'turn'},
-  { name: 'monday', align: 'center', label: 'Lunes', field: 'monday'},
-  { name: 'tuesday', align: 'center', label: 'Martes', field: 'tuesday'},
-  { name: 'wednesday', align: 'center', label: 'Miercoles', field: 'wednesday' },
+  { name: 'turn', align: 'center', field: 'turn' },
+  { name: 'monday', align: 'center', label: 'Lunes', field: 'monday' },
+  { name: 'tuesday', align: 'center', label: 'Martes', field: 'tuesday' },
+  {
+    name: 'wednesday',
+    align: 'center',
+    label: 'Miercoles',
+    field: 'wednesday',
+  },
   { name: 'thursday', align: 'center', label: 'Jueves', field: 'thursday' },
-  { name: 'friday', align: 'center', label: 'Viernes', field: 'friday' }
-  
-]
+  { name: 'friday', align: 'center', label: 'Viernes', field: 'friday' },
+];
 
 const emptyState = ['1', '2', '3', 'Receso', '4', '5', '6'].map((v) => {
   return {
-    turn: v,
+    turn: ` ${v} `,
     monday: '',
     tuesday: '',
     wednesday: '',
     thursday: '',
-    friday: ''
-  }
-})
+    friday: '',
+  };
+});
 
-const fieldForEditing = columns.filter((c) => c.name !== "turn").map((c) => c.name)
+const fieldForEditing = columns
+  .filter((c) => c.name !== 'turn')
+  .map((c) => c.name);
 
-const rows = ref(timeTableData.loadData() || emptyState)
+const rows = ref(timeTableData.loadData() || emptyState);
 
 export default {
-  setup () {
+  setup() {
     return {
       columns,
       rows,
       fieldForEditing,
       onSave() {
-        timeTableData.saveData(rows.value)
+        timeTableData.saveData(rows.value);
       },
       onClear() {
-        rows.value = emptyState
-        timeTableData.cleanData()
-      }
-    }
-  }
-}
+        rows.value = emptyState;
+        timeTableData.cleanData();
+      },
+    };
+  },
+};
 </script>
