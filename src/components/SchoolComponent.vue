@@ -1,9 +1,9 @@
 <template>
   <div class="q-pa-md full-width">
     <q-table
+      style="max-width: 100%"
       class="my-custom-table"
-      title="Horario"
-      :rows="rows"
+      :rows="schoolData"
       :columns="columns"
       row-key="name"
       separator="cell"
@@ -12,26 +12,6 @@
       }"
       hide-pagination
     >
-      <template v-slot:top-right>
-        <q-btn
-          color="primary"
-          icon-right="archive"
-          label="Salvar"
-          no-caps
-          rounded
-          class="q-mr-md"
-          @click="onSave"
-        />
-        <q-btn
-          color="warning"
-          icon-right="close"
-          label="Limpiar"
-          no-caps
-          outline
-          rounded
-          @click="onClear"
-        />
-      </template>
       <template v-slot:header>
         <q-tr>
           <q-th colspan="1"></q-th>
@@ -89,9 +69,13 @@
           <q-td :key="item" :props="props" v-for="item in fieldForEditing">
             <q-input
               type="text"
-              v-model="props.row[item]"
-              :maxLength="5"
+              :style="`width: ${
+                props.row[item] && props.row[item].length > 3 ? '50px' : '100%'
+              } !important; margin: auto !important`"
+              :model-value="props.row[item]"
+              @update:model-value="onUpdate(props.rowIndex, item, $event)"
               dense
+              :maxlength="6"
             />
           </q-td>
         </q-tr>
@@ -100,12 +84,11 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import { schoolTableData } from 'src/hooks/PersistanceDB.hooks';
+<script lang="ts">
+import { QTableColumn } from 'quasar';
 
-const columns = [
-  { name: 'turn', align: 'center', field: 'turn' },
+const columns: QTableColumn[] = [
+  { name: 'turn', align: 'center', field: 'turn', label: '' },
   { name: 'monday1', align: 'center', label: '1', field: 'monday1' },
   { name: 'monday2', align: 'center', label: '2', field: 'monday2' },
   { name: 'monday3', align: 'center', label: '3', field: 'monday3' },
@@ -142,31 +125,22 @@ const fieldForEditing = columns
   .filter((c) => c.name !== 'turn')
   .map((c) => c.name);
 
-const emptyState = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((v) => {
-  return {
-    turn: `[ ${v} ]`,
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: '',
-  };
-});
-
-const rows = ref(schoolTableData.loadData() || emptyState);
-
 export default {
-  setup() {
+  props: {
+    schoolData: {
+      type: Array,
+      required: true,
+    },
+  },
+  emits: ['update'],
+  setup(props, { emit }) {
     return {
       columns,
-      rows,
       fieldForEditing,
-      onSave() {
-        schoolTableData.saveData(rows.value);
-      },
-      onClear() {
-        rows.value = emptyState;
-        schoolTableData.cleanData();
+      onUpdate(row: number, column: string, value: any) {
+        const newList = [...props.schoolData.map((x: any) => ({ ...x }))];
+        newList[row][column] = value;
+        emit('update', newList);
       },
     };
   },
