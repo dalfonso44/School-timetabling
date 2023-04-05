@@ -61,6 +61,24 @@
         <q-space />
         <div class="row col-sm-6 col-12 items-center justify-end q-px-sm">
           <q-btn
+            color="secondary"
+            icon-right="add"
+            label="Nuevo horario"
+            no-caps
+            rounded
+            class="q-mr-md"
+            @click="showNewTime = true"
+          />
+          <q-btn
+            color="accent"
+            icon-right="add_circle"
+            label="Nuevo grupo"
+            no-caps
+            rounded
+            class="q-mr-md"
+            @click="showNewGroup = true"
+          />
+          <q-btn
             color="primary"
             icon-right="archive"
             label="Salvar"
@@ -111,10 +129,28 @@
         </q-tr>
       </template>
     </q-table>
+
+    <input-dialog
+      :title="'Crea un nuevo horario'"
+      :label="'Nombre'"
+      @on-next="$emit('create-year', $event)"
+      :show="showNewTime"
+      @on-close="showNewTime = false"
+    />
+
+    <input-dialog
+      :title="'Crea un nuevo grupo'"
+      :label="'Grupo'"
+      :show="showNewGroup"
+      @on-next="$emit('create-group', $event)"
+      @on-close="showNewGroup = false"
+    />
   </div>
 </template>
 
 <script lang="ts">
+import InputDialog from './dialogs/InputDialog.vue';
+import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 
 const columns: QTableColumn[] = [
@@ -158,9 +194,23 @@ export default {
       required: true,
     },
   },
-  emits: ['on-clear', 'on-save', 'update', 'update-group', 'update-year'],
+  components: { InputDialog },
+  emits: [
+    'on-clear',
+    'on-save',
+    'update',
+    'update-group',
+    'update-year',
+    'create-year',
+    'create-group',
+  ],
   setup(props, { emit }) {
+    const showNewTime = ref(false);
+    const showNewGroup = ref(false);
+
     return {
+      showNewTime,
+      showNewGroup,
       columns,
       fieldForEditing,
       onSave() {

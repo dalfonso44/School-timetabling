@@ -1,3 +1,4 @@
+import { Notify } from 'quasar';
 import { timeTableData } from './PersistanceDB.hooks';
 import { computed, ref } from 'vue';
 
@@ -72,11 +73,6 @@ export const useTimetabling = () => {
 
   const groupData = ref(timeLoad() || defaultTimeTablingYearObject);
 
-  const addGroup = (group: string) => {
-    groupData.value[group] = emptyTimeState;
-    timeSave(groupData.value);
-  };
-
   const yearKeys = computed(() => {
     return Object.keys(groupData.value);
   });
@@ -87,6 +83,26 @@ export const useTimetabling = () => {
   const selectedYear = ref(yearKeys.value[0]);
   const selectedGroup = ref(groupKeys.value[0]);
 
+  const addYear = (year: string) => {
+    groupData.value[year] = {
+      groups: defaultTimeTablingObject,
+      rooms: emptySchoolState,
+    };
+    timeSave(groupData.value);
+    selectedYear.value = year;
+    selectedGroup.value = groupKeys.value[0];
+    Notify.create({
+      type: 'positive',
+      message: `El horario ${year} fue creado y salvado correctamente`,
+    });
+  };
+
+  const addGroup = (group: string) => {
+    groupData.value[selectedYear.value].groups[group] = emptyTimeState;
+    timeSave(groupData.value);
+    selectedGroup.value = group;
+  };
+
   return {
     groupData,
     groupKeys,
@@ -94,6 +110,15 @@ export const useTimetabling = () => {
     selectedYear,
     selectedGroup,
     addGroup,
+    addYear,
+    onChangeYear(year: string) {
+      selectedYear.value = year;
+      if (
+        !Object.keys(groupData.value[year].groups).includes(selectedGroup.value)
+      ) {
+        selectedGroup.value = Object.keys(groupData.value[year].groups)[0];
+      }
+    },
     onSave() {
       timeSave(groupData.value);
     },

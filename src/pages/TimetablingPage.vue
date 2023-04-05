@@ -7,10 +7,12 @@
       :selectedGroup="selectedGroup"
       :selectedYear="selectedYear"
       @update-group="selectedGroup = $event"
-      @update-year="selectedYear = $event"
+      @update-year="onChangeYear"
       @update="groupData[selectedYear].groups = $event"
       @on-save="onSave"
       @on-clear="onClear"
+      @create-year="addYear"
+      @create-group="addGroup"
     />
     <school-component
       :schoolData="groupData[selectedYear].rooms"
@@ -37,6 +39,8 @@ export default defineComponent({
       addGroup,
       onSave,
       onClear,
+      addYear,
+      onChangeYear,
     } = useTimetabling();
     return {
       groupData,
@@ -44,9 +48,11 @@ export default defineComponent({
       selectedGroup,
       selectedYear,
       yearKeys,
+      onChangeYear,
       addGroup,
       onSave,
       onClear,
+      addYear,
     };
   },
 });
