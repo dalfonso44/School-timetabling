@@ -11,6 +11,7 @@
       @update="groupData[selectedYear].groups = $event"
       @on-save="onSave"
       @on-clear="onClear"
+      @on-load = "onLoad"
     />
     <school-component
       :schoolData="groupData[selectedYear].rooms"
@@ -37,6 +38,7 @@ export default defineComponent({
       addGroup,
       onSave,
       onClear,
+      onLoad,
     } = useTimetabling();
     return {
       groupData,
@@ -47,6 +49,7 @@ export default defineComponent({
       addGroup,
       onSave,
       onClear,
+      onLoad,
     };
   },
 });

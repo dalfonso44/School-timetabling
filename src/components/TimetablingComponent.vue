@@ -78,6 +78,15 @@
             rounded
             @click="onClear"
           />
+          <q-btn
+            color="red"
+            icon-right="star"
+            label="Cargar"
+            no-caps
+            outline
+            rounded
+            @click="onLoad"
+          />
         </div>
       </template>
       <template v-slot:body="props">
@@ -102,7 +111,6 @@
               type="text"
               dense
               borderless
-              :maxlength="6"
               :model-value="props.row[item]"
               input-class="text-center"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
@@ -158,7 +166,7 @@ export default {
       required: true,
     },
   },
-  emits: ['on-clear', 'on-save', 'update', 'update-group', 'update-year'],
+  emits: ['on-clear', 'on-save', 'update', 'update-group', 'update-year', 'on-load'],
   setup(props, { emit }) {
     return {
       columns,
@@ -170,6 +178,9 @@ export default {
       onClear() {
         emit('on-clear');
         // rows.value = emptyState;
+      },
+      onLoad(){
+        emit('on-load')
       },
       getColor(str: string) {
         str = str + str;

@@ -35,7 +35,7 @@ export const emptyTimeState = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
   }
 );
 
-const emptySchoolState = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
+export const emptySchoolState = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
   (v) => {
     return {
       turn: `[ ${v} ]`,
@@ -67,7 +67,9 @@ export const defaultTimeTablingYearObject = defaultYear.reduce(
   {}
 );
 
+// que difencia entre tener puesto export y no tenerlo
 export const useTimetabling = () => {
+  //aqui redefino los nombres de los metodos en el hooks por que necesito hacer esto
   const { loadData: timeLoad, saveData: timeSave } = timeTableData;
 
   const groupData = ref(timeLoad() || defaultTimeTablingYearObject);
@@ -82,6 +84,7 @@ export const useTimetabling = () => {
   });
 
   const groupKeys = computed(() => {
+    // por que necesito poner .value?????
     return Object.keys(groupData.value[selectedYear.value].groups);
   });
   const selectedYear = ref(yearKeys.value[0]);
@@ -98,11 +101,14 @@ export const useTimetabling = () => {
       timeSave(groupData.value);
     },
     onClear() {
-      // groupData.value[selectedYear.value].groups[selectedGroup.value] =
-      //   emptyTimeState;
-      // groupData.value[selectedYear.value].rooms = emptySchoolState;
-      groupData.value = defaultTimeTablingYearObject;
+      groupData.value[selectedYear.value].groups[selectedGroup.value] =
+      emptyTimeState;
+      groupData.value[selectedYear.value].rooms = emptySchoolState;
+      //groupData.value = defaultTimeTablingYearObject;
       timeSave(groupData.value);
     },
+    onLoad(){
+      console.log("AAAA")
+    }
   };
 };
