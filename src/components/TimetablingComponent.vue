@@ -97,7 +97,28 @@
             @click="onClear"
           />
         </div>
-      </template>
+
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Paint" outline style="primary" @click="card = true" />
+        <q-dialog v-model="card">
+          <q-card class="my-card">
+            <div class="q-pa-md row items-start q-gutter-md">
+              <q-color 
+                class="my-picker" 
+                :model-value="selectedColor"
+                @update:model-value="$event => $emit('update-color', $event)"
+              />
+            </div>
+            <q-separator />
+            <q-card-actions align="right">
+              <q-btn v-close-popup flat color="primary" label="Seleccionar" @click="onPaint"/>
+              <q-btn v-close-popup flat color="primary" label="Cancelar" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+      </div>
+
+    </template>
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td
@@ -193,6 +214,10 @@ export default {
       type: String,
       required: true,
     },
+    selectedColor:{
+      type:String,
+      required: true,
+    },
   },
   components: { InputDialog },
   emits: [
@@ -203,12 +228,15 @@ export default {
     'update-year',
     'create-year',
     'create-group',
+    'update-color',
+    'on-paint',
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
-
     return {
+      card: ref(false),
+      stars: ref(3),
       showNewTime,
       showNewGroup,
       columns,
@@ -220,6 +248,9 @@ export default {
       onClear() {
         emit('on-clear');
         // rows.value = emptyState;
+      },
+      onPaint(){
+        emit('on-paint')
       },
       getColor(str: string) {
         str = str + str;

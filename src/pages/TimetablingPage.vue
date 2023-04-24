@@ -6,6 +6,7 @@
       :yearKeys="yearKeys"
       :selectedGroup="selectedGroup"
       :selectedYear="selectedYear"
+      :selectedColor = "selectedColor"
       @update-group="selectedGroup = $event"
       @update-year="onChangeYear"
       @update="groupData[selectedYear].groups = $event"
@@ -13,6 +14,8 @@
       @on-clear="onClear"
       @create-year="addYear"
       @create-group="addGroup"
+      @on-paint = "onPaint"
+      @update-color="$event => selectedColor = $event"
     />
     <school-component
       :schoolData="groupData[selectedYear].rooms"
@@ -26,10 +29,12 @@ import { defineComponent } from 'vue';
 import TimetablingComponent from 'components/TimetablingComponent.vue';
 import SchoolComponent from 'components/SchoolComponent.vue';
 import { useTimetabling } from 'src/hooks/timetabling.hooks';
+import {ref} from 'vue';
 export default defineComponent({
   name: 'TimetablingPage',
   components: { TimetablingComponent, SchoolComponent },
   setup() {
+    const selectedColor = ref('rgb(0,0,0)')
     const {
       groupData,
       groupKeys,
@@ -47,12 +52,16 @@ export default defineComponent({
       groupKeys,
       selectedGroup,
       selectedYear,
+      selectedColor,
       yearKeys,
       onChangeYear,
       addGroup,
       onSave,
       onClear,
       addYear,
+      onPaint(){
+        console.log(selectedColor)
+      },
     };
   },
 });
