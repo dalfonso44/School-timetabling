@@ -57,9 +57,16 @@
             label="Año"
           />
         </div>
-
+        <div class="q-pa-md row items-start q-gutter-md">
+          <q-color 
+            class="my-picker" 
+            :model-value="selectedColor"
+            @update:model-value="$event => $emit('update-color', $event)"
+          />
+        </div>
         <q-space />
         <div class="row col-sm-6 col-12 items-center justify-end q-px-sm">
+ 
           <q-btn
             color="primary"
             icon-right="archive"
@@ -79,6 +86,7 @@
             @click="onClear"
           />
           <q-btn
+<<<<<<< Updated upstream
             color="red"
             icon-right="star"
             label="Cargar"
@@ -87,6 +95,18 @@
             rounded
             @click="onLoad"
           />
+=======
+            color="blue"
+            icon-right="star"
+            label="Pintar"
+            no-caps
+            outline
+            rounded
+            @click="onPaint"
+          />
+          
+          
+>>>>>>> Stashed changes
         </div>
       </template>
       <template v-slot:body="props">
@@ -165,8 +185,27 @@ export default {
       type: String,
       required: true,
     },
+    selectedColor:{
+      type:String,
+      required: true,
+    },
   },
+<<<<<<< Updated upstream
   emits: ['on-clear', 'on-save', 'update', 'update-group', 'update-year', 'on-load'],
+=======
+  components: { InputDialog },
+  emits: [
+    'on-clear',
+    'on-save',
+    'update',
+    'update-group',
+    'update-year',
+    'create-year',
+    'create-group',
+    'on-paint',
+    'update-color',
+  ],
+>>>>>>> Stashed changes
   setup(props, { emit }) {
     return {
       columns,
@@ -179,8 +218,13 @@ export default {
         emit('on-clear');
         // rows.value = emptyState;
       },
+<<<<<<< Updated upstream
       onLoad(){
         emit('on-load')
+=======
+      onPaint(){
+        emit('on-paint');
+>>>>>>> Stashed changes
       },
       getColor(str: string) {
         str = str + str;

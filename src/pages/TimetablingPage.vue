@@ -1,6 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <timetabling-component
+      :selectedColor="selectedColor"
       :groupData="groupData[selectedYear].groups"
       :groupKeys="groupKeys"
       :yearKeys="yearKeys"
@@ -11,7 +12,14 @@
       @update="groupData[selectedYear].groups = $event"
       @on-save="onSave"
       @on-clear="onClear"
+<<<<<<< Updated upstream
       @on-load = "onLoad"
+=======
+      @create-year="addYear"
+      @create-group="addGroup"
+      @on-paint = "onPaint"
+      @update-color="$event => selectedColor = $event"
+>>>>>>> Stashed changes
     />
     <school-component
       :schoolData="groupData[selectedYear].rooms"
@@ -29,6 +37,7 @@ export default defineComponent({
   name: 'TimetablingPage',
   components: { TimetablingComponent, SchoolComponent },
   setup() {
+    const selectedColor = 'rgb(0,0,0)'
     const {
       groupData,
       groupKeys,
@@ -46,10 +55,22 @@ export default defineComponent({
       selectedGroup,
       selectedYear,
       yearKeys,
+<<<<<<< Updated upstream
       addGroup,
       onSave,
       onClear,
       onLoad,
+=======
+      selectedColor,
+      onChangeYear,
+      addGroup,
+      onSave,
+      onClear,
+      addYear,
+      onPaint(){
+        console.log("aaaa")
+      },
+>>>>>>> Stashed changes
     };
   },
 });
