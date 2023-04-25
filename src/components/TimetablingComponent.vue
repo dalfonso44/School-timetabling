@@ -12,7 +12,7 @@
       hide-pagination
     >
       <template v-slot:top>
-        <div class="row col-sm-6 col-12 items-center justify-start q-px-sm">
+        <div class="row col-sm-5 col-12 items-center justify-start q-px-sm">
           Horario
           <q-select
             class="q-ml-md col-md-3 col-sm-4 col-12"
@@ -59,14 +59,41 @@
         </div>
 
         <q-space />
-        <div class="row col-sm-6 col-12 items-center justify-end q-px-sm">
+        <div class="row col-sm-7 col-12 items-center justify-end q-px-sm">
+          <q-btn 
+            label="Color"
+            color="secondary"
+            icon-right="edit"
+            no-caps
+            :style="`background-color: ${selectedColor} !important  ;`" 
+            rounded
+            class="q-mr-sm"
+            @click="card = true" 
+          />
+          <q-btn round dense icon="edit" @click="editing = !editing" class="q-mr-sm"></q-btn>
+          <q-dialog v-model="card">
+            <q-card class="my-card">
+              <div class="q-pa-md row items-start q-gutter-md">
+                <q-color 
+                  class="my-picker" 
+                  :model-value="selectedColor"
+                  @update:model-value="$event => $emit('update-color', $event)"
+                />
+              </div>
+              <q-separator />
+              <q-card-actions align="right">
+                <q-btn v-close-popup flat color="primary" label="Seleccionar" @click="onPaint"/>
+                <q-btn v-close-popup flat color="primary" label="Cancelar" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
           <q-btn
             color="secondary"
             icon-right="add"
             label="Nuevo horario"
             no-caps
             rounded
-            class="q-mr-md"
+            class="q-mr-sm"
             @click="showNewTime = true"
           />
           <q-btn
@@ -75,7 +102,7 @@
             label="Nuevo grupo"
             no-caps
             rounded
-            class="q-mr-md"
+            class="q-mr-sm"
             @click="showNewGroup = true"
           />
           <q-btn
@@ -84,7 +111,7 @@
             label="Salvar"
             no-caps
             rounded
-            class="q-mr-md"
+            class="q-mr-sm"
             @click="onSave"
           />
           <q-btn
@@ -99,23 +126,7 @@
         </div>
 
       <div class="q-pa-md q-gutter-sm">
-        <q-btn label="Paint" outline style="primary" @click="card = true" />
-        <q-dialog v-model="card">
-          <q-card class="my-card">
-            <div class="q-pa-md row items-start q-gutter-md">
-              <q-color 
-                class="my-picker" 
-                :model-value="selectedColor"
-                @update:model-value="$event => $emit('update-color', $event)"
-              />
-            </div>
-            <q-separator />
-            <q-card-actions align="right">
-              <q-btn v-close-popup flat color="primary" label="Seleccionar" @click="onPaint"/>
-              <q-btn v-close-popup flat color="primary" label="Cancelar" />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+        
       </div>
 
     </template>
@@ -234,6 +245,7 @@ export default {
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
+    const editing = ref(false);
     return {
       card: ref(false),
       stars: ref(3),
@@ -241,6 +253,7 @@ export default {
       showNewGroup,
       columns,
       fieldForEditing,
+      editing,
       onSave() {
         emit('on-save');
         // timeTableData.saveData(rows.value);
