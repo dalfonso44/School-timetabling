@@ -60,29 +60,38 @@
 
         <q-space />
         <div class="row col-sm-7 col-12 items-center justify-end q-px-sm">
-          <q-btn 
+          <q-btn
             label="Color"
             color="secondary"
-            icon-right="edit"
+            icon-right="palette"
             no-caps
-            :style="`background-color: ${selectedColor} !important  ;`" 
+            :style="`background-color: ${selectedColor} !important  ;`"
             rounded
             class="q-mr-sm"
-            @click="card = true" 
+            @click="card = true"
           />
-          <q-btn round dense icon="edit" @click="editing = !editing" class="q-mr-sm"></q-btn>
+          <q-btn
+            round
+            dense
+            :style="`color: ${selectedColor} !important  ;`"
+            :icon="editing ? 'edit' : 'format_color_fill'"
+            @click="editing = !editing"
+            class="q-mr-sm"
+          ></q-btn>
           <q-dialog v-model="card">
             <q-card class="my-card">
-              <div class="q-pa-md row items-start q-gutter-md">
-                <q-color 
-                  class="my-picker" 
+              <div class="q-pa-md row items-start">
+                <q-color
+                  class="full-width"
                   :model-value="selectedColor"
-                  @update:model-value="$event => $emit('update-color', $event)"
+                  @update:model-value="
+                    ($event) => $emit('update-color', $event)
+                  "
                 />
               </div>
               <q-separator />
               <q-card-actions align="right">
-                <q-btn v-close-popup flat color="primary" label="Seleccionar" @click="onPaint"/>
+                <q-btn v-close-popup flat color="primary" label="Seleccionar" />
                 <q-btn v-close-popup flat color="primary" label="Cancelar" />
               </q-card-actions>
             </q-card>
@@ -125,11 +134,8 @@
           />
         </div>
 
-      <div class="q-pa-md q-gutter-sm">
-        
-      </div>
-
-    </template>
+        <div class="q-pa-md q-gutter-sm"></div>
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td
@@ -144,17 +150,32 @@
             :props="props"
             v-for="item in fieldForEditing"
             :key="item"
-            :class="props.rowIndex == 3 && 'bg-grey-3'"
+            :class="{
+              'bg-grey-3': props.rowIndex == 3,
+              'cursor-pointer': !editing,
+              'text-white': !!props.row[`${item}_custom_color`],
+            }"
+            :style="
+              !!props.row[`${item}_custom_color`] &&
+              `background-color: ${props.row[`${item}_custom_color`]}`
+            "
             style="padding-bottom: 0 !important"
+            @click="!editing && onPaint(props.rowIndex, item)"
           >
             <q-input
               v-if="props.rowIndex != 3"
               type="text"
               dense
+              :readonly="!editing"
               borderless
+              :input-class="`text-center text-${
+                props.row[`${item}_custom_color`] ? 'white' : 'dark'
+              }`"
               :maxlength="6"
+              :class="{
+                'cursor-pointer': !editing,
+              }"
               :model-value="props.row[item]"
-              input-class="text-center"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />
           </q-td>
@@ -225,8 +246,8 @@ export default {
       type: String,
       required: true,
     },
-    selectedColor:{
-      type:String,
+    selectedColor: {
+      type: String,
       required: true,
     },
   },
@@ -245,7 +266,7 @@ export default {
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
-    const editing = ref(false);
+    const editing = ref(true);
     return {
       card: ref(false),
       stars: ref(3),
@@ -261,9 +282,6 @@ export default {
       onClear() {
         emit('on-clear');
         // rows.value = emptyState;
-      },
-      onPaint(){
-        emit('on-paint')
       },
       getColor(str: string) {
         str = str + str;
@@ -285,6 +303,16 @@ export default {
           ...props.groupData[props.selectedGroup].map((x: any) => ({ ...x })),
         ];
         newList[row][column] = value;
+        emit('update', {
+          ...props.groupData,
+          [props.selectedGroup]: newList,
+        });
+      },
+      onPaint(row: number, column: string) {
+        const newList = [
+          ...props.groupData[props.selectedGroup].map((x: any) => ({ ...x })),
+        ];
+        newList[row][`${column}_custom_color`] = props.selectedColor;
         emit('update', {
           ...props.groupData,
           [props.selectedGroup]: newList,
