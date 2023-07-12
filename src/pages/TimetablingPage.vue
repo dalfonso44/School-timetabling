@@ -1,6 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <timetabling-component
+    <gschedule-component
       :groupData="groupData[selectedYear].groups"
       :groupKeys="groupKeys"
       :yearKeys="yearKeys"
@@ -23,12 +23,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TimetablingComponent from 'components/TimetablingComponent.vue';
+import GscheduleComponent from 'components/GscheduleComponent.vue';
 import SchoolComponent from 'components/SchoolComponent.vue';
 import { useTimetabling } from 'src/hooks/timetabling.hooks';
 export default defineComponent({
   name: 'TimetablingPage',
-  components: { TimetablingComponent, SchoolComponent },
+  components: { GscheduleComponent, SchoolComponent },
   setup() {
     const {
       groupData,
