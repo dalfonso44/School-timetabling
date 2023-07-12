@@ -1,4 +1,3 @@
-//const SCHOOL_KEY = 'sch-jwl'
 const TIMETA_KEY = 'tim-jwl';
 
 export const usePersistanceDB = (key: string) => {
@@ -17,4 +16,3 @@ export const usePersistanceDB = (key: string) => {
 };
 
 export const timeTableData = usePersistanceDB(TIMETA_KEY);
-//export const schoolTableData = usePersistanceDB(SCHOOL_KEY);

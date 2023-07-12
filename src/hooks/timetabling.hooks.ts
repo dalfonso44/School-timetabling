@@ -2,7 +2,7 @@ import { Notify } from 'quasar';
 import { timeTableData } from './PersistanceDB.hooks';
 import { computed, ref } from 'vue';
 
-export const defaultGroup = [
+export const default_groups = [
   'C111',
   'C112',
   'C113',
@@ -21,9 +21,9 @@ export const defaultGroup = [
   'M4',
   'CD1',
 ];
-export const defaultYear = ['2023', 'test'];
+export const default_years = ['2023', 'test'];
 
-export const emptyTimeState = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
+export const default_group_schedule = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
   (v) => {
     return {
       turn: ` ${v} `,
@@ -36,7 +36,7 @@ export const emptyTimeState = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
   }
 );
 
-const emptySchoolState = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
+const default_school_schedule = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
   (v) => {
     return {
       turn: `[ ${v} ]`,
@@ -49,20 +49,20 @@ const emptySchoolState = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
   }
 );
 
-export const defaultTimeTablingObject = defaultGroup.reduce(
+export const group_schedule_object = default_groups.reduce(
   (prev, current) => ({
     ...prev,
-    [current]: emptyTimeState,
+    [current]: default_group_schedule,
   }),
   {}
 );
 
-export const defaultTimeTablingYearObject = defaultYear.reduce(
+export const school_schedule_object = default_years.reduce(
   (prev, current) => ({
     ...prev,
     [current]: {
-      groups: defaultTimeTablingObject,
-      rooms: emptySchoolState,
+      groups: group_schedule_object,
+      rooms: default_school_schedule,
     },
   }),
   {}
@@ -71,63 +71,73 @@ export const defaultTimeTablingYearObject = defaultYear.reduce(
 export const useTimetabling = () => {
   const { loadData: timeLoad, saveData: timeSave } = timeTableData;
 
-  const groupData = ref(timeLoad() || defaultTimeTablingYearObject);
 
-  const yearKeys = computed(() => {
-    return Object.keys(groupData.value);
+  //to keep school schedule of all years
+  const school_data = ref(timeLoad() || school_schedule_object);
+
+  //to keep all years 
+  const year_keys = computed(() => {
+    return Object.keys(school_data.value);
   });
 
-  const groupKeys = computed(() => {
-    return Object.keys(groupData.value[selectedYear.value].groups);
+  //to keep all groups
+  const group_keys = computed(() => {
+    return Object.keys(school_data.value[selected_year.value].groups);
   });
-  const selectedYear = ref(yearKeys.value[0]);
-  const selectedGroup = ref(groupKeys.value[0]);
 
+  // to keep selected year
+  const selected_year = ref(year_keys.value[0]);
+
+  //to keep selected group
+  const selected_group = ref(group_keys.value[0]);
+
+  //adds a new year to the DB and saves changes
   const addYear = (year: string) => {
-    groupData.value[year] = {
-      groups: defaultTimeTablingObject,
-      rooms: emptySchoolState,
+    school_data.value[year] = {
+      groups: group_schedule_object,
+      rooms: default_school_schedule,
     };
-    timeSave(groupData.value);
-    selectedYear.value = year;
-    selectedGroup.value = groupKeys.value[0];
+    timeSave(school_data.value);
+    selected_year.value = year;
+    selected_group.value = group_keys.value[0];
     Notify.create({
       type: 'positive',
       message: `El horario ${year} fue creado y salvado correctamente`,
     });
   };
 
+  //adds a new group for the selected year and saves it 
   const addGroup = (group: string) => {
-    groupData.value[selectedYear.value].groups[group] = emptyTimeState;
-    timeSave(groupData.value);
-    selectedGroup.value = group;
+    school_data.value[selected_year.value].groups[group] = default_group_schedule;
+    timeSave(school_data.value);
+    selected_group.value = group;
   };
 
   return {
-    groupData,
-    groupKeys,
-    yearKeys,
-    selectedYear,
-    selectedGroup,
+    school_data,
+    groupKeys: group_keys,
+    yearKeys: year_keys,
+    selected_year,
+    selectedGroup: selected_group,
     addGroup,
     addYear,
     onChangeYear(year: string) {
-      selectedYear.value = year;
+      selected_year.value = year;
       if (
-        !Object.keys(groupData.value[year].groups).includes(selectedGroup.value)
+        !Object.keys(school_data.value[year].groups).includes(selected_group.value)
       ) {
-        selectedGroup.value = Object.keys(groupData.value[year].groups)[0];
+        selected_group.value = Object.keys(school_data.value[year].groups)[0];
       }
     },
     onSave() {
-      timeSave(groupData.value);
+      timeSave(school_data.value);
     },
     onClear() {
       // groupData.value[selectedYear.value].groups[selectedGroup.value] =
       //   emptyTimeState;
       // groupData.value[selectedYear.value].rooms = emptySchoolState;
-      groupData.value = defaultTimeTablingYearObject;
-      timeSave(groupData.value);
+      school_data.value = school_schedule_object;
+      timeSave(school_data.value);
     },
   };
 };
