@@ -14,7 +14,7 @@
       @create-year="addYear"
       @create-group="addGroup"
     />
-    <school-component
+    <sschedule-component
       :schoolData="groupData[selectedYear].rooms"
       @update="groupData[selectedYear].rooms = $event"
     />
@@ -24,11 +24,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import GscheduleComponent from 'components/GscheduleComponent.vue';
-import SchoolComponent from 'components/SchoolComponent.vue';
+import SscheduleComponent from 'components/SscheduleComponent.vue';
 import { useTimetabling } from 'src/hooks/timetabling.hooks';
 export default defineComponent({
   name: 'TimetablingPage',
-  components: { GscheduleComponent, SchoolComponent },
+  components: { GscheduleComponent, SscheduleComponent },
   setup() {
     const {
       groupData,
