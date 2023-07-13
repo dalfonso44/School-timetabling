@@ -1,22 +1,22 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <gschedule-component
-      :groupData="groupData[selectedYear].groups"
-      :groupKeys="groupKeys"
-      :yearKeys="yearKeys"
-      :selectedGroup="selectedGroup"
-      :selectedYear="selectedYear"
-      @update-group="selectedGroup = $event"
+      :school_data="school_data[selected_year].groups"
+      :group_keys="group_keys"
+      :year_keys="year_keys"
+      :selected_group="selected_group"
+      :selected_year="selected_year"
+      @update-group="selected_group = $event"
       @update-year="onChangeYear"
-      @update="groupData[selectedYear].groups = $event"
+      @update="school_data[selected_year].groups = $event"
       @on-save="onSave"
       @on-clear="onClear"
-      @create-year="addYear"
-      @create-group="addGroup"
+      @create-year="add_year"
+      @create-group="add_group"
     />
     <sschedule-component
-      :schoolData="groupData[selectedYear].rooms"
-      @update="groupData[selectedYear].rooms = $event"
+      :schoolData="school_data[selected_year].rooms"
+      @update="school_data[selected_year].rooms = $event"
     />
   </q-page>
 </template>
@@ -31,28 +31,28 @@ export default defineComponent({
   components: { GscheduleComponent, SscheduleComponent },
   setup() {
     const {
-      groupData,
-      groupKeys,
-      selectedGroup,
-      selectedYear,
-      yearKeys,
-      addGroup,
+      school_data,
+      group_keys,
+      year_keys,
+      selected_year,
+      selected_group,
+      add_group,
+      add_year,
       onSave,
       onClear,
-      addYear,
       onChangeYear,
     } = useTimetabling();
     return {
-      groupData,
-      groupKeys,
-      selectedGroup,
-      selectedYear,
-      yearKeys,
-      onChangeYear,
-      addGroup,
+      school_data,
+      group_keys,
+      year_keys,
+      selected_year,
+      selected_group,
+      add_group,
+      add_year,
       onSave,
       onClear,
-      addYear,
+      onChangeYear,
     };
   },
 });

@@ -90,7 +90,7 @@ export const useTimetabling = () => {
   const selected_group = ref(group_keys.value[0]);
 
   //adds new year and saves it
-  const addYear = (year: string) => {
+  const add_year = (year: string) => {
     school_data.value[year] = {
       groups: default_group_schedule_object,
       rooms: empty_school_state,
@@ -105,20 +105,20 @@ export const useTimetabling = () => {
   };
   
   //adds new group and saves it
-  const addGroup = (group: string) => {
+  const add_group = (group: string) => {
     school_data.value[selected_year.value].groups[group] = empty_group_state;
     timeSave(school_data.value);
     selected_group.value = group;
   };
 
   return {
-    groupData: school_data,
-    groupKeys: group_keys,
-    yearKeys: year_keys,
-    selectedYear: selected_year,
-    selectedGroup: selected_group,
-    addGroup,
-    addYear,
+    school_data,
+    group_keys,
+    year_keys,
+    selected_year,
+    selected_group,
+    add_group,
+    add_year,
     onChangeYear(year: string) {
       selected_year.value = year;
       if (

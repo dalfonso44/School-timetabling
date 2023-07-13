@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-md full-width">
     <q-table
-      :title="`Horario ${selectedGroup}`"
-      :rows="groupData[selectedGroup]"
+      :title="`Horario ${selected_group}`"
+      :rows="school_data[selected_group]"
       :columns="columns"
       row-key="name"
       separator="cell"
@@ -19,20 +19,20 @@
             outlined
             rounded
             dense
-            :model-value="selectedGroup"
+            :model-value="selected_group"
             @update:model-value="$emit('update-group', $event)"
-            :options="groupKeys"
+            :options="group_keys"
           >
             <template v-slot:selected>
               <q-badge
-                v-if="selectedGroup"
-                :style="`border-color: ${getColor(selectedGroup)}`"
+                v-if="selected_group"
+                :style="`border-color: ${getColor(selected_group)}`"
                 square
                 outline
                 text-color="dark"
                 class="q-px-sm q-py-xs"
               >
-                {{ selectedGroup }}
+                {{ selected_group }}
               </q-badge>
             </template>
             <template v-slot:option="scope">
@@ -51,9 +51,9 @@
             outlined
             rounded
             dense
-            :model-value="selectedYear"
+            :model-value="selected_year"
             @update:model-value="$emit('update-year', $event)"
-            :options="yearKeys"
+            :options="year_keys"
             label="Año"
           />
         </div>
@@ -173,23 +173,23 @@ const fieldForEditing = columns
 
 export default {
   props: {
-    groupData: {
+    school_data: {
       type: Object,
       required: true,
     },
-    groupKeys: {
+    group_keys: {
       type: Array,
       required: true,
     },
-    yearKeys: {
+    year_keys: {
       type: Array,
       required: true,
     },
-    selectedGroup: {
+    selected_group: {
       type: String,
       required: true,
     },
-    selectedYear: {
+    selected_year: {
       type: String,
       required: true,
     },
@@ -238,12 +238,12 @@ export default {
       },
       onUpdate(row: number, column: string, value: any) {
         const newList = [
-          ...props.groupData[props.selectedGroup].map((x: any) => ({ ...x })),
+          ...props.school_data[props.selected_group].map((x: any) => ({ ...x })),
         ];
         newList[row][column] = value;
         emit('update', {
-          ...props.groupData,
-          [props.selectedGroup]: newList,
+          ...props.school_data,
+          [props.selected_group]: newList,
         });
       },
     };
