@@ -15,7 +15,7 @@
       @create-group="add_group"
     />
     <sschedule-component
-      :schoolData="school_data[selected_year].rooms"
+      :rooms_school_data="school_data[selected_year].rooms"
       @update="school_data[selected_year].rooms = $event"
     />
   </q-page>

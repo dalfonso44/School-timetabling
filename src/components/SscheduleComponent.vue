@@ -3,7 +3,7 @@
     <q-table
       style="max-width: 100%"
       class="my-custom-table"
-      :rows="schoolData"
+      :rows="rooms_school_data"
       :columns="columns"
       row-key="name"
       separator="cell"
@@ -127,7 +127,7 @@ const fieldForEditing = columns
 
 export default {
   props: {
-    schoolData: {
+    rooms_school_data: {
       type: Array,
       required: true,
     },
@@ -138,7 +138,7 @@ export default {
       columns,
       fieldForEditing,
       onUpdate(row: number, column: string, value: any) {
-        const newList = [...props.schoolData.map((x: any) => ({ ...x }))];
+        const newList = [...props.rooms_school_data.map((x: any) => ({ ...x }))];
         newList[row][column] = value;
         emit('update', newList);
       },
