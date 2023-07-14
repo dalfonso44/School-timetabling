@@ -61,13 +61,51 @@
         <q-space />
         <div class="row col-sm-6 col-12 items-center justify-end q-px-sm">
           <q-btn
+            color = "secondary"
+            icon-right="palette"
+            label="Color"
+            no-caps
+            rounded
+            class="q-mr-sm"
+            :style="`background-color: ${selected_color} !important  ;`"
+            @click="card = true"
+          />
+          <q-dialog v-model="card">
+            <q-card class="my-card">
+              <div class="q-pa-md row items-start">
+                <q-color
+                  class="full-width"
+                  :model-value="selected_color"
+                  @update:model-value="
+                    ($event) => $emit('update-color', $event)
+                  "
+                />
+              </div>
+              <q-separator />
+              <q-card-actions align="right">
+                <q-btn v-close-popup flat color="primary" label="Seleccionar" />
+                <q-btn v-close-popup flat color="primary" label="Cancelar" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
+          <q-btn
+            round
+            dense
+            :style="`color: ${selected_color} !important  ;`"
+            :icon="editing ? 'edit' : 'format_color_fill'"
+            @click="editing = !editing"
+            class="q-mr-sm"
+          ></q-btn>
+          
+          <q-btn
             color="secondary"
             icon-right="add"
             label="Nuevo horario"
             no-caps
             rounded
-            class="q-mr-md"
-            @click="showNewTime = true"
+            class="q-mr-sm"
+            @click="show_new_year = true"
           />
           <q-btn
             color="accent"
@@ -75,8 +113,8 @@
             label="Nuevo grupo"
             no-caps
             rounded
-            class="q-mr-md"
-            @click="showNewGroup = true"
+            class="q-mr-sm"
+            @click="show_new_group = true"
           />
           <q-btn
             color="primary"
@@ -96,6 +134,8 @@
             rounded
             @click="onClear"
           />
+
+         
         </div>
       </template>
       <template v-slot:body="props">
@@ -112,17 +152,28 @@
             :props="props"
             v-for="item in fieldForEditing"
             :key="item"
-            :class="props.rowIndex == 3 && 'bg-grey-3'"
+            :class="{
+              'bg-grey-3': props.rowIndex==3,
+              'cursor-pointer': !editing,
+              'text-white': !!props.row[`${item}_custom_color`],
+              }"
             style="padding-bottom: 0 !important"
+            @click="!editing && onPaint(props.rowIndex, item)"
           >
             <q-input
               v-if="props.rowIndex != 3"
               type="text"
               dense
+              :readonly="!editing"
               borderless
               :maxlength="6"
               :model-value="props.row[item]"
-              input-class="text-center"
+              :class="{
+                'cursor-pointer': !editing,
+              }"
+              :input-class="`text-center text-${
+                props.row[`${item}_custom_color`] ? 'white' : 'dark'
+              }`"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />
           </q-td>
@@ -134,16 +185,16 @@
       :title="'Crea un nuevo horario'"
       :label="'Nombre'"
       @on-next="$emit('create-year', $event)"
-      :show="showNewTime"
-      @on-close="showNewTime = false"
+      :show="show_new_year"
+      @on-close="show_new_year = false"
     />
 
     <input-dialog
       :title="'Crea un nuevo grupo'"
       :label="'Grupo'"
-      :show="showNewGroup"
+      :show="show_new_group"
       @on-next="$emit('create-group', $event)"
-      @on-close="showNewGroup = false"
+      @on-close="show_new_group = false"
     />
   </div>
 </template>
@@ -193,6 +244,10 @@ export default {
       type: String,
       required: true,
     },
+    selected_color:{
+      type: String,
+      required: true,
+    },
   },
   components: { InputDialog },
   emits: [
@@ -203,14 +258,19 @@ export default {
     'update-year',
     'create-year',
     'create-group',
+    'update-color',
+    'on-paint',
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
+    const editing = ref(true)
 
     return {
-      showNewTime,
-      showNewGroup,
+      card:ref(false),
+      editing,
+      show_new_year: showNewTime,
+      show_new_group: showNewGroup,
       columns,
       fieldForEditing,
       onSave() {
@@ -244,6 +304,16 @@ export default {
         emit('update', {
           ...props.school_data,
           [props.selected_group]: newList,
+        });
+      },
+      onPaint(row: number, column: string){
+        const newList = [
+          ...props.school_data[props.selected_group].map((x:any) => ({...x})),
+        ];
+        newList[row][`${column}_custom_color`] = props.selected_color;
+        emit('on-paint', {
+          ...props.school_data,
+          [props.selected_group]:newList,
         });
       },
     };
