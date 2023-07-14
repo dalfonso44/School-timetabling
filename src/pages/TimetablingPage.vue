@@ -14,7 +14,7 @@
       @on-clear="onClear"
       @create-year="add_year"
       @create-group="add_group"
-      @on-paint="school_data[selected_year].groups = $event"
+     
       @update-color="$event => selected_color = $event"
     />
     <sschedule-component

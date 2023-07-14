@@ -157,6 +157,9 @@
               'cursor-pointer': !editing,
               'text-white': !!props.row[`${item}_custom_color`],
               }"
+            :style="
+              !!props.row[`${item}_custom_color`] &&
+              `background-color: ${props.row[`${item}_custom_color`]}`"
             style="padding-bottom: 0 !important"
             @click="!editing && onPaint(props.rowIndex, item)"
           >
@@ -259,7 +262,7 @@ export default {
     'create-year',
     'create-group',
     'update-color',
-    'on-paint',
+    
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
@@ -311,7 +314,7 @@ export default {
           ...props.school_data[props.selected_group].map((x:any) => ({...x})),
         ];
         newList[row][`${column}_custom_color`] = props.selected_color;
-        emit('on-paint', {
+        emit('update', {
           ...props.school_data,
           [props.selected_group]:newList,
         });
