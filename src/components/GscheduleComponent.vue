@@ -12,7 +12,9 @@
       hide-pagination
     >
       <template v-slot:top>
-        <div class="row col-sm-6 col-12 items-center justify-start q-px-sm">
+        <div
+          class="row col-sm-6 col-md-5 col-lg-4 col-12 items-center justify-start q-px-sm"
+        >
           Horario
           <q-select
             class="q-ml-md col-md-3 col-sm-4 col-12"
@@ -47,7 +49,9 @@
           </q-select>
 
           <q-select
-            class="q-ml-md col-md-3 col-sm-4 col-12"
+            :class="`q-ml-md col-md-3 col-sm-4 col-12 ${
+              $q.screen.xs && 'q-mt-sm'
+            }`"
             outlined
             rounded
             dense
@@ -59,13 +63,18 @@
         </div>
 
         <q-space />
-        <div class="row col-sm-6 col-12 items-center justify-end q-px-sm">
+        <div
+          :class="`row col-sm-6 col-md-7 col-lg-8 col-12 items-center justify-end q-px-sm ${
+            $q.screen.xs && 'q-pt-sm'
+          }`"
+        >
           <q-btn
-            color = "secondary"
-            icon-right="palette"
-            label="Color"
+            color="secondary"
+            :label="!$q.screen.xs ? 'Color' : undefined"
             no-caps
-            rounded
+            :rounded="!$q.screen.xs"
+            :round="$q.screen.xs"
+            icon="palette"
             class="q-mr-sm"
             :style="`background-color: ${selected_color} !important  ;`"
             @click="card = true"
@@ -97,11 +106,12 @@
             @click="editing = !editing"
             class="q-mr-sm"
           ></q-btn>
-          
+
           <q-btn
             color="secondary"
-            icon-right="add"
-            label="Nuevo horario"
+            :round="$q.screen.xs"
+            icon="add"
+            :label="!$q.screen.xs ? 'Nuevo horario' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -109,8 +119,9 @@
           />
           <q-btn
             color="accent"
-            icon-right="add_circle"
-            label="Nuevo grupo"
+            icon="add_circle"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Nuevo grupo' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -118,8 +129,9 @@
           />
           <q-btn
             color="primary"
-            icon-right="archive"
-            label="Salvar"
+            icon="archive"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Salvar' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -127,16 +139,15 @@
           />
           <q-btn
             color="warning"
-            icon-right="close"
-            label="Limpiar"
+            icon="close"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Limpiar' : undefined"
             no-caps
             outline
             rounded
-            class = "q-mr-sm"
+            class="q-mr-sm"
             @click="onClear"
           />
-
-         
         </div>
       </template>
       <template v-slot:body="props">
@@ -154,13 +165,14 @@
             v-for="item in fieldForEditing"
             :key="item"
             :class="{
-              'bg-grey-3': props.rowIndex==3,
+              'bg-grey-3': props.rowIndex == 3,
               'cursor-pointer': !editing,
               'text-white': !!props.row[`${item}_custom_color`],
-              }"
+            }"
             :style="
               !!props.row[`${item}_custom_color`] &&
-              `background-color: ${props.row[`${item}_custom_color`]}`"
+              `background-color: ${props.row[`${item}_custom_color`]}`
+            "
             style="padding-bottom: 0 !important"
             @click="!editing && onPaint(props.rowIndex, item)"
           >
@@ -248,7 +260,7 @@ export default {
       type: String,
       required: true,
     },
-    selected_color:{
+    selected_color: {
       type: String,
       required: true,
     },
@@ -263,15 +275,14 @@ export default {
     'create-year',
     'create-group',
     'update-color',
-    
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
-    const editing = ref(true)
+    const editing = ref(true);
 
     return {
-      card:ref(false),
+      card: ref(false),
       editing,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
@@ -302,7 +313,9 @@ export default {
       },
       onUpdate(row: number, column: string, value: any) {
         const newList = [
-          ...props.school_data[props.selected_group].map((x: any) => ({ ...x })),
+          ...props.school_data[props.selected_group].map((x: any) => ({
+            ...x,
+          })),
         ];
         newList[row][column] = value;
         emit('update', {
@@ -310,14 +323,16 @@ export default {
           [props.selected_group]: newList,
         });
       },
-      onPaint(row: number, column: string){
+      onPaint(row: number, column: string) {
         const newList = [
-          ...props.school_data[props.selected_group].map((x:any) => ({...x})),
+          ...props.school_data[props.selected_group].map((x: any) => ({
+            ...x,
+          })),
         ];
         newList[row][`${column}_custom_color`] = props.selected_color;
         emit('update', {
           ...props.school_data,
-          [props.selected_group]:newList,
+          [props.selected_group]: newList,
         });
       },
     };
