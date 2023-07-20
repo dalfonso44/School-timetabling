@@ -122,7 +122,7 @@
             label="Salvar"
             no-caps
             rounded
-            class="q-mr-md"
+            class="q-mr-sm"
             @click="onSave"
           />
           <q-btn
@@ -132,6 +132,7 @@
             no-caps
             outline
             rounded
+            class = "q-mr-sm"
             @click="onClear"
           />
 
