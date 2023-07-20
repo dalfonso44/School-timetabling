@@ -13,6 +13,6 @@ export default defineComponent({
   components: { TablingComponent },
   setup() {
     return {};
-  },
+  }
 });
 </script>
