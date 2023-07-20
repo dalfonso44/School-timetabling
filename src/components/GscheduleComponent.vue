@@ -49,7 +49,9 @@
           </q-select>
 
           <q-select
-            class="q-ml-md col-md-3 col-sm-4 col-12"
+            :class="`q-ml-md col-md-3 col-sm-4 col-12 ${
+              $q.screen.xs && 'q-mt-sm'
+            }`"
             outlined
             rounded
             dense
@@ -62,14 +64,17 @@
 
         <q-space />
         <div
-          class="row col-sm-6 col-md-7 col-lg-8 col-12 items-center justify-end q-px-sm"
+          :class="`row col-sm-6 col-md-7 col-lg-8 col-12 items-center justify-end q-px-sm ${
+            $q.screen.xs && 'q-pt-sm'
+          }`"
         >
           <q-btn
             color="secondary"
-            icon-right="palette"
-            label="Color"
+            :label="!$q.screen.xs ? 'Color' : undefined"
             no-caps
-            rounded
+            :rounded="!$q.screen.xs"
+            :round="$q.screen.xs"
+            icon="palette"
             class="q-mr-sm"
             :style="`background-color: ${selected_color} !important  ;`"
             @click="card = true"
@@ -104,8 +109,9 @@
 
           <q-btn
             color="secondary"
-            icon-right="add"
-            label="Nuevo horario"
+            :round="$q.screen.xs"
+            icon="add"
+            :label="!$q.screen.xs ? 'Nuevo horario' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -113,8 +119,9 @@
           />
           <q-btn
             color="accent"
-            icon-right="add_circle"
-            label="Nuevo grupo"
+            icon="add_circle"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Nuevo grupo' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -122,8 +129,9 @@
           />
           <q-btn
             color="primary"
-            icon-right="archive"
-            label="Salvar"
+            icon="archive"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Salvar' : undefined"
             no-caps
             rounded
             class="q-mr-sm"
@@ -131,8 +139,9 @@
           />
           <q-btn
             color="warning"
-            icon-right="close"
-            label="Limpiar"
+            icon="close"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Limpiar' : undefined"
             no-caps
             outline
             rounded
