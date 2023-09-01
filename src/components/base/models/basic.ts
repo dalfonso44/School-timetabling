@@ -8,11 +8,23 @@ export interface BaseSchedule {
 
   /** Year related ex: 2023 */
   year: string;
+
+  /** Group related ex: 2023 */
   group: string;
+
+  /** Day of week */
   day: number;
+
+  /** Room related ex: 3 */
   room: string;
+
+  /** Turn related ex: 3 */
   hour: number;
+
+  /** is a practical lesson? */
   cp: boolean;
+
+  /** verification code */
   id: string;
 }
 
@@ -23,7 +35,7 @@ export interface Schedule {
   /** paint dict use like paint[schedule.id] = color */
   paint: Dictionary<string>;
 
-  /** all the setting needed for create an Schedule*/
+  /** all the setting needed for create an complete Schedule*/
   config: {
     groupsOptions: string[];
     yearsOptions: string[];
