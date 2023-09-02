@@ -13,6 +13,7 @@
       @on-clear="onClear"
       @create-year="add_year"
       @create-group="add_group"
+      @update-base="onUpdateBase"
       @update="school_data[selected_year].groups = $event"
       @update-color="($event) => (selected_color = $event)"
     />
@@ -25,8 +26,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import GscheduleComponent from 'components/GscheduleComponent.vue';
-import SscheduleComponent from 'components/SscheduleComponent.vue';
+import GscheduleComponent from 'components/base/component/BaseGscheduleComponent.vue';
+import SscheduleComponent from 'components/base/component/BaseSscheduleComponent.vue';
 import { useScheduleTimetabling } from 'components/base/hooks/useTimetabling.hooks';
 import { ref } from 'vue';
 
@@ -45,7 +46,8 @@ export default defineComponent({
       add_year,
       onSave,
       onClear,
-      onChangeYear
+      onChangeYear,
+      onUpdateBase
     } = useScheduleTimetabling();
 
     // const;
@@ -60,7 +62,8 @@ export default defineComponent({
       add_year,
       onSave,
       onClear,
-      onChangeYear
+      onChangeYear,
+      onUpdateBase
     };
   }
 });

@@ -1,7 +1,7 @@
 import { Notify } from 'quasar';
 import { computed, ref } from 'vue';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
-import { MyBasicSquedule } from '../models/basic';
+import { BaseSchedule, MyBasicSquedule } from '../models/basic';
 import { useScheduleHandler } from './useSchedule.hooks';
 
 export const useScheduleTimetabling = () => {
@@ -10,8 +10,6 @@ export const useScheduleTimetabling = () => {
   const sch = timeLoad() || MyBasicSquedule;
 
   const {
-    addBase,
-    deleteBase,
     mappedBaseSchedule,
     mappedRoomSchedule,
     getVerbose,
@@ -54,7 +52,10 @@ export const useScheduleTimetabling = () => {
         ...dotDaysXHours.reduce(
           (prev, value) => ({
             ...prev,
-            [value]: mappedRoomSchedule.value[`${year}-${v}-${value}`]?.group
+            [value]: mappedRoomSchedule.value[`${year}-${v}-${value}`] || []
+            // [value]: (mappedRoomSchedule.value[`${year}-${v}-${value}`] || [])
+            //   .map((x) => x.group)
+            //   .reduce((prev, x) => `${prev ? `${prev}<br>` : ''}${x}`, '')
           }),
           {}
         )
@@ -103,10 +104,9 @@ export const useScheduleTimetabling = () => {
   //adds new year and saves it
   const add_year = (year: string) => {
     school_data.value[year] = {
-      groups: default_group_schedule_object,
-      rooms: empty_school_state
+      groups: default_group_schedule_object(year),
+      rooms: empty_school_state(year)
     };
-    // timeSave(school_data.value);
     schedule.value.config.yearsOptions.push(year);
     selected_year.value = year;
     selected_group.value = group_keys.value[0];
@@ -145,8 +145,30 @@ export const useScheduleTimetabling = () => {
       // groupData.value[selectedYear.value].groups[selectedGroup.value] =
       //   emptyTimeState;
       // groupData.value[selectedYear.value].rooms = emptySchoolState;
-      school_data.value = default_school_schedule_object;
-      timeSave(schedule.value);
+      // school_data.value = default_school_schedule_object;
+      // timeSave(schedule.value);
+    },
+    onUpdateBase(payload: {
+      year: string;
+      group: string;
+      hour_index: number;
+      column: string;
+      value: string;
+    }) {
+      const hour = schedule.value.config.hoursOptions[payload.hour_index];
+      const id = `${payload.year}-${hour}-${payload.group}-${payload.column}`;
+      const [subject, cp, room] = payload.value.split(' ');
+      const baseSchedule: BaseSchedule = {
+        cp: cp == 'cp',
+        day: payload.column,
+        group: payload.group,
+        hour: hour,
+        room: room,
+        subject: subject,
+        year: payload.year
+      };
+      onChangeBase(id, baseSchedule);
+      school_data.value[payload.year].rooms = empty_school_state(payload.year);
     }
   };
 };

@@ -1,5 +1,10 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
+
+export const getVerbose = (bs: BaseSchedule | undefined) => {
+  if (!bs) return '';
+  return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
+};
 
 export const useScheduleHandler = (sch: Schedule) => {
   const schedule = ref<Schedule>(sch);
@@ -10,11 +15,6 @@ export const useScheduleHandler = (sch: Schedule) => {
   const getRoomID = (bs: BaseSchedule) =>
     `${bs.year}-${bs.room}-${bs.day}${bs.hour}`;
 
-  const getVerbose = (bs: BaseSchedule | undefined) => {
-    if (!bs) return '';
-    return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
-  };
-
   const mappedBaseSchedule = ref<Dictionary<BaseSchedule>>(
     sch.schedule.reduce(
       (prevV, value) => ({
@@ -24,13 +24,13 @@ export const useScheduleHandler = (sch: Schedule) => {
       {}
     )
   );
-  const mappedRoomSchedule = ref<Dictionary<BaseSchedule>>(
-    sch.schedule.reduce(
+  const mappedRoomSchedule = computed<Dictionary<BaseSchedule[]>>(() =>
+    schedule.value.schedule.reduce(
       (prevV, value) => ({
         ...prevV,
-        [getRoomID(value)]: value
+        [getRoomID(value)]: [...(prevV[getRoomID(value)] || []), value]
       }),
-      {}
+      {} as Dictionary<BaseSchedule[]>
     )
   );
 
@@ -39,7 +39,12 @@ export const useScheduleHandler = (sch: Schedule) => {
   //   mappedBaseSchedule.value[value.id] = value;
   // });
 
+  const ensureSchedulePersistence = () => {
+    schedule.value.schedule = Object.values(mappedBaseSchedule.value);
+  };
+
   const onChangeBase = (id: string, value: BaseSchedule) => {
+    console.log('on change >', id, value);
     const oldValue = mappedBaseSchedule.value[id];
     if (!!oldValue) delete mappedBaseSchedule.value[id];
     const newId = getID(value);
@@ -47,6 +52,7 @@ export const useScheduleHandler = (sch: Schedule) => {
       throw 'invalid structure';
     }
     mappedBaseSchedule.value[newId] = value;
+    ensureSchedulePersistence();
   };
 
   const addBase = (value: BaseSchedule) => {

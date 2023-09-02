@@ -19,7 +19,7 @@ export interface BaseSchedule {
   room: string;
 
   /** Turn related ex: 3 */
-  hour: number;
+  hour: string;
 
   /** is a practical lesson? */
   cp: boolean;
@@ -54,7 +54,7 @@ export const MyBasicSquedule: Schedule = {
       cp: true,
       day: 'monday',
       group: 'C111',
-      hour: 1,
+      hour: '1',
       room: '1',
       subject: 'EDAI',
       year: '2023'
