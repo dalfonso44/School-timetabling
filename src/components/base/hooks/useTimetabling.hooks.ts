@@ -1,5 +1,4 @@
 import { Notify } from 'quasar';
-import { timeTableData } from './PersistanceDB.hooks';
 import { computed, ref } from 'vue';
 
 export const default_groups = [

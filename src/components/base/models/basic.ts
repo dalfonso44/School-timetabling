@@ -25,7 +25,7 @@ export interface BaseSchedule {
   cp: boolean;
 
   /** verification code */
-  id: string;
+  id?: string;
 }
 
 export interface Schedule {
