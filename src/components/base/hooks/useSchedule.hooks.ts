@@ -1,37 +1,34 @@
 import { ref } from 'vue';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
 
-const CHD_KEY = 'schedule-key';
-
-export const usePersistanceScheduleDB = () => {
-  return {
-    saveData(obj: any[]) {
-      localStorage.setItem(CHD_KEY, JSON.stringify(obj));
-    },
-    loadData(): Schedule | false {
-      const obj = localStorage.getItem(CHD_KEY);
-      if (obj) return JSON.parse(obj) as Schedule;
-      return false;
-    },
-    cleanData() {
-      localStorage.removeItem(CHD_KEY);
-    }
-  };
-};
-
 export const useScheduleHandler = (sch: Schedule) => {
   const schedule = ref<Schedule>(sch);
 
   const getID = (bs: BaseSchedule) =>
-    `${bs.year}-${bs.subject}-${bs.group}-${bs.day}-${bs.hour}-${bs.room}-${
-      bs.cp ? 'cp' : 'conf'
-    }`;
+    `${bs.year}-${bs.hour}-${bs.group}-${bs.day}`;
+
+  const getRoomID = (bs: BaseSchedule) =>
+    `${bs.year}-${bs.room}-${bs.day}${bs.hour}`;
+
+  const getVerbose = (bs: BaseSchedule | undefined) => {
+    if (!bs) return '';
+    return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
+  };
 
   const mappedBaseSchedule = ref<Dictionary<BaseSchedule>>(
     sch.schedule.reduce(
       (prevV, value) => ({
         ...prevV,
         [getID(value)]: value
+      }),
+      {}
+    )
+  );
+  const mappedRoomSchedule = ref<Dictionary<BaseSchedule>>(
+    sch.schedule.reduce(
+      (prevV, value) => ({
+        ...prevV,
+        [getRoomID(value)]: value
       }),
       {}
     )
@@ -70,8 +67,10 @@ export const useScheduleHandler = (sch: Schedule) => {
   return {
     schedule,
     onChangeBase,
+    getVerbose,
     addBase,
     deleteBase,
-    mappedBaseSchedule
+    mappedBaseSchedule,
+    mappedRoomSchedule
   };
 };

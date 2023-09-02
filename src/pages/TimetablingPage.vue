@@ -14,8 +14,7 @@
       @on-clear="onClear"
       @create-year="add_year"
       @create-group="add_group"
-     
-      @update-color="$event => selected_color = $event"
+      @update-color="($event) => (selected_color = $event)"
     />
     <sschedule-component
       :rooms_school_data="school_data[selected_year].rooms"
@@ -29,13 +28,13 @@ import { defineComponent } from 'vue';
 import GscheduleComponent from 'components/GscheduleComponent.vue';
 import SscheduleComponent from 'components/SscheduleComponent.vue';
 import { useTimetabling } from 'src/hooks/timetabling.hooks';
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 export default defineComponent({
   name: 'TimetablingPage',
   components: { GscheduleComponent, SscheduleComponent },
   setup() {
-    const selected_color = ref('rgb(0,0,0)')
+    const selected_color = ref('rgb(0,0,0)');
     const {
       school_data,
       group_keys,
@@ -46,7 +45,7 @@ export default defineComponent({
       add_year,
       onSave,
       onClear,
-      onChangeYear,
+      onChangeYear
     } = useTimetabling();
     return {
       school_data,
@@ -59,8 +58,8 @@ export default defineComponent({
       add_year,
       onSave,
       onClear,
-      onChangeYear,
+      onChangeYear
     };
-  },
+  }
 });
 </script>

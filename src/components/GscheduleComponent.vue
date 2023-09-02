@@ -7,7 +7,7 @@
       row-key="name"
       separator="cell"
       :pagination="{
-        rowsPerPage: -1,
+        rowsPerPage: -1
       }"
       hide-pagination
     >
@@ -167,7 +167,7 @@
             :class="{
               'bg-grey-3': props.rowIndex == 3,
               'cursor-pointer': !editing,
-              'text-white': !!props.row[`${item}_custom_color`],
+              'text-white': !!props.row[`${item}_custom_color`]
             }"
             :style="
               !!props.row[`${item}_custom_color`] &&
@@ -182,10 +182,9 @@
               dense
               :readonly="!editing"
               borderless
-              :maxlength="6"
               :model-value="props.row[item]"
               :class="{
-                'cursor-pointer': !editing,
+                'cursor-pointer': !editing
               }"
               :input-class="`text-center text-${
                 props.row[`${item}_custom_color`] ? 'white' : 'dark'
@@ -228,10 +227,10 @@ const columns: QTableColumn[] = [
     name: 'wednesday',
     align: 'center',
     label: 'Miercoles',
-    field: 'wednesday',
+    field: 'wednesday'
   },
   { name: 'thursday', align: 'center', label: 'Jueves', field: 'thursday' },
-  { name: 'friday', align: 'center', label: 'Viernes', field: 'friday' },
+  { name: 'friday', align: 'center', label: 'Viernes', field: 'friday' }
 ];
 
 const fieldForEditing = columns
@@ -242,28 +241,28 @@ export default {
   props: {
     school_data: {
       type: Object,
-      required: true,
+      required: true
     },
     group_keys: {
       type: Array,
-      required: true,
+      required: true
     },
     year_keys: {
       type: Array,
-      required: true,
+      required: true
     },
     selected_group: {
       type: String,
-      required: true,
+      required: true
     },
     selected_year: {
       type: String,
-      required: true,
+      required: true
     },
     selected_color: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   components: { InputDialog },
   emits: [
@@ -274,7 +273,7 @@ export default {
     'update-year',
     'create-year',
     'create-group',
-    'update-color',
+    'update-color'
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
@@ -314,28 +313,28 @@ export default {
       onUpdate(row: number, column: string, value: any) {
         const newList = [
           ...props.school_data[props.selected_group].map((x: any) => ({
-            ...x,
-          })),
+            ...x
+          }))
         ];
         newList[row][column] = value;
         emit('update', {
           ...props.school_data,
-          [props.selected_group]: newList,
+          [props.selected_group]: newList
         });
       },
       onPaint(row: number, column: string) {
         const newList = [
           ...props.school_data[props.selected_group].map((x: any) => ({
-            ...x,
-          })),
+            ...x
+          }))
         ];
         newList[row][`${column}_custom_color`] = props.selected_color;
         emit('update', {
           ...props.school_data,
-          [props.selected_group]: newList,
+          [props.selected_group]: newList
         });
-      },
+      }
     };
-  },
+  }
 };
 </script>
