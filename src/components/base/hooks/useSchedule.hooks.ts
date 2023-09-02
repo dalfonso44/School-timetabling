@@ -52,9 +52,26 @@ export const useScheduleHandler = (sch: Schedule) => {
     mappedBaseSchedule.value[newId] = value;
   };
 
+  const addBase = (value: BaseSchedule) => {
+    const newId = getID(value);
+    if (mappedBaseSchedule.value[newId]) {
+      throw 'invalid structure';
+    }
+    mappedBaseSchedule.value[newId] = value;
+  };
+
+  const deleteBase = (id: string) => {
+    if (!!mappedBaseSchedule.value[id]) {
+      throw 'invalid structure';
+    }
+    delete mappedBaseSchedule.value[id];
+  };
+
   return {
     schedule,
     onChangeBase,
+    addBase,
+    deleteBase,
     mappedBaseSchedule
   };
 };
