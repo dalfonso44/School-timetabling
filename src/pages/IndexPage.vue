@@ -16,11 +16,14 @@
       @update-base="onUpdateBase"
       @update="school_data[selected_year].groups = $event"
       @update-color="($event) => (selected_color = $event)"
+      @on-print="onPrint"
     />
-    <sschedule-component
-      :rooms_school_data="school_data[selected_year].rooms"
-      @update="school_data[selected_year].rooms = $event"
-    />
+    <div id="printID" class="full-width">
+      <sschedule-component
+        :rooms_school_data="school_data[selected_year].rooms"
+        @update="school_data[selected_year].rooms = $event"
+      />
+    </div>
   </q-page>
 </template>
 
@@ -63,7 +66,37 @@ export default defineComponent({
       onSave,
       onClear,
       onChangeYear,
-      onUpdateBase
+      onUpdateBase,
+      onPrint() {
+        const toPrint = document.getElementById('printID')?.innerHTML;
+        let stylesHtml = '';
+        document
+          .querySelectorAll('link[rel="stylesheet"], style')
+          .forEach((value) => {
+            stylesHtml += value.outerHTML;
+          });
+
+        // Open the print window
+        const WinPrint = window.open(
+          '',
+          '',
+          'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
+        );
+
+        WinPrint?.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+    ${stylesHtml}
+  </head>
+  <body>
+    ${toPrint}
+  </body>
+</html>`);
+
+        WinPrint?.document.close();
+        WinPrint?.focus();
+        WinPrint?.print();
+      }
     };
   }
 });

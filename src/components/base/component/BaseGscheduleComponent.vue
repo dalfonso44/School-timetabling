@@ -107,6 +107,15 @@
             class="q-mr-sm"
           ></q-btn>
 
+          <!-- <q-btn
+            icon="print"
+            dense
+            round
+            color="primary"
+            class="q-mr-sm"
+            @click="$emit('on-print')"
+          ></q-btn> -->
+
           <q-btn
             color="secondary"
             :round="$q.screen.xs"
@@ -277,7 +286,8 @@ export default {
     'update-year',
     'create-year',
     'create-group',
-    'update-color'
+    'update-color',
+    'on-print'
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
