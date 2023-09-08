@@ -21,6 +21,7 @@ export const default_groups = [
   'M4',
   'CD1'
 ];
+
 export const default_years = ['2023', 'test'];
 
 export const empty_group_state = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
