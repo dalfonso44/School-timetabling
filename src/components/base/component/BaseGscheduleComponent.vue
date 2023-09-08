@@ -107,6 +107,15 @@
             class="q-mr-sm"
           ></q-btn>
 
+          <!-- <q-btn
+            icon="print"
+            dense
+            round
+            color="primary"
+            class="q-mr-sm"
+            @click="$emit('on-print')"
+          ></q-btn> -->
+
           <q-btn
             color="secondary"
             :round="$q.screen.xs"
@@ -182,6 +191,8 @@
               dense
               :readonly="!editing"
               borderless
+              hide-bottom-space
+              lazy-rules
               :model-value="props.row[item]"
               :class="{
                 'cursor-pointer': !editing
@@ -189,6 +200,7 @@
               :input-class="`text-center text-${
                 props.row[`${item}_custom_color`] ? 'white' : 'dark'
               }`"
+              :rules="[verifyVerbose]"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />
           </q-td>
@@ -215,10 +227,10 @@
 </template>
 
 <script lang="ts">
-import InputDialog from './dialogs/InputDialog.vue';
+import InputDialog from '../../dialogs/InputDialog.vue';
 import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
-
+import { getColor } from '../hooks/utils.hooks';
 const columns: QTableColumn[] = [
   { name: 'turn', align: 'center', field: 'turn', label: '' },
   { name: 'monday', align: 'center', label: 'Lunes', field: 'monday' },
@@ -269,20 +281,30 @@ export default {
     'on-clear',
     'on-save',
     'update',
+    'update-base',
     'update-group',
     'update-year',
     'create-year',
     'create-group',
-    'update-color'
+    'update-color',
+    'on-print'
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
     const editing = ref(true);
 
+    const verifyVerbose = (value: string) => {
+      if (!value) return true;
+      const spl = value.trim().split(' ');
+      if (spl.length != 3) return 'Campo incompleto';
+      if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
+      return true;
+    };
     return {
       card: ref(false),
       editing,
+      verifyVerbose,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       columns,
@@ -295,32 +317,37 @@ export default {
         emit('on-clear');
         // rows.value = emptyState;
       },
-      getColor(str: string) {
-        str = str + str;
-        var hash = 0;
-        if (str.length === 0) return hash;
-        for (var i = 0; i < str.length; i++) {
-          hash = str.charCodeAt(i) + ((hash << 5) - hash);
-          hash = hash & hash;
-        }
-        var rgb = [0, 0, 0];
-        for (var i = 0; i < 3; i++) {
-          var value = (hash >> (i * 8)) & 255;
-          rgb[i] = value;
-        }
-        return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-      },
+      getColor,
+
       onUpdate(row: number, column: string, value: any) {
-        const newList = [
-          ...props.school_data[props.selected_group].map((x: any) => ({
-            ...x
-          }))
-        ];
-        newList[row][column] = value;
-        emit('update', {
-          ...props.school_data,
-          [props.selected_group]: newList
-        });
+        const verify = verifyVerbose(value);
+        if (typeof verify == 'boolean') {
+          const newList = [
+            ...props.school_data[props.selected_group].map((x: any) => ({
+              ...x
+            }))
+          ];
+          newList[row][column] = value.trim();
+          console.log(
+            '>>>>',
+            props.selected_year,
+            props.selected_group,
+            row,
+            column,
+            value
+          );
+          emit('update-base', {
+            year: props.selected_year,
+            group: props.selected_group,
+            hour_index: row,
+            column,
+            value: value.trim()
+          });
+          emit('update', {
+            ...props.school_data,
+            [props.selected_group]: newList
+          });
+        }
       },
       onPaint(row: number, column: string) {
         const newList = [

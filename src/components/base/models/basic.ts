@@ -13,19 +13,19 @@ export interface BaseSchedule {
   group: string;
 
   /** Day of week */
-  day: number;
+  day: string;
 
   /** Room related ex: 3 */
   room: string;
 
   /** Turn related ex: 3 */
-  hour: number;
+  hour: string;
 
   /** is a practical lesson? */
   cp: boolean;
 
   /** verification code */
-  id: string;
+  id?: string;
 }
 
 export interface Schedule {
@@ -40,7 +40,7 @@ export interface Schedule {
     groupsOptions: string[];
     yearsOptions: string[];
     roomsOptions: string[];
-    daysOptions: number[];
+    daysOptions: string[];
 
     /** use '-' as separator */
     hoursOptions: string[];
@@ -49,9 +49,19 @@ export interface Schedule {
 
 export const MyBasicSquedule: Schedule = {
   paint: {},
-  schedule: [],
+  schedule: [
+    {
+      cp: true,
+      day: 'monday',
+      group: 'C111',
+      hour: '1',
+      room: '1',
+      subject: 'EDAI',
+      year: '2023'
+    }
+  ],
   config: {
-    daysOptions: [1, 2, 3, 4, 5],
+    daysOptions: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
     groupsOptions: [
       'C111',
       'C112',
@@ -73,6 +83,6 @@ export const MyBasicSquedule: Schedule = {
     ],
     roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     yearsOptions: ['2023'],
-    hoursOptions: ['1', '2', '3', '-', '4', '5', '6']
+    hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6']
   }
 };

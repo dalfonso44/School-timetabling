@@ -19,7 +19,7 @@ export const default_groups = [
   'M2',
   'M3',
   'M4',
-  'CD1',
+  'CD1'
 ];
 export const default_years = ['2023', 'test'];
 
@@ -31,7 +31,7 @@ export const empty_group_state = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
       tuesday: '',
       wednesday: '',
       thursday: '',
-      friday: '',
+      friday: ''
     };
   }
 );
@@ -44,7 +44,7 @@ const empty_school_state = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
       tuesday: '',
       wednesday: '',
       thursday: '',
-      friday: '',
+      friday: ''
     };
   }
 );
@@ -52,7 +52,7 @@ const empty_school_state = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
 export const default_group_schedule_object = default_groups.reduce(
   (prev, current) => ({
     ...prev,
-    [current]: empty_group_state,
+    [current]: empty_group_state
   }),
   {}
 );
@@ -62,8 +62,8 @@ export const default_school_schedule_object = default_years.reduce(
     ...prev,
     [current]: {
       groups: default_group_schedule_object,
-      rooms: empty_school_state,
-    },
+      rooms: empty_school_state
+    }
   }),
   {}
 );
@@ -85,7 +85,7 @@ export const useTimetabling = () => {
 
   //keeps selected year
   const selected_year = ref(year_keys.value[0]);
-  
+
   //keeps selected group
   const selected_group = ref(group_keys.value[0]);
 
@@ -93,17 +93,17 @@ export const useTimetabling = () => {
   const add_year = (year: string) => {
     school_data.value[year] = {
       groups: default_group_schedule_object,
-      rooms: empty_school_state,
+      rooms: empty_school_state
     };
     timeSave(school_data.value);
     selected_year.value = year;
     selected_group.value = group_keys.value[0];
     Notify.create({
       type: 'positive',
-      message: `El horario ${year} fue creado y salvado correctamente`,
+      message: `El horario ${year} fue creado y salvado correctamente`
     });
   };
-  
+
   //adds new group and saves it
   const add_group = (group: string) => {
     school_data.value[selected_year.value].groups[group] = empty_group_state;
@@ -122,7 +122,9 @@ export const useTimetabling = () => {
     onChangeYear(year: string) {
       selected_year.value = year;
       if (
-        !Object.keys(school_data.value[year].groups).includes(selected_group.value)
+        !Object.keys(school_data.value[year].groups).includes(
+          selected_group.value
+        )
       ) {
         selected_group.value = Object.keys(school_data.value[year].groups)[0];
       }
@@ -136,6 +138,6 @@ export const useTimetabling = () => {
       // groupData.value[selectedYear.value].rooms = emptySchoolState;
       school_data.value = default_school_schedule_object;
       timeSave(school_data.value);
-    },
+    }
   };
 };

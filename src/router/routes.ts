@@ -7,6 +7,13 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }]
   },
   {
+    path: '/old/',
+    component: () => import('layouts/MyLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/TimetablingPage.vue') }
+    ]
+  },
+  {
     path: '/timetabling/',
     component: () => import('layouts/EmptyLayout.vue'),
     children: [
