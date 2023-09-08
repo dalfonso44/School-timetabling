@@ -36,14 +36,22 @@ export interface Schedule {
   paint: Dictionary<string>;
 
   /** all the setting needed for create an complete Schedule*/
+  /*aqui es donde annado todas las configuraciones que pueda 
+  necesitar para el futuro como el claustro de profesors, la cantidad de horas 
+  por asignaturas, etc*/
   config: {
     groupsOptions: string[];
     yearsOptions: string[];
     roomsOptions: string[];
     daysOptions: string[];
-
     /** use '-' as separator */
     hoursOptions: string[];
+
+    /*subjects thaught in other place */
+    subjectsWithoutRooms?: string[];
+    /* teachers who teach the subjects*/
+    professors?: string[];
+    scheduleName?: string;
   };
 }
 
