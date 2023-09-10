@@ -4,7 +4,6 @@
       style="max-width: 100%"
       class="my-custom-table"
       :rows="rooms_school_data"
-      :columns="columns"
       row-key="name"
       separator="cell"
       :pagination="{
@@ -45,7 +44,7 @@
             {{ props.row.turn }}
           </q-td>
 
-          <q-td :key="item" :props="props" v-for="item in fieldForEditing">
+          <q-td :key="item" :props="props" v-for="item in dotDaysXHours">
             <!-- <q-input
               type="text"
               :style="`width: ${
@@ -85,7 +84,6 @@
 </template>
 
 <script lang="ts">
-import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
 
@@ -96,44 +94,6 @@ const colors: string[] = [
   'bg-purple-5 text-white',
   'bg-pink-13 text-white'
 ];
-
-const columns: QTableColumn[] = [
-  { name: 'turn', align: 'center', field: 'turn', label: '' },
-  { name: 'monday1', align: 'center', label: '1', field: 'monday1' },
-  { name: 'monday2', align: 'center', label: '2', field: 'monday2' },
-  { name: 'monday3', align: 'center', label: '3', field: 'monday3' },
-  { name: 'monday4', align: 'center', label: '4', field: 'monday4' },
-  { name: 'monday5', align: 'center', label: '5', field: 'monday5' },
-  { name: 'monday6', align: 'center', label: '6', field: 'monday6' },
-  { name: 'tuesday1', align: 'center', label: '1', field: 'tuesday1' },
-  { name: 'tuesday2', align: 'center', label: '2', field: 'tuesday2' },
-  { name: 'tuesday3', align: 'center', label: '3', field: 'tuesday3' },
-  { name: 'tuesday4', align: 'center', label: '4', field: 'tuesday4' },
-  { name: 'tuesday5', align: 'center', label: '5', field: 'tuesday5' },
-  { name: 'tuesday6', align: 'center', label: '6', field: 'tuesday6' },
-  { name: 'wednesday1', align: 'center', label: '1', field: 'wednesday1' },
-  { name: 'wednesday2', align: 'center', label: '2', field: 'wednesday2' },
-  { name: 'wednesday3', align: 'center', label: '3', field: 'wednesday3' },
-  { name: 'wednesday4', align: 'center', label: '4', field: 'wednesday4' },
-  { name: 'wednesday5', align: 'center', label: '5', field: 'wednesday5' },
-  { name: 'wednesday6', align: 'center', label: '6', field: 'wednesday6' },
-  { name: 'thursday1', align: 'center', label: '1', field: 'thursday1' },
-  { name: 'thursday2', align: 'center', label: '2', field: 'thursday2' },
-  { name: 'thursday3', align: 'center', label: '3', field: 'thursday3' },
-  { name: 'thursday4', align: 'center', label: '4', field: 'thursday4' },
-  { name: 'thursday5', align: 'center', label: '5', field: 'thursday5' },
-  { name: 'thursday6', align: 'center', label: '6', field: 'thursday6' },
-  { name: 'friday1', align: 'center', label: '1', field: 'friday1' },
-  { name: 'friday2', align: 'center', label: '2', field: 'friday2' },
-  { name: 'friday3', align: 'center', label: '3', field: 'friday3' },
-  { name: 'friday4', align: 'center', label: '4', field: 'friday4' },
-  { name: 'friday5', align: 'center', label: '5', field: 'friday5' },
-  { name: 'friday6', align: 'center', label: '6', field: 'friday6' }
-];
-
-const fieldForEditing = columns
-  .filter((c) => c.name !== 'turn')
-  .map((c) => c.name);
 
 export default {
   props: {
@@ -146,14 +106,22 @@ export default {
       required: true
     }
   },
+
   emits: ['update'],
   setup(props, { emit }) {
+    const dotDaysXHours = props.sch.config.daysOptions
+      .map((day: string) => {
+        return props.sch.config.hoursOptions
+          .filter((hour: string) => hour != 'Receso')
+          .map((hour: string) => day + hour);
+      })
+      .reduce((prev: string, curr: string) => [...prev, ...curr], []);
+
     return {
-      columns,
       getVerbose,
       getColor,
-      fieldForEditing,
       colors,
+      dotDaysXHours,
 
       onUpdate(row: number, column: string, value: any) {
         const newList = [
