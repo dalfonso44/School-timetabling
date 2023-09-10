@@ -125,6 +125,7 @@ export const useScheduleTimetabling = () => {
   };
 
   return {
+    sch,
     school_data,
     group_keys,
     year_keys,

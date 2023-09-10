@@ -21,6 +21,7 @@
     <div id="printID" class="full-width">
       <sschedule-component
         :rooms_school_data="school_data[selected_year].rooms"
+        :sch="sch"
         @update="school_data[selected_year].rooms = $event"
       />
     </div>
@@ -40,6 +41,7 @@ export default defineComponent({
   setup() {
     const selected_color = ref('rgb(0,0,0)');
     const {
+      sch,
       school_data,
       group_keys,
       year_keys,
@@ -55,6 +57,7 @@ export default defineComponent({
 
     // const;
     return {
+      sch,
       school_data,
       group_keys,
       year_keys,

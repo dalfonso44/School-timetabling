@@ -15,49 +15,28 @@
       <template v-slot:header>
         <q-tr>
           <q-th colspan="1"></q-th>
-          <q-th colspan="6" class="bg-teal-9 text-white">Lunes</q-th>
-          <q-th colspan="6" class="bg-deep-orange-9 text-white">Martes</q-th>
-          <q-th colspan="6" class="bg-light-blue-9 text-white">Miercoles</q-th>
-          <q-th colspan="6" class="bg-purple-5 text-white">Jueves</q-th>
-          <q-th colspan="6" class="bg-pink-13 text-white">Viernes</q-th>
+          <template
+            :key="days"
+            v-for="(days, index) in $props.sch.config.daysOptions"
+          >
+            <q-th colspan="6" :class="colors[index]">{{ days }}</q-th>
+          </template>
         </q-tr>
         <q-tr>
           <q-th colspan="1"></q-th>
-
-          <q-th colspan="1" class="bg-teal-9 text-white">1</q-th>
-          <q-th colspan="1" class="bg-teal-9 text-white">2</q-th>
-          <q-th colspan="1" class="bg-teal-9 text-white">3</q-th>
-          <q-th colspan="1" class="bg-teal-9 text-white">4</q-th>
-          <q-th colspan="1" class="bg-teal-9 text-white">5</q-th>
-          <q-th colspan="1" class="bg-teal-9 text-white">6</q-th>
-
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">1</q-th>
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">2</q-th>
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">3</q-th>
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">4</q-th>
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">5</q-th>
-          <q-th colspan="1" class="bg-deep-orange-9 text-white">6</q-th>
-
-          <q-th colspan="1" class="bg-light-blue-9 text-white">1</q-th>
-          <q-th colspan="1" class="bg-light-blue-9 text-white">2</q-th>
-          <q-th colspan="1" class="bg-light-blue-9 text-white">3</q-th>
-          <q-th colspan="1" class="bg-light-blue-9 text-white">4</q-th>
-          <q-th colspan="1" class="bg-light-blue-9 text-white">5</q-th>
-          <q-th colspan="1" class="bg-light-blue-9 text-white">6</q-th>
-
-          <q-th colspan="1" class="bg-purple-5 text-white">1</q-th>
-          <q-th colspan="1" class="bg-purple-5 text-white">2</q-th>
-          <q-th colspan="1" class="bg-purple-5 text-white">3</q-th>
-          <q-th colspan="1" class="bg-purple-5 text-white">4</q-th>
-          <q-th colspan="1" class="bg-purple-5 text-white">5</q-th>
-          <q-th colspan="1" class="bg-purple-5 text-white">6</q-th>
-
-          <q-th colspan="1" class="bg-pink-13 text-white">1</q-th>
-          <q-th colspan="1" class="bg-pink-13 text-white">2</q-th>
-          <q-th colspan="1" class="bg-pink-13 text-white">3</q-th>
-          <q-th colspan="1" class="bg-pink-13 text-white">4</q-th>
-          <q-th colspan="1" class="bg-pink-13 text-white">5</q-th>
-          <q-th colspan="1" class="bg-pink-13 text-white">6</q-th>
+          <template
+            :key="days"
+            v-for="(days, index) in $props.sch.config.daysOptions"
+          >
+            <template
+              :key="turn"
+              v-for="turn in $props.sch.config.hoursOptions"
+            >
+              <template v-if="turn != `Receso`">
+                <q-th colspan="1" :class="colors[index]"> {{ turn }} </q-th>
+              </template>
+            </template>
+          </template>
         </q-tr>
       </template>
       <template v-slot:body="props">
@@ -110,6 +89,14 @@ import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
 
+const colors: string[] = [
+  'bg-teal-9 text-white',
+  'bg-deep-orange-9 text-white',
+  'bg-light-blue-9 text-white',
+  'bg-purple-5 text-white',
+  'bg-pink-13 text-white'
+];
+
 const columns: QTableColumn[] = [
   { name: 'turn', align: 'center', field: 'turn', label: '' },
   { name: 'monday1', align: 'center', label: '1', field: 'monday1' },
@@ -153,6 +140,10 @@ export default {
     rooms_school_data: {
       type: Array,
       required: true
+    },
+    sch: {
+      type: Object,
+      required: true
     }
   },
   emits: ['update'],
@@ -162,6 +153,8 @@ export default {
       getVerbose,
       getColor,
       fieldForEditing,
+      colors,
+
       onUpdate(row: number, column: string, value: any) {
         const newList = [
           ...props.rooms_school_data.map((x: any) => ({ ...x }))
