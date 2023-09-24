@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
 import { BaseSchedule, MyBasicSquedule } from '../models/basic';
 import { useScheduleHandler } from './useSchedule.hooks';
+import { twoSubjectInSameRoom, classType } from './validations.hooks';
 
 export const useScheduleTimetabling = () => {
   const { loadData: timeLoad, saveData: timeSave } = persistanceSchedule;
@@ -168,6 +169,18 @@ export const useScheduleTimetabling = () => {
         subject: subject,
         year: payload.year
       };
+      if (
+        !twoSubjectInSameRoom(
+          school_data.value[payload.year].rooms[payload.hour_index][`${payload.column}${hour}`],
+          baseSchedule
+        ) ||
+        !classType(
+          school_data.value[payload.year].rooms[payload.hour_index][`${payload.column}${hour}`],
+          baseSchedule
+        )
+      )
+        return;
+
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
     }
