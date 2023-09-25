@@ -51,6 +51,10 @@ export interface Schedule {
     subjectsWithoutRooms?: string[];
     /* teachers who teach the subjects*/
     professors?: string[];
+
+    subjectsByProfessor?: Dictionary<string>;
+    hoursClassBySubject?:Dictionary<string>;
+
     scheduleName?: string;
   };
 }
