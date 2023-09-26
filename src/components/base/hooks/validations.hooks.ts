@@ -1,51 +1,67 @@
-import { BaseSchedule } from '../models/basic';
+import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
 import { Notify } from 'quasar';
 
-export const validationFunction=(
-  sch:Schedule,
-  schedule:any,
-  baseScheduleChange: BaseSchedule,
-
-) => {
-
-  for(let i = 0; i< sch.config.validationFunctions.length; i++){
-    eval(sch.config.validationFunctions[i])(schedule,baseScheduleChange) 
-  }  
-  return true;
-}
-
 export const twoSubjectInSameRoom = (
-  schedule:Schedule,
-  baseScheduleChange: any,
-
+  schedule: any,
+  baseScheduleChange: BaseSchedule
 ) => {
-  
-    const subject = schedule.value[baseScheduleChange.year].rooms[parseInt(baseScheduleChange.hour)-1]
-    [`${baseScheduleChange.day}${baseScheduleChange.hour}`][0][`subject`]
+  // TODO: Fix here
+  const subjectPlace =
+    schedule[baseScheduleChange.year].rooms[
+      parseInt(baseScheduleChange.hour) - 1
+    ][`${baseScheduleChange.day}${baseScheduleChange.hour}`][0];
 
-  if (subject != baseScheduleChange.subject){
+  const subject = (subjectPlace && subjectPlace['subject']) || '';
+
+  if (subject && subject != baseScheduleChange.subject) {
     Notify.create({
       type: 'negative',
-      message: `No se puede impartir ${subjects[0][`subject`]} y ${baseSchedule.subject} al mismo tiempo`
+      message: `No se puede impartir ${subject} y ${baseScheduleChange.subject} al mismo tiempo`
     });
     return false;
   }
+
+  return true;
 };
 
-
-export const classType = (
-  schedule:Schedule,
-  baseScheduleChange: any,
-
-) => {
-  const cp = schedule.value[baseScheduleChange.year].rooms[parseInt(baseScheduleChange.hour)-1]
-    [`${baseScheduleChange.day}${baseScheduleChange.hour}`][0][`cp`]
-  if (cp != baseScheduleChange.cp){
+export const classType = (schedule: any, baseScheduleChange: BaseSchedule) => {
+  // TODO: Fix here
+  const cpPlace =
+    schedule[baseScheduleChange.year].rooms[
+      parseInt(baseScheduleChange.hour) - 1
+    ][`${baseScheduleChange.day}${baseScheduleChange.hour}`][0];
+  const cp = (cpPlace && cpPlace['cp']) || '';
+  if (cp && cp != baseScheduleChange.cp) {
     Notify.create({
       type: 'negative',
-      message: `No se puede impartir una conferencia y una clase práctica al mismo tiempo`
+      message:
+        'No se puede impartir una conferencia y una clase práctica al mismo tiempo'
     });
     return false;
   }
+  return true;
+};
 
+export const validationFunctionMapped: Dictionary<
+  (schedule: any, baseScheduleChange: BaseSchedule) => boolean
+> = {
+  twoSubjectInSameRoom: twoSubjectInSameRoom,
+  classType: classType
+};
+
+export const validationFunction = (
+  sch: Schedule,
+  schedule: any,
+  baseScheduleChange: BaseSchedule
+) => {
+  sch.config.validationFunctions.forEach((funcKey) => {
+    if (!!validationFunctionMapped[funcKey]) {
+      const answ = validationFunctionMapped[funcKey](
+        schedule,
+        baseScheduleChange
+      );
+      if (!answ) return false;
+    }
+  });
+  return true;
 };

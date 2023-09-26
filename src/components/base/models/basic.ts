@@ -36,8 +36,8 @@ export interface Schedule {
   paint: Dictionary<string>;
 
   /** all the setting needed for create an complete Schedule*/
-  /*aqui es donde annado todas las configuraciones que pueda 
-  necesitar para el futuro como el claustro de profesors, la cantidad de horas 
+  /*aqui es donde annado todas las configuraciones que pueda
+  necesitar para el futuro como el claustro de profesors, la cantidad de horas
   por asignaturas, etc*/
   config: {
     groupsOptions: string[];
@@ -51,7 +51,7 @@ export interface Schedule {
     subjectsWithoutRooms?: string[];
     /* teachers who teach the subjects*/
     professors?: string[];
-    validationFunctions:string[];
+    validationFunctions: string[];
     scheduleName?: string;
   };
 }
@@ -93,6 +93,6 @@ export const MyBasicSquedule: Schedule = {
     roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     yearsOptions: ['2023'],
     hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
-    validationFunctions:['twoSubjectInSameRoom','classType']
+    validationFunctions: ['twoSubjectInSameRoom', 'classType']
   }
 };

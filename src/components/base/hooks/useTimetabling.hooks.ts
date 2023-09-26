@@ -170,7 +170,8 @@ export const useScheduleTimetabling = () => {
         year: payload.year
       };
 
-      if (!validationFunction(sch,school_data,baseSchedule))return;
+      if (!validationFunction(schedule.value, school_data.value, baseSchedule))
+        return;
 
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
