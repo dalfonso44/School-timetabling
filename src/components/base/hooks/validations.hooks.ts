@@ -54,14 +54,16 @@ export const validationFunction = (
   schedule: any,
   baseScheduleChange: BaseSchedule
 ) => {
+  let result = true
   sch.config.validationFunctions.forEach((funcKey) => {
     if (!!validationFunctionMapped[funcKey]) {
       const answ = validationFunctionMapped[funcKey](
         schedule,
         baseScheduleChange
       );
-      if (!answ) return false;
+      if (!answ) {result = false;}
     }
   });
-  return true;
+  
+  return result;
 };
