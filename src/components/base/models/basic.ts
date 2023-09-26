@@ -51,6 +51,7 @@ export interface Schedule {
     subjectsWithoutRooms?: string[];
     /* teachers who teach the subjects*/
     professors?: string[];
+    validationFunctions:string[];
     scheduleName?: string;
   };
 }
@@ -91,6 +92,7 @@ export const MyBasicSquedule: Schedule = {
     ],
     roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     yearsOptions: ['2023'],
-    hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6']
+    hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
+    validationFunctions:['twoSubjectInSameRoom','classType']
   }
 };
