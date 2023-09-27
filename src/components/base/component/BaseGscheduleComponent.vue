@@ -137,6 +137,26 @@
             @click="show_new_group = true"
           />
           <q-btn
+            color="info"
+            icon="upload"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Exportar horario' : undefined"
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="onExport"
+          />
+          <q-btn
+            color="positive"
+            icon="download"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Importar horario' : undefined"
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="onImport"
+          />
+          <q-btn
             color="primary"
             icon="archive"
             :round="$q.screen.xs"
@@ -157,6 +177,8 @@
             class="q-mr-sm"
             @click="onClear"
           />
+          
+
         </div>
       </template>
       <template v-slot:body="props">
@@ -231,6 +253,7 @@ import InputDialog from '../../dialogs/InputDialog.vue';
 import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
+import { emit } from 'process';
 const columns: QTableColumn[] = [
   { name: 'turn', align: 'center', field: 'turn', label: '' },
   { name: 'monday', align: 'center', label: 'Lunes', field: 'monday' },
@@ -287,7 +310,9 @@ export default {
     'create-year',
     'create-group',
     'update-color',
-    'on-print'
+    'on-print',
+    'on-export',
+    'on-import',
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
@@ -316,6 +341,12 @@ export default {
       onClear() {
         emit('on-clear');
         // rows.value = emptyState;
+      },
+      onExport(){
+        emit('on-export');
+      },
+      onImport(){
+        emit('on-import')
       },
       getColor,
 

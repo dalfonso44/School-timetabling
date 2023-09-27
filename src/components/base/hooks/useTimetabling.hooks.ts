@@ -150,6 +150,12 @@ export const useScheduleTimetabling = () => {
       // school_data.value = default_school_schedule_object;
       // timeSave(schedule.value);
     },
+    onExport(){
+      console.log(`aaaaaaaaaaa`)
+    },
+    onImport(){
+      console.log(`bbbbbbbbb`)
+    },
     onUpdateBase(payload: {
       year: string;
       group: string;
