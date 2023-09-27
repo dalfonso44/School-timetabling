@@ -6,7 +6,7 @@ import { useScheduleHandler } from './useSchedule.hooks';
 import { validationFunction } from './validations.hooks';
 
 export const useScheduleTimetabling = () => {
-  const { loadData: timeLoad, saveData: timeSave } = persistanceSchedule;
+  const { loadData: timeLoad, saveData: timeSave, exportData: timeExport, importData: timeImport } = persistanceSchedule;
 
   const sch = timeLoad() || MyBasicSquedule;
 
@@ -151,10 +151,10 @@ export const useScheduleTimetabling = () => {
       // timeSave(schedule.value);
     },
     onExport(){
-      console.log(`aaaaaaaaaaa`)
+      timeExport(schedule.value)
     },
     onImport(){
-      console.log(`bbbbbbbbb`)
+      timeImport(schedule.value)
     },
     onUpdateBase(payload: {
       year: string;

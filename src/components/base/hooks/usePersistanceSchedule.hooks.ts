@@ -14,6 +14,12 @@ export const usePersistanceScheduleDB = (key: string) => {
     },
     cleanData() {
       localStorage.removeItem(key);
+    },
+    exportData(obj: Schedule){
+      console.log(JSON.stringify(obj));
+    },
+    importData(obj: Schedule){
+      console.log(JSON.stringify(obj))
     }
   };
 };
