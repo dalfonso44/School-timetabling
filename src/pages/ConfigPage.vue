@@ -112,14 +112,15 @@
 
     <h6>Campos Opcionales</h6>
     <div class="col-12 justify-evenly" style= "height: 150px">
-        <div class="col-12 q-gutter-md row items-start style=margin">
+        <div class="col-12 q-gutter-md row items-start">
           <q-input outlined v-model="name" label="Nombre del horario" style="width: 250px"/>
         </div>
-
-        <div class="prof row ">
-          <div class="col ">
-            <p>Profesores</p>
-            <q-btn outline color="bg-grey-9" label="Cargar BD" class="ml"/>
+        <fieldset>
+          <legend><strong>Profesores</strong></legend>
+          
+          <div class=" row ">
+            <div class="col ">
+            <q-btn outline color="bg-grey-9" label="Cargar BD" class="mp"/>
           </div>
          <div class="q-pa-md" style="width: 900px">
             <q-input
@@ -127,9 +128,10 @@
               filled
               autogrow
               label="Escribir"
-            />
+              />
+            </div>
           </div>
-        </div>
+        </fieldset>
       
         <div class="prof row ">
           <div class="col"> 
@@ -213,6 +215,9 @@ import { ref } from 'vue'
 export default {
   setup () {
     return {
+      hoursXsubject:ref(''),
+      modelMultiple:ref(null),
+      model:ref(null),
       groups: ref(''),
       professors: ref(''),
       subjects: ref(''),
@@ -254,7 +259,7 @@ export default {
   max-width: 250px
 
 .prof
-  border: 1px solid grey
+  border: 1px solid gray
   margin-top: 20px
   margin-bottom: 20px
 
@@ -268,7 +273,10 @@ export default {
 
 .ml
   margin-left:10px
- 
-
+  
+.mp
+  margin-top:20px
+  margin-left:10px
+  
 </style>
 
