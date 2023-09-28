@@ -16,10 +16,13 @@ export const usePersistanceScheduleDB = (key: string) => {
       localStorage.removeItem(key);
     },
     exportData(obj: Schedule){
+      localStorage.setItem(key,JSON.stringify(obj));
       console.log(JSON.stringify(obj));
     },
-    importData(obj: Schedule){
-      console.log(JSON.stringify(obj))
+    importData(): Schedule | false {
+      const obj = localStorage.getItem(key);
+      console.log(JSON.stringify(obj));
+      return false;
     }
   };
 };

@@ -154,7 +154,7 @@ export const useScheduleTimetabling = () => {
       timeExport(schedule.value)
     },
     onImport(){
-      timeImport(schedule.value)
+      timeImport()
     },
     onUpdateBase(payload: {
       year: string;

@@ -144,30 +144,8 @@
             no-caps 
             rounded
             class = "q-mr-sm"
-            @click="alert0 = true" 
+            @click="onExport" 
           />
-          <q-dialog v-model="alert0">
-            <q-card>
-              <q-card-section>
-                <div class="text-h6">Seleccione la carpeta donde almacenar el archivo</div>
-              </q-card-section>
-
-              <q-card-section class="q-pt-none">
-                <q-file color="teal" filled v-model="model">
-                  <template v-slot:prepend>
-                    <q-icon name="cloud_upload" />
-                  </template>
-                  <template v-slot:append>
-                    <q-icon name="close" @click.stop.prevent="model = null" class="cursor-pointer" />
-                  </template>
-                </q-file>
-              </q-card-section>
-
-              <q-card-actions align="right">
-                <q-btn flat label="OK" color="primary" @click="onExport" v-close-popup />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
           
           <q-btn 
             color="positive" 
@@ -375,7 +353,6 @@ export default {
     return {
       model: ref(null),
       alert: ref(false),
-      alert0: ref(false),
       card: ref(false),
       editing,
       verifyVerbose,
