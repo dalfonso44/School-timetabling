@@ -17,7 +17,7 @@
           <q-th colspan="1"></q-th>
           <template
             :key="days"
-            v-for="(days, index) in $props.sch.config.daysOptions"
+            v-for="(days, index) in sch.config.daysOptions"
           >
             <q-th
               colspan="6"
@@ -32,11 +32,11 @@
           <q-th colspan="1"></q-th>
           <template
             :key="days"
-            v-for="(days, index) in $props.sch.config.daysOptions"
+            v-for="(days, index) in sch.config.daysOptions"
           >
             <template
               :key="turn"
-              v-for="turn in $props.sch.config.hoursOptions"
+              v-for="turn in sch.config.hoursOptions"
             >
               <template v-if="turn != `Receso`">
                 <q-th
