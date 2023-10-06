@@ -57,7 +57,19 @@
             {{ props.row.turn }}
           </q-td>
 
-          <q-td :key="item" :props="props" v-for="item in dotDaysXHours">
+          <q-td
+            :key="item"
+            :props="props"
+            v-for="item in dotDaysXHours"
+            :style="
+              props.row[item] && props.row[item].length > 0
+                ? `background-color: ${getColor(
+                    props.row[item][0].group.substring(0, 2),
+                    0.75
+                  )}`
+                : ''
+            "
+          >
             <!-- <q-input
               type="text"
               :style="`width: ${
@@ -73,10 +85,10 @@
               :key="`badge-${i}-${item}`"
             >
               <q-badge
-                :style="`border-color: ${getColor(sch.group)}`"
+                :style="`border-color: white`"
                 square
                 outline
-                text-color="dark"
+                text-color="white"
                 :class="`q-px-sm q-py-xs ${i != 0 && 'q-mt-xs'}`"
               >
                 {{ sch.group }}

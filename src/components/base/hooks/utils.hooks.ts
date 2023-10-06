@@ -1,4 +1,4 @@
-export const getColor = (str: string) => {
+export const getColor = (str: string, alfa = 1) => {
   str = str.substring(0, 2) + str.substring(0, 2);
   let hash = 0;
   if (str.length === 0) return hash;
@@ -11,5 +11,5 @@ export const getColor = (str: string) => {
     const value = (hash >> (i * 8)) & 255;
     rgb[i] = value;
   }
-  return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alfa})`;
 };

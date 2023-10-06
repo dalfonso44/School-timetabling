@@ -35,6 +35,9 @@ export interface Schedule {
   /** paint dict use like paint[schedule.id] = color */
   paint: Dictionary<string>;
 
+  /** background paint dict use like background[schedule.id] = color */
+  background: Dictionary<string>;
+
   /** all the setting needed for create an complete Schedule*/
   /*aqui es donde annado todas las configuraciones que pueda
   necesitar para el futuro como el claustro de profesors, la cantidad de horas
@@ -58,6 +61,7 @@ export interface Schedule {
 
 export const MyBasicSquedule: Schedule = {
   paint: {},
+  background: {},
   schedule: [
     {
       cp: true,
