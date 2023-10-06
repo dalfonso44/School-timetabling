@@ -10,7 +10,8 @@ export const useScheduleTimetabling = () => {
     loadData: timeLoad,
     saveData: timeSave,
     exportData: timeExport,
-    importData: timeImport
+    importData: timeImport,
+    cleanData
   } = persistanceSchedule;
 
   const sch = timeLoad() || MyBasicSquedule;
@@ -149,11 +150,8 @@ export const useScheduleTimetabling = () => {
       timeSave(schedule.value);
     },
     onClear() {
-      // groupData.value[selectedYear.value].groups[selectedGroup.value] =
-      //   emptyTimeState;
-      // groupData.value[selectedYear.value].rooms = emptySchoolState;
-      // school_data.value = default_school_schedule_object;
-      // timeSave(schedule.value);
+      cleanData();
+      window.location.reload();
     },
     onExport() {
       Dialog.create({
