@@ -1,6 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <gschedule-component
+      :sch="sch"
       :school_data="school_data[selected_year].groups"
       :group_keys="group_keys"
       :year_keys="year_keys"

@@ -226,7 +226,7 @@
 
           <q-td
             :props="props"
-            v-for="item in fieldForEditing"
+            v-for="item in $props.sch.config.daysOptions"
             :key="item"
             :class="{
               'bg-grey-3': props.rowIndex == 3,
@@ -286,27 +286,17 @@ import InputDialog from '../../dialogs/InputDialog.vue';
 import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
-import { emit } from 'process';
-const columns: QTableColumn[] = [
-  { name: 'turn', align: 'center', field: 'turn', label: '' },
-  { name: 'monday', align: 'center', label: 'Lunes', field: 'monday' },
-  { name: 'tuesday', align: 'center', label: 'Martes', field: 'tuesday' },
-  {
-    name: 'wednesday',
-    align: 'center',
-    label: 'Miercoles',
-    field: 'wednesday'
-  },
-  { name: 'thursday', align: 'center', label: 'Jueves', field: 'thursday' },
-  { name: 'friday', align: 'center', label: 'Viernes', field: 'friday' }
-];
 
-const fieldForEditing = columns
-  .filter((c) => c.name !== 'turn')
-  .map((c) => c.name);
+
+
+
 
 export default {
   props: {
+    sch:{
+      type: Object,
+      required: true
+    },
     school_data: {
       type: Object,
       required: true
@@ -353,6 +343,12 @@ export default {
     const editing = ref(true);
     const importFile = ref(null);
 
+    const columns: QTableColumn[]=[
+      { name: 'turn', align: 'center', field: 'turn', label: '' },
+      ...props.sch.config.daysOptions.map((day:string)=>({name: day, align:'center', field:day, label: day}))
+
+    ]
+
     const verifyVerbose = (value: string) => {
       if (!value) return true;
       const spl = value.trim().split(' ');
@@ -370,7 +366,7 @@ export default {
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       columns,
-      fieldForEditing,
+     
       onSave() {
         emit('on-save');
         // timeTableData.saveData(rows.value);
