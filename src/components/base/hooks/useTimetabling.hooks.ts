@@ -203,7 +203,7 @@ export const useScheduleTimetabling = () => {
         year: payload.year
       };
 
-      if (!validationFunction(schedule.value, school_data.value, baseSchedule))
+      if (!validationFunction(schedule.value, baseSchedule))
         return;
 
       onChangeBase(id, baseSchedule);
