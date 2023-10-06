@@ -1,4 +1,4 @@
-import { Notify } from 'quasar';
+import { Dialog, Notify } from 'quasar';
 import { computed, ref } from 'vue';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
 import { BaseSchedule, MyBasicSquedule } from '../models/basic';
@@ -6,7 +6,13 @@ import { useScheduleHandler } from './useSchedule.hooks';
 import { validationFunction } from './validations.hooks';
 
 export const useScheduleTimetabling = () => {
-  const { loadData: timeLoad, saveData: timeSave } = persistanceSchedule;
+  const {
+    loadData: timeLoad,
+    saveData: timeSave,
+    exportData: timeExport,
+    importData: timeImport,
+    cleanData
+  } = persistanceSchedule;
 
   const sch = timeLoad() || MyBasicSquedule;
 
@@ -144,11 +150,38 @@ export const useScheduleTimetabling = () => {
       timeSave(schedule.value);
     },
     onClear() {
-      // groupData.value[selectedYear.value].groups[selectedGroup.value] =
-      //   emptyTimeState;
-      // groupData.value[selectedYear.value].rooms = emptySchoolState;
-      // school_data.value = default_school_schedule_object;
-      // timeSave(schedule.value);
+      cleanData();
+      window.location.reload();
+    },
+    onExport() {
+      Dialog.create({
+        title: 'Guardar horario',
+        message: 'Nombre del fichero',
+        prompt: {
+          model: '',
+          type: 'text',
+          suffix: '.sch'
+        },
+        cancel: true,
+        persistent: true
+      })
+        .onOk((data) => {
+          timeExport(data, schedule.value);
+        })
+        .onCancel(() => {
+          // console.log('>>>> Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    },
+    onImport(file: any) {
+      const FR = new FileReader();
+      FR.onload = function (e: any) {
+        const contents = FR.result as string;
+        timeImport(contents);
+      };
+      FR.readAsText(file);
     },
     onUpdateBase(payload: {
       year: string;
