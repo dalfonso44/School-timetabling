@@ -20,10 +20,10 @@ export const usePersistanceScheduleDB = (key: string) => {
       localStorage.setItem(key, JSON.stringify(obj));
       const a = window.document.createElement('a');
       a.href = window.URL.createObjectURL(
-        new Blob([JSON.stringify(obj)], { type: 'text/plain;charset=utf-8;' })
+        new Blob([JSON.stringify(obj)], { type: 'text/json' })
       );
       a.download = `${fileName}.sch`;
-
+      a.target = '_blank';
       // Append anchor to body.
       document.body.appendChild(a);
       a.click();
@@ -34,7 +34,7 @@ export const usePersistanceScheduleDB = (key: string) => {
       console.log(JSON.stringify(obj));
 
       Notify.create({
-        message: 'Horario salvado con éxito !!!',
+        message: 'Horario exportado con éxito !!!',
         type: 'positive'
       });
     },

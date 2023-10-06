@@ -161,14 +161,13 @@ export const useScheduleTimetabling = () => {
         message: 'Nombre del fichero',
         prompt: {
           model: '',
-          type: 'text', // optional,
+          type: 'text',
           suffix: '.sch'
         },
         cancel: true,
         persistent: true
       })
         .onOk((data) => {
-          // console.log('>>>> OK, received', data);
           timeExport(data, schedule.value);
         })
         .onCancel(() => {
@@ -179,9 +178,8 @@ export const useScheduleTimetabling = () => {
         });
     },
     onImport(file: any) {
-      console.log(file, typeof file);
       const FR = new FileReader();
-      FR.onload = function (e) {
+      FR.onload = function (e: any) {
         const contents = FR.result as string;
         timeImport(contents);
       };
