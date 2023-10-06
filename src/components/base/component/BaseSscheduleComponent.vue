@@ -19,7 +19,12 @@
             :key="days"
             v-for="(days, index) in $props.sch.config.daysOptions"
           >
-            <q-th colspan="6" :class="colors[index]">{{ days }}</q-th>
+            <q-th
+              colspan="6"
+              :class="'text-white'"
+              :style="`background-color: ${getColorIndex(index)}`"
+              >{{ days }}</q-th
+            >
             <!-- :style="`background-color: red`" -->
           </template>
         </q-tr>
@@ -34,7 +39,13 @@
               v-for="turn in $props.sch.config.hoursOptions"
             >
               <template v-if="turn != `Receso`">
-                <q-th colspan="1" :class="colors[index]"> {{ turn }} </q-th>
+                <q-th
+                  colspan="1"
+                  :class="'text-white'"
+                  :style="`background-color: ${getColorIndex(index)}`"
+                >
+                  {{ turn }}
+                </q-th>
               </template>
             </template>
           </template>
@@ -90,16 +101,6 @@ import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
 import { QTableColumn } from 'quasar';
 
-const colors: string[] = [
-  'bg-teal-9 text-white',
-  'bg-deep-orange-9 text-white',
-  'bg-light-blue-9 text-white',
-  'bg-purple-5 text-white',
-  'bg-pink-13 text-white'
-];
-
-
-
 export default {
   props: {
     rooms_school_data: {
@@ -121,19 +122,32 @@ export default {
           .map((hour: string) => day + hour);
       })
       .reduce((prev: string, curr: string) => [...prev, ...curr], []);
-    
+
     console.log(dotDaysXHours);
 
-    const columns:QTableColumn[]=[{ name: 'turn', align: 'center', field: 'turn', label: '' }, 
-    ...dotDaysXHours.map((dot:string)=>({name: dot, align:'center', field:dot}))]
-    
+    const columns: QTableColumn[] = [
+      { name: 'turn', align: 'center', field: 'turn', label: '' },
+      ...dotDaysXHours.map((dot: string) => ({
+        name: dot,
+        align: 'center',
+        field: dot
+      }))
+    ];
+
+    const toBin = (x: number): string => {
+      if (x == 0) return '0';
+      if (x % 2) return `1${toBin((x - 1) / 2)}`;
+      return `0${toBin(x / 2)}`;
+    };
+
     return {
       getVerbose,
       getColor,
-      colors,
       dotDaysXHours,
       columns,
-
+      getColorIndex(index: number) {
+        return getColor(`-${index}${toBin(index)}`);
+      },
       onUpdate(row: number, column: string, value: any) {
         const newList = [
           ...props.rooms_school_data.map((x: any) => ({ ...x }))
