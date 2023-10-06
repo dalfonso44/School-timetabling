@@ -226,7 +226,7 @@
 
           <q-td
             :props="props"
-            v-for="item in $props.sch.config.daysOptions"
+            v-for="item in sch.config.daysOptions"
             :key="item"
             :class="{
               'bg-grey-3': props.rowIndex == 3,
