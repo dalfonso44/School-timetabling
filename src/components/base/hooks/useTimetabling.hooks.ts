@@ -168,7 +168,7 @@ export const useScheduleTimetabling = () => {
         persistent: true
       })
         .onOk((data) => {
-          console.log('>>>> OK, received', data);
+          // console.log('>>>> OK, received', data);
           timeExport(data, schedule.value);
         })
         .onCancel(() => {

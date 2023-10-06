@@ -32,6 +32,11 @@ export const usePersistanceScheduleDB = (key: string) => {
       document.body.removeChild(a);
 
       console.log(JSON.stringify(obj));
+
+      Notify.create({
+        message: 'Horario salvado con éxito !!!',
+        type: 'positive'
+      });
     },
     importData(content: string): Schedule | false {
       try {
