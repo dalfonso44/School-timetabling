@@ -137,6 +137,61 @@
             @click="show_new_group = true"
           />
           <q-btn
+            color="info"
+            icon="cloud_upload"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Exportar horario' : undefined"
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="onExport"
+          />
+
+          <q-btn
+            color="positive"
+            icon="cloud_download"
+            :round="$q.screen.xs"
+            :label="!$q.screen.xs ? 'Importar horario' : undefined"
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="alert = true"
+          />
+          <q-dialog v-model="alert">
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Selecciona el archivo</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
+                <q-file color="teal" filled v-model="importFile">
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_download" />
+                  </template>
+                  <template v-slot:append>
+                    <q-icon
+                      name="close"
+                      @click.stop.prevent="importFile = null"
+                      class="cursor-pointer"
+                    />
+                  </template>
+                </q-file>
+              </q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn
+                  flat
+                  label="OK"
+                  color="primary"
+                  :disabled="!importFile"
+                  @click="onImport()"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
+          <q-btn
             color="primary"
             icon="archive"
             :round="$q.screen.xs"
@@ -231,6 +286,7 @@ import InputDialog from '../../dialogs/InputDialog.vue';
 import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
+import { emit } from 'process';
 const columns: QTableColumn[] = [
   { name: 'turn', align: 'center', field: 'turn', label: '' },
   { name: 'monday', align: 'center', label: 'Lunes', field: 'monday' },
@@ -287,12 +343,15 @@ export default {
     'create-year',
     'create-group',
     'update-color',
-    'on-print'
+    'on-print',
+    'on-export',
+    'on-import'
   ],
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
     const editing = ref(true);
+    const importFile = ref(null);
 
     const verifyVerbose = (value: string) => {
       if (!value) return true;
@@ -301,9 +360,12 @@ export default {
       if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
       return true;
     };
+
     return {
+      alert: ref(false),
       card: ref(false),
       editing,
+      importFile,
       verifyVerbose,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
@@ -316,6 +378,12 @@ export default {
       onClear() {
         emit('on-clear');
         // rows.value = emptyState;
+      },
+      onExport() {
+        emit('on-export');
+      },
+      onImport() {
+        emit('on-import', importFile.value);
       },
       getColor,
 

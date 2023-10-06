@@ -17,6 +17,8 @@
       @update="school_data[selected_year].groups = $event"
       @update-color="($event) => (selected_color = $event)"
       @on-print="onPrint"
+      @on-export="onExport"
+      @on-import="onImport"
     />
     <div id="printID" class="full-width">
       <sschedule-component
@@ -52,7 +54,9 @@ export default defineComponent({
       onSave,
       onClear,
       onChangeYear,
-      onUpdateBase
+      onUpdateBase,
+      onExport,
+      onImport,
     } = useScheduleTimetabling();
 
     // const;
@@ -70,6 +74,8 @@ export default defineComponent({
       onClear,
       onChangeYear,
       onUpdateBase,
+      onExport,
+      onImport,
       onPrint() {
         const toPrint = document.getElementById('printID')?.innerHTML;
         let stylesHtml = '';
