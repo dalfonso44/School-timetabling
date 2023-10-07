@@ -66,17 +66,7 @@ export interface Schedule {
 export const MyBasicSquedule: Schedule = {
   paint: {},
   background: {},
-  schedule: [
-    {
-      cp: true,
-      day: 'monday',
-      group: 'C111',
-      hour: '1',
-      room: '1',
-      subject: 'EDAI',
-      year: '2023'
-    }
-  ],
+  schedule: [],
   config: {
     daysOptions: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
     groupsOptions: [
