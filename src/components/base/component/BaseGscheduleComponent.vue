@@ -237,6 +237,7 @@
               !!props.row[`${item}_custom_color`] &&
               `background-color: ${props.row[`${item}_custom_color`]}`
             "
+            @keydown="onkeydown"
             style="padding-bottom: 0 !important"
             @click="!editing && onPaint(props.rowIndex, item)"
           >
@@ -244,6 +245,9 @@
               v-if="props.rowIndex != 3"
               type="text"
               dense
+              ref="fields"
+              :key="`${props.rowIndex}${item}`"
+              @focus="onfocus"
               :readonly="!editing"
               borderless
               hide-bottom-space
@@ -287,13 +291,9 @@ import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 
-
-
-
-
 export default {
   props: {
-    sch:{
+    sch: {
       type: Object,
       required: true
     },
@@ -343,11 +343,15 @@ export default {
     const editing = ref(true);
     const importFile = ref(null);
 
-    const columns: QTableColumn[]=[
+    const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },
-      ...props.sch.config.daysOptions.map((day:string)=>({name: day, align:'center', field:day, label: day}))
-
-    ]
+      ...props.sch.config.daysOptions.map((day: string) => ({
+        name: day,
+        align: 'center',
+        field: day,
+        label: day
+      }))
+    ];
 
     const verifyVerbose = (value: string) => {
       if (!value) return true;
@@ -357,7 +361,12 @@ export default {
       return true;
     };
 
+    const fields = ref(null as any);
+    const indexFocus = ref(0);
+
     return {
+      fields,
+      indexFocus,
       alert: ref(false),
       card: ref(false),
       editing,
@@ -366,7 +375,21 @@ export default {
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       columns,
-     
+      onkeydown(event: any) {
+        console.log('>>>', event);
+        console.log(':::', fields.value);
+
+        if (event.code === 'ArrowRight') {
+          indexFocus.value += 1;
+        }
+        if (event.code === 'ArrowLeft') {
+          indexFocus.value -= 1;
+        }
+        if (indexFocus.value) fields.value[indexFocus.value].focus();
+      },
+      onfocus(event: any) {
+        console.log('>>>', event);
+      },
       onSave() {
         emit('on-save');
         // timeTableData.saveData(rows.value);
