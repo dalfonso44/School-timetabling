@@ -226,7 +226,7 @@
 
           <q-td
             :props="props"
-            v-for="item in sch.config.daysOptions"
+            v-for="(item, j) in sch.config.daysOptions"
             :key="item"
             :class="{
               'bg-grey-3': props.rowIndex == 3,
@@ -237,7 +237,7 @@
               !!props.row[`${item}_custom_color`] &&
               `background-color: ${props.row[`${item}_custom_color`]}`
             "
-            @keydown="onkeydown"
+            @keyup.ctrl.stop="onkeydown"
             style="padding-bottom: 0 !important"
             @click="!editing && onPaint(props.rowIndex, item)"
           >
@@ -245,9 +245,9 @@
               v-if="props.rowIndex != 3"
               type="text"
               dense
-              ref="fields"
+              :ref="(field) => (fields[props.rowIndex][j] = field)"
               :key="`${props.rowIndex}${item}`"
-              @focus="onfocus"
+              @focus="onfocus(props.rowIndex, j)"
               :readonly="!editing"
               borderless
               hide-bottom-space
@@ -361,9 +361,13 @@ export default {
       return true;
     };
 
-    const fields = ref(null as any);
-    const indexFocus = ref(0);
-
+    const fields = ref(
+      props.school_data[props.selected_group].map(() =>
+        props.sch.config.daysOptions.map(() => null)
+      )
+    );
+    const indexFocus = ref([0, 0]);
+    console.log('>>>|', fields);
     return {
       fields,
       indexFocus,
@@ -378,17 +382,47 @@ export default {
       onkeydown(event: any) {
         console.log('>>>', event);
         console.log(':::', fields.value);
-
-        if (event.code === 'ArrowRight') {
-          indexFocus.value += 1;
+        const n = props.school_data[props.selected_group].length;
+        const m = props.sch.config.daysOptions.length;
+        if (
+          event.code === 'ArrowRight' &&
+          !(indexFocus.value[0] == n - 1 && indexFocus.value[1] == m - 1)
+        ) {
+          indexFocus.value[1] += 1;
         }
-        if (event.code === 'ArrowLeft') {
-          indexFocus.value -= 1;
+        if (
+          event.code === 'ArrowLeft' &&
+          !(indexFocus.value[0] == 0 && indexFocus.value[1] == 0)
+        ) {
+          indexFocus.value[1] -= 1;
         }
-        if (indexFocus.value) fields.value[indexFocus.value].focus();
+        if (indexFocus.value[1] >= m) {
+          indexFocus.value[0] += 1;
+          indexFocus.value[1] = 0;
+        }
+        if (indexFocus.value[1] < 0) {
+          indexFocus.value[0] -= 1;
+          indexFocus.value[1] = m - 1;
+        }
+        if (indexFocus.value[0] == 3) {
+          if (indexFocus.value[1] == 0) indexFocus.value[0] += 1;
+          else indexFocus.value[0] -= 1;
+        }
+        if (event.code === 'ArrowUp' && !(indexFocus.value[0] == 0)) {
+          indexFocus.value[0] -= 1;
+          if (indexFocus.value[0] == 3) indexFocus.value[0] -= 1;
+        }
+        if (event.code === 'ArrowDown' && !(indexFocus.value[0] == n - 1)) {
+          indexFocus.value[0] += 1;
+          if (indexFocus.value[0] == 3) indexFocus.value[0] += 1;
+        }
+        if (indexFocus.value)
+          fields.value[indexFocus.value[0]][indexFocus.value[1]]?.focus();
       },
-      onfocus(event: any) {
-        console.log('>>>', event);
+      onfocus(i: number, j: number) {
+        console.log('>>>', i, j);
+        indexFocus.value[0] = i;
+        indexFocus.value[1] = j;
       },
       onSave() {
         emit('on-save');
