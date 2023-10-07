@@ -35,9 +35,12 @@ export interface Schedule {
   /** paint dict use like paint[schedule.id] = color */
   paint: Dictionary<string>;
 
+  /** background paint dict use like background[schedule.id] = color */
+  background: Dictionary<string>;
+
   /** all the setting needed for create an complete Schedule*/
-  /*aqui es donde annado todas las configuraciones que pueda 
-  necesitar para el futuro como el claustro de profesors, la cantidad de horas 
+  /*aqui es donde annado todas las configuraciones que pueda
+  necesitar para el futuro como el claustro de profesors, la cantidad de horas
   por asignaturas, etc*/
   config: {
     groupsOptions: string[];
@@ -53,14 +56,16 @@ export interface Schedule {
     professors?: string[];
 
     subjectsByProfessor?: Dictionary<string>;
-    hoursClassBySubject?:Dictionary<string>;
+    hoursClassBySubject?: Dictionary<string>;
 
+    validationFunctions: string[];
     scheduleName?: string;
   };
 }
 
 export const MyBasicSquedule: Schedule = {
   paint: {},
+  background: {},
   schedule: [
     {
       cp: true,
@@ -95,6 +100,7 @@ export const MyBasicSquedule: Schedule = {
     ],
     roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     yearsOptions: ['2023'],
-    hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6']
+    hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
+    validationFunctions: ['twoSubjectInSameRoom', 'classType']
   }
 };

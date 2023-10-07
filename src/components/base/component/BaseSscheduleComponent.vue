@@ -5,6 +5,7 @@
       class="my-custom-table"
       :rows="rooms_school_data"
       row-key="name"
+      :columns="columns"
       separator="cell"
       :pagination="{
         rowsPerPage: -1
@@ -16,23 +17,35 @@
           <q-th colspan="1"></q-th>
           <template
             :key="days"
-            v-for="(days, index) in $props.sch.config.daysOptions"
+            v-for="(days, index) in sch.config.daysOptions"
           >
-            <q-th colspan="6" :class="colors[index]">{{ days }}</q-th>
+            <q-th
+              colspan="6"
+              :class="'text-white'"
+              :style="`background-color: ${getColorIndex(index)}`"
+              >{{ days }}</q-th
+            >
+            <!-- :style="`background-color: red`" -->
           </template>
         </q-tr>
         <q-tr>
           <q-th colspan="1"></q-th>
           <template
             :key="days"
-            v-for="(days, index) in $props.sch.config.daysOptions"
+            v-for="(days, index) in sch.config.daysOptions"
           >
             <template
               :key="turn"
-              v-for="turn in $props.sch.config.hoursOptions"
+              v-for="turn in sch.config.hoursOptions"
             >
               <template v-if="turn != `Receso`">
-                <q-th colspan="1" :class="colors[index]"> {{ turn }} </q-th>
+                <q-th
+                  colspan="1"
+                  :class="'text-white'"
+                  :style="`background-color: ${getColorIndex(index)}`"
+                >
+                  {{ turn }}
+                </q-th>
               </template>
             </template>
           </template>
@@ -44,7 +57,19 @@
             {{ props.row.turn }}
           </q-td>
 
-          <q-td :key="item" :props="props" v-for="item in dotDaysXHours">
+          <q-td
+            :key="item"
+            :props="props"
+            v-for="item in dotDaysXHours"
+            :style="
+              props.row[item] && props.row[item].length > 0
+                ? `background-color: ${getColor(
+                    props.row[item][0].group.substring(0, 2),
+                    0.75
+                  )}`
+                : ''
+            "
+          >
             <!-- <q-input
               type="text"
               :style="`width: ${
@@ -60,10 +85,10 @@
               :key="`badge-${i}-${item}`"
             >
               <q-badge
-                :style="`border-color: ${getColor(sch.group)}`"
+                :style="`border-color: white`"
                 square
                 outline
-                text-color="dark"
+                text-color="white"
                 :class="`q-px-sm q-py-xs ${i != 0 && 'q-mt-xs'}`"
               >
                 {{ sch.group }}
@@ -86,14 +111,7 @@
 <script lang="ts">
 import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
-
-const colors: string[] = [
-  'bg-teal-9 text-white',
-  'bg-deep-orange-9 text-white',
-  'bg-light-blue-9 text-white',
-  'bg-purple-5 text-white',
-  'bg-pink-13 text-white'
-];
+import { QTableColumn } from 'quasar';
 
 export default {
   props: {
@@ -117,12 +135,31 @@ export default {
       })
       .reduce((prev: string, curr: string) => [...prev, ...curr], []);
 
+    console.log(dotDaysXHours);
+
+    const columns: QTableColumn[] = [
+      { name: 'turn', align: 'center', field: 'turn', label: '' },
+      ...dotDaysXHours.map((dot: string) => ({
+        name: dot,
+        align: 'center',
+        field: dot
+      }))
+    ];
+
+    const toBin = (x: number): string => {
+      if (x == 0) return '0';
+      if (x % 2) return `1${toBin((x - 1) / 2)}`;
+      return `0${toBin(x / 2)}`;
+    };
+
     return {
       getVerbose,
       getColor,
-      colors,
       dotDaysXHours,
-
+      columns,
+      getColorIndex(index: number) {
+        return getColor(`-${index}${toBin(index)}`);
+      },
       onUpdate(row: number, column: string, value: any) {
         const newList = [
           ...props.rooms_school_data.map((x: any) => ({ ...x }))
