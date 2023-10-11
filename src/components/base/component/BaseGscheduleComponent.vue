@@ -441,7 +441,6 @@ export default {
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       columns,
-
       onkeydown(event: any) {
         console.log('>>>', event);
         console.log(':::', fields.value);
