@@ -1,6 +1,11 @@
 export interface Dictionary<T = any> {
   [key: string]: T;
 }
+export interface ValidationFunction {
+  name: string;
+  description: string;
+  handler: (sch: Schedule, baseScheduleChange: BaseSchedule) => boolean;
+}
 
 export interface BaseSchedule {
   /** Subject related course ex: EDA */

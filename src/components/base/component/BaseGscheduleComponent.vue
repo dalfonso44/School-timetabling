@@ -70,15 +70,23 @@
         >
           <q-btn
             color="secondary"
-            :label="!$q.screen.xs ? 'Color' : undefined"
+            :label="!$q.screen.lt.lg ? 'Color' : undefined"
             no-caps
             :rounded="!$q.screen.xs"
-            :round="$q.screen.xs"
+            :round="$q.screen.lt.lg"
             icon="palette"
+            dense
             class="q-mr-sm"
             :style="`background-color: ${selected_color} !important  ;`"
             @click="card = true"
-          />
+          >
+            <q-tooltip
+              class="text-white"
+              :style="`background-color: ${selected_color} !important  ;`"
+            >
+              Color
+            </q-tooltip>
+          </q-btn>
           <q-dialog v-model="card">
             <q-card class="my-card">
               <div class="q-pa-md row items-start">
@@ -118,45 +126,60 @@
 
           <q-btn
             color="secondary"
-            :round="$q.screen.xs"
+            :round="$q.screen.lt.lg"
             icon="add"
-            :label="!$q.screen.xs ? 'Nuevo horario' : undefined"
+            :label="!$q.screen.lt.lg ? 'Nuevo horario' : undefined"
             no-caps
             rounded
+            dense
             class="q-mr-sm"
             @click="show_new_year = true"
-          />
+          >
+            <q-tooltip class="bg-secondary text-white">
+              Nuevo horario
+            </q-tooltip>
+          </q-btn>
           <q-btn
             color="accent"
             icon="add_circle"
-            :round="$q.screen.xs"
-            :label="!$q.screen.xs ? 'Nuevo grupo' : undefined"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Nuevo grupo' : undefined"
             no-caps
             rounded
+            dense
             class="q-mr-sm"
             @click="show_new_group = true"
-          />
+          >
+            <q-tooltip class="bg-accent text-white"> Nuevo grupo </q-tooltip>
+          </q-btn>
           <q-btn
             color="info"
             icon="cloud_upload"
-            :round="$q.screen.xs"
-            :label="!$q.screen.xs ? 'Exportar horario' : undefined"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Exportar horario' : undefined"
             no-caps
+            dense
             rounded
             class="q-mr-sm"
             @click="onExport"
-          />
-
+          >
+            <q-tooltip class="bg-info text-white"> Exportar horario </q-tooltip>
+          </q-btn>
           <q-btn
             color="positive"
             icon="cloud_download"
-            :round="$q.screen.xs"
-            :label="!$q.screen.xs ? 'Importar horario' : undefined"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Importar horario' : undefined"
+            dense
             no-caps
             rounded
             class="q-mr-sm"
             @click="alert = true"
-          />
+          >
+            <q-tooltip class="bg-positive text-white">
+              Importar horario
+            </q-tooltip>
+          </q-btn>
           <q-dialog v-model="alert">
             <q-card>
               <q-card-section>
@@ -194,24 +217,30 @@
           <q-btn
             color="primary"
             icon="archive"
-            :round="$q.screen.xs"
-            :label="!$q.screen.xs ? 'Salvar' : undefined"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Salvar' : undefined"
+            dense
             no-caps
             rounded
             class="q-mr-sm"
             @click="onSave"
-          />
+          >
+            <q-tooltip class="bg-primary text-white"> Salvar </q-tooltip>
+          </q-btn>
           <q-btn
             color="warning"
             icon="close"
-            :round="$q.screen.xs"
-            :label="!$q.screen.xs ? 'Limpiar' : undefined"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Limpiar' : undefined"
             no-caps
             outline
+            dense
             rounded
             class="q-mr-sm"
             @click="onClear"
-          />
+          >
+            <q-tooltip class="bg-warning text-white"> Limpiar </q-tooltip>
+          </q-btn>
         </div>
       </template>
       <template v-slot:body="props">
@@ -287,13 +316,9 @@ import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 
-
-
-
-
 export default {
   props: {
-    sch:{
+    sch: {
       type: Object,
       required: true
     },
@@ -343,11 +368,15 @@ export default {
     const editing = ref(true);
     const importFile = ref(null);
 
-    const columns: QTableColumn[]=[
+    const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },
-      ...props.sch.config.daysOptions.map((day:string)=>({name: day, align:'center', field:day, label: day}))
-
-    ]
+      ...props.sch.config.daysOptions.map((day: string) => ({
+        name: day,
+        align: 'center',
+        field: day,
+        label: day
+      }))
+    ];
 
     const verifyVerbose = (value: string) => {
       if (!value) return true;
@@ -366,7 +395,7 @@ export default {
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       columns,
-     
+
       onSave() {
         emit('on-save');
         // timeTableData.saveData(rows.value);
