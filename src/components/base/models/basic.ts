@@ -65,7 +65,7 @@ export const MyBasicSquedule: Schedule = {
   schedule: [
     {
       cp: true,
-      day: 'monday',
+      day: 'Lunes',
       group: 'C111',
       hour: '1',
       room: '1',
@@ -74,7 +74,7 @@ export const MyBasicSquedule: Schedule = {
     }
   ],
   config: {
-    daysOptions: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    daysOptions: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
     groupsOptions: [
       'C111',
       'C112',
