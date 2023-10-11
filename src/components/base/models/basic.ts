@@ -73,7 +73,7 @@ export const MyBasicSquedule: Schedule = {
   background: {},
   schedule: [],
   config: {
-    daysOptions: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    daysOptions: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
     groupsOptions: [
       'C111',
       'C112',
