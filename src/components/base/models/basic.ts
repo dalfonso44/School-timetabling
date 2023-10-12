@@ -94,7 +94,7 @@ export const MyBasicSquedule: Schedule = {
       'M4',
       'CD1'
     ],
-    roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'lab1', 'lab2'],
     yearsOptions: ['2023'],
     hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
     validationFunctions: ['twoSubjectInSameRoom', 'classType']
