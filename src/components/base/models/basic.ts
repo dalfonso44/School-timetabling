@@ -96,6 +96,7 @@ export const MyBasicSquedule: Schedule = {
     roomsOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     yearsOptions: ['2023'],
     hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
-    validationFunctions: ['twoSubjectInSameRoom', 'classType']
+    validationFunctions: ['twoSubjectInSameRoom', 'classType'],
+    subjectsWithoutRooms: ['EF']
   }
 };

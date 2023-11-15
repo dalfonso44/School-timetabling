@@ -215,6 +215,23 @@
           </q-dialog>
 
           <q-btn
+            color="orange"
+            icon="settings"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Configuraciones' : undefined"
+            no-caps
+            outline
+            dense
+            rounded
+            class="q-mr-sm"
+            to="/config"
+          >
+            <q-tooltip class="bg-orange text-white">
+              Configuraciones
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
             color="primary"
             icon="archive"
             :round="$q.screen.lt.lg"
@@ -315,6 +332,7 @@ import InputDialog from '../../dialogs/InputDialog.vue';
 import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
+import { useRouter } from 'vue-router';
 
 export default {
   props: {
@@ -367,6 +385,11 @@ export default {
     const showNewGroup = ref(false);
     const editing = ref(true);
     const importFile = ref(null);
+
+    const router = useRouter();
+
+    // Wxample of how to use vue-router for change the route inside the setup logic
+    // router.push('/config');
 
     const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },

@@ -1,105 +1,122 @@
 <template>
   <q-page padding class="bg-white">
     <div class="q-pa-md row justify-center items-center">
-      <q-card class="col-10 row justify-center items-start q-pa-md bg-grey-2">
-        <q-card-section class="col-12 q-mb-md test-center">
-          <p class="text-h5 q-mb-sm">Agregar configuaración de horario</p>
+      <q-form ref="form">
+        <q-card class="col-10 row justify-center items-start bg-grey-2">
+          <q-card-section class="col-12 q-mb-md test-center">
+            <p class="text-h5 q-mb-sm">Agregar configuaración de horario</p>
 
-          <p class="text-h6 q-mb-sm">Campos Requeridos</p>
-        </q-card-section>
-        <div class="col-6 row justify-center items-start q-pa-md">
-          <q-card-section class="col-12 q-pa-md">
-            <q-select
-              class="bg-grey-3"
-              label="Días"
-              filled
-              v-model="config.config.daysOptions"
-              use-input
-              use-chips
-              multiple
-              hide-dropdown-icon
-              input-debounce="0"
-              @new-value="createValue"
-            />
+            <p class="text-h6 q-mb-sm">Campos Requeridos</p>
           </q-card-section>
+          <div class="col-md-6 col-12 row justify-center items-start">
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Días"
+                filled
+                v-model="config.config.daysOptions"
+                use-input
+                use-chips
+                multiple
+                hide-dropdown-icon
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
 
-          <q-card-section class="col-12 q-pa-md">
-            <q-select
-              class="bg-grey-3"
-              label="Validaciones"
-              filled
-              v-model="config.config.validationFunctions"
-              use-chips
-              multiple
-              :options="Object.keys(validationFunctionMapped)"
-              input-debounce="0"
-              :option-label="(key) => validationFunctionMapped[key].name"
-            >
-              <template v-slot:option="scope">
-                <q-item
-                  v-bind="scope.itemProps"
-                  @click="scope.toggleOption(scope.opt)"
-                >
-                  <q-item-section>
-                    {{ validationFunctionMapped[scope.opt].name }}
-                  </q-item-section>
-                  <q-item-section caption>
-                    {{ validationFunctionMapped[scope.opt].description }}
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </q-card-section>
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Validaciones"
+                filled
+                v-model="config.config.validationFunctions"
+                use-chips
+                multiple
+                :options="Object.keys(validationFunctionMapped)"
+                input-debounce="0"
+                :option-label="(key) => validationFunctionMapped[key].name"
+              >
+                <template v-slot:option="scope">
+                  <q-item
+                    v-bind="scope.itemProps"
+                    @click="scope.toggleOption(scope.opt)"
+                  >
+                    <q-item-section>
+                      {{ validationFunctionMapped[scope.opt].name }}
+                    </q-item-section>
+                    <q-item-section caption>
+                      {{ validationFunctionMapped[scope.opt].description }}
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </q-card-section>
 
-          <q-card-section class="col-12 q-pa-md">
-            <q-select
-              class="bg-grey-3"
-              label="Aulas"
-              filled
-              v-model="config.config.roomsOptions"
-              use-input
-              use-chips
-              multiple
-              hide-dropdown-icon
-              input-debounce="0"
-              @new-value="createValue"
-            />
-          </q-card-section>
-        </div>
-        <div class="col-6 row justify-center items-start q-pa-md">
-          <q-card-section class="col-12 q-pa-md">
-            <q-select
-              class="bg-grey-3"
-              label="Grupos"
-              filled
-              v-model="config.config.groupsOptions"
-              use-input
-              use-chips
-              multiple
-              hide-dropdown-icon
-              input-debounce="0"
-              @new-value="createValue"
-            /> </q-card-section
-          ><q-card-section class="col-12 q-pa-md">
-            <q-select
-              class="bg-grey-3"
-              label="Años"
-              filled
-              v-model="config.config.yearsOptions"
-              use-input
-              use-chips
-              multiple
-              hide-dropdown-icon
-              input-debounce="0"
-              @new-value="createValue"
-            />
-          </q-card-section>
-        </div>
-        <q-card-actions align="right" class="full-width row">
-          <q-btn label="GO" class="col-1" color="primary" @click="onGo">
-          </q-btn>
-        </q-card-actions>
-      </q-card>
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Aulas"
+                filled
+                v-model="config.config.roomsOptions"
+                use-input
+                use-chips
+                multiple
+                hide-dropdown-icon
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
+          </div>
+          <div class="col-md-6 col-12 row justify-center items-start">
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Grupos"
+                filled
+                v-model="config.config.groupsOptions"
+                use-input
+                use-chips
+                multiple
+                hide-dropdown-icon
+                input-debounce="0"
+                @new-value="createValue"
+              /> </q-card-section
+            ><q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Años"
+                filled
+                v-model="config.config.yearsOptions"
+                use-input
+                use-chips
+                multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
+                hide-dropdown-icon
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-grey-3"
+                label="Asignaturas que se impartenen otros edificios"
+                filled
+                v-model="config.config.subjectsWithoutRooms"
+                use-input
+                use-chips
+                multiple
+                hide-dropdown-icon
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
+          </div>
+          <q-card-actions align="right" class="full-width row">
+            <q-btn label="GO" class="col-1" color="primary" @click="onGo">
+            </q-btn>
+          </q-card-actions>
+        </q-card>
+      </q-form>
     </div>
   </q-page>
 </template>
@@ -111,13 +128,16 @@ import { validationFunctionMapped } from 'src/components/base/hooks/validations.
 import { Schedule, MyBasicSquedule } from 'src/components/base/models/basic';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Dialog } from 'quasar';
 
 export default {
   setup() {
     const router = useRouter();
     const config = ref<Schedule>({
-      ...MyBasicSquedule
+      ...(persistanceSchedule.loadData() || MyBasicSquedule)
     });
+    config.value.schedule = [];
+    const form = ref(null as any);
     return {
       config,
       hoursXsubject: ref(''),
@@ -136,9 +156,19 @@ export default {
       group: ref('op1'),
       validationFunctionMapped,
       onGo() {
-        persistanceSchedule.saveData(config.value);
-        router.push({ name: 'home' }).then(() => {
-          window.location.reload();
+        Dialog.create({
+          title: 'Alerta',
+          message: 'Si va a esta pagina pierde los datos no exportados',
+          cancel: true,
+          persistent: true
+        });
+        form.value.validate().then((ack: boolean) => {
+          if (ack) {
+            persistanceSchedule.saveData(config.value);
+            router.push({ name: 'home' }).then(() => {
+              window.location.reload();
+            });
+          }
         });
       },
       createValue(val: any, done: any) {
@@ -152,7 +182,8 @@ export default {
         //    if it is used); default behavior (if not using
         //    new-value-mode) is to add the value even if it would
         //    be a duplicate
-      }
+      },
+      form
     };
   }
 };
