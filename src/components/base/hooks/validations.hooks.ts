@@ -14,7 +14,10 @@ export const twoSubjectInSameRoom = (
 
   const schedules: BaseSchedule[] = [];
   for (let i = 0; i < sch.schedule.length; i++) {
+    console.log(sch.schedule[i].room);
     if (
+      !!sch.schedule[i].room &&
+      sch.schedule[i].room != '_' &&
       sch.schedule[i].room == baseScheduleChange.room &&
       sch.schedule[i].day == baseScheduleChange.day &&
       sch.schedule[i].hour == baseScheduleChange.hour
@@ -42,6 +45,8 @@ export const classType = (sch: Schedule, baseScheduleChange: BaseSchedule) => {
 
   for (let i = 0; i < sch.schedule.length; i++) {
     if (
+      !!sch.schedule[i].room &&
+      sch.schedule[i].room != '_' &&
       sch.schedule[i].room == baseScheduleChange.room &&
       sch.schedule[i].day == baseScheduleChange.day &&
       sch.schedule[i].hour == baseScheduleChange.hour

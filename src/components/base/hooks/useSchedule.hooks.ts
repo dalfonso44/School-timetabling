@@ -3,6 +3,7 @@ import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
 
 export const getVerbose = (bs: BaseSchedule | undefined) => {
   if (!bs) return '';
+  if (!bs.room) return bs.subject;
   return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
 };
 

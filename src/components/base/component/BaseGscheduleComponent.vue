@@ -224,7 +224,7 @@
             dense
             rounded
             class="q-mr-sm"
-            to="/config"
+            @click="onConfig"
           >
             <q-tooltip class="bg-orange text-white">
               Configuraciones
@@ -336,6 +336,7 @@ import { ref } from 'vue';
 import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { useRouter } from 'vue-router';
+import { Dialog } from 'quasar';
 
 export default {
   props: {
@@ -410,6 +411,9 @@ export default {
     const verifyVerbose = (value: string) => {
       if (!value) return true;
       const spl = value.trim().split(' ');
+      if (spl.length == 1) {
+        if (props.sch.config.subjectsWithoutRooms.includes(spl[0])) return true;
+      }
       if (spl.length != 3) return 'Campo incompleto';
       if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
       return true;
@@ -481,6 +485,16 @@ export default {
         emit('update', {
           ...props.school_data,
           [props.selected_group]: newList
+        });
+      },
+      onConfig() {
+        Dialog.create({
+          title: 'Alerta',
+          message: 'Si vas a las configuraciones se pierden todos los datos',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          router.push('/config');
         });
       }
     };

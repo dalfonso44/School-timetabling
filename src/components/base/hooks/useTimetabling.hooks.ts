@@ -192,7 +192,8 @@ export const useScheduleTimetabling = () => {
     }) {
       const hour = schedule.value.config.hoursOptions[payload.hour_index];
       const id = `${payload.year}-${hour}-${payload.group}-${payload.column}`;
-      const [subject, cp, room] = payload.value.split(' ');
+      const li = payload.value.split(' ');
+      const [subject, cp, room] = li.length == 1 ? [li[0], 'c', '_'] : li;
       const baseSchedule: BaseSchedule = {
         cp: cp == 'cp',
         day: payload.column,
@@ -203,8 +204,7 @@ export const useScheduleTimetabling = () => {
         year: payload.year
       };
 
-      if (!validationFunction(schedule.value, baseSchedule))
-        return;
+      if (!validationFunction(schedule.value, baseSchedule)) return;
 
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
