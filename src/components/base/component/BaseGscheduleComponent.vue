@@ -11,7 +11,7 @@
       }"
       hide-pagination
     >
-      <template v-slot:top>
+      <template v-slot:top v-if="!readonly">
         <div
           class="row col-sm-6 col-md-5 col-lg-4 col-12 items-center justify-start q-px-sm"
         >
@@ -115,14 +115,14 @@
             class="q-mr-sm"
           ></q-btn>
 
-          <!-- <q-btn
+          <q-btn
             icon="print"
             dense
             round
             color="primary"
             class="q-mr-sm"
             @click="$emit('on-print')"
-          ></q-btn> -->
+          ></q-btn>
 
           <q-btn
             color="secondary"
@@ -287,7 +287,7 @@
             @click="!editing && onPaint(props.rowIndex, item)"
           >
             <q-input
-              v-if="props.rowIndex != 3"
+              v-if="props.rowIndex != 3 && !readonly"
               type="text"
               dense
               :readonly="!editing"
@@ -304,6 +304,9 @@
               :rules="[verifyVerbose]"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />
+            <p v-else-if="readonly && props.rowIndex != 3">
+              {{ props.row[item] }}
+            </p>
           </q-td>
         </q-tr>
       </template>
@@ -336,6 +339,9 @@ import { useRouter } from 'vue-router';
 
 export default {
   props: {
+    readonly: {
+      type: Boolean
+    },
     sch: {
       type: Object,
       required: true
