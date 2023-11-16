@@ -128,7 +128,6 @@ import { validationFunctionMapped } from 'src/components/base/hooks/validations.
 import { Schedule, MyBasicSquedule } from 'src/components/base/models/basic';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { Dialog } from 'quasar';
 
 export default {
   setup() {
@@ -156,12 +155,6 @@ export default {
       group: ref('op1'),
       validationFunctionMapped,
       onGo() {
-        Dialog.create({
-          title: 'Alerta',
-          message: 'Si va a esta pagina pierde los datos no exportados',
-          cancel: true,
-          persistent: true
-        });
         form.value.validate().then((ack: boolean) => {
           if (ack) {
             persistanceSchedule.saveData(config.value);
