@@ -26,6 +26,7 @@
         :rooms_school_data="school_data[selected_year].rooms"
         :sch="sch"
         @update="school_data[selected_year].rooms = $event"
+        @change-schedule="updateBaseSch"
       />
       <div class="full-width" v-if="printing">
         <gschedule-component
@@ -68,12 +69,14 @@ export default defineComponent({
       year_keys,
       selected_year,
       selected_group,
+      updateBaseSch,
       add_group,
       add_year,
       onSave,
       onClear,
       onChangeYear,
       onUpdateBase,
+      onChangeBase,
       onExport,
       onImport
     } = useScheduleTimetabling();
@@ -87,6 +90,8 @@ export default defineComponent({
       selected_group,
       selected_color,
       printing,
+      updateBaseSch,
+      onChangeBase,
       add_group,
       add_year,
       onSave,

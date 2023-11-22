@@ -47,7 +47,7 @@ export const useScheduleTimetabling = () => {
 
           // TODO: here
           .filter((x) => x != 'Receso')
-          .map((x) => day + x)
+          .map((x) => `${day}-${x}`)
       );
     })
     .reduce((prev, curr) => [...prev, ...curr], []);
@@ -140,6 +140,7 @@ export const useScheduleTimetabling = () => {
     selected_group,
     add_group,
     add_year,
+    onChangeBase,
     onChangeYear(year: string) {
       selected_year.value = year;
       if (!group_keys.value.includes(selected_group.value)) {
@@ -208,6 +209,17 @@ export const useScheduleTimetabling = () => {
 
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
+    },
+    updateBaseSch(id: string, sch: BaseSchedule) {
+      if (!validationFunction(schedule.value, sch)) return;
+
+      onChangeBase(id, sch);
+
+      school_data.value[selected_year.value].groups =
+        default_group_schedule_object(selected_year.value);
+      school_data.value[selected_year.value].rooms = empty_school_state(
+        selected_year.value
+      );
     }
   };
 };

@@ -14,7 +14,7 @@ export const useScheduleHandler = (sch: Schedule) => {
     `${bs.year}-${bs.hour}-${bs.group}-${bs.day}`;
 
   const getRoomID = (bs: BaseSchedule) =>
-    `${bs.year}-${bs.room}-${bs.day}${bs.hour}`;
+    `${bs.year}-${bs.room}-${bs.day}-${bs.hour}`;
 
   const mappedBaseSchedule = ref<Dictionary<BaseSchedule>>(
     sch.schedule.reduce(
@@ -47,6 +47,7 @@ export const useScheduleHandler = (sch: Schedule) => {
   const onChangeBase = (id: string, value: BaseSchedule) => {
     console.log('on change >', id, value);
     const oldValue = mappedBaseSchedule.value[id];
+    console.log('old value', oldValue);
     if (!!oldValue) delete mappedBaseSchedule.value[id];
     const newId = getID(value);
     if (mappedBaseSchedule.value[newId]) {

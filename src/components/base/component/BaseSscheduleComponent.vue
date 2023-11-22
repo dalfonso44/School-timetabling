@@ -15,10 +15,7 @@
       <template v-slot:header>
         <q-tr>
           <q-th colspan="1"></q-th>
-          <template
-            :key="days"
-            v-for="(days, index) in sch.config.daysOptions"
-          >
+          <template :key="days" v-for="(days, index) in sch.config.daysOptions">
             <q-th
               colspan="6"
               :class="'text-white'"
@@ -30,14 +27,8 @@
         </q-tr>
         <q-tr>
           <q-th colspan="1"></q-th>
-          <template
-            :key="days"
-            v-for="(days, index) in sch.config.daysOptions"
-          >
-            <template
-              :key="turn"
-              v-for="turn in sch.config.hoursOptions"
-            >
+          <template :key="days" v-for="(days, index) in sch.config.daysOptions">
+            <template :key="turn" v-for="turn in sch.config.hoursOptions">
               <template v-if="turn != `Receso`">
                 <q-th
                   colspan="1"
@@ -69,6 +60,10 @@
                   )}`
                 : ''
             "
+            dropzone
+            :id="`td-${item}`"
+            @drop="onDrop($event, item, props.rowIndex)"
+            @dragover="$event.preventDefault()"
           >
             <!-- <q-input
               type="text"
@@ -91,7 +86,14 @@
                 text-color="white"
                 :class="`q-px-sm q-py-xs ${i != 0 && 'q-mt-xs'}`"
               >
-                {{ sch.group }}
+                <div
+                  :id="`drag-${i}-${item}`"
+                  class="cursor-pointer"
+                  draggable="true"
+                  @dragstart="startDrag($event, sch)"
+                >
+                  {{ sch.group }}
+                </div>
                 <q-tooltip
                   class="text-white font-subtitle1"
                   :style="`background-color: ${getColor(sch.group)}`"
@@ -112,6 +114,8 @@
 import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
 import { QTableColumn } from 'quasar';
+import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
+import { ref } from 'vue';
 
 export default {
   props: {
@@ -125,13 +129,13 @@ export default {
     }
   },
 
-  emits: ['update'],
+  emits: ['update', 'change-schedule'],
   setup(props, { emit }) {
     const dotDaysXHours = props.sch.config.daysOptions
       .map((day: string) => {
         return props.sch.config.hoursOptions
           .filter((hour: string) => hour != 'Receso')
-          .map((hour: string) => day + hour);
+          .map((hour: string) => `${day}-${hour}`);
       })
       .reduce((prev: string, curr: string) => [...prev, ...curr], []);
 
@@ -152,11 +156,44 @@ export default {
       return `0${toBin(x / 2)}`;
     };
 
+    const moveSch = ref({} as BaseSchedule);
+
+    const startDrag = (ev: any, sch: BaseSchedule) => {
+      console.log('start drag', ev, sch);
+      moveSch.value = sch;
+    };
+
+    const onDrop = (ev: any, place: string, row_index: number) => {
+      console.log(
+        'on drop',
+        ev,
+        place,
+        row_index,
+        props.rooms_school_data[row_index]
+      );
+      const [day, hour] = place.split('-');
+      const bs = moveSch.value;
+      const id = `${bs.year}-${bs.hour}-${bs.group}-${bs.day}`;
+      emit('change-schedule', id, {
+        ...bs,
+        day: day,
+        room: (row_index + 1).toString(),
+        hour: hour
+      });
+
+      // const clone = (props.rooms_school_data[row_index] as Dictionary<[]>)[
+      //   place
+      // ] as any[];
+      // clone.push(moveSch.value);
+    };
+
     return {
       getVerbose,
       getColor,
       dotDaysXHours,
       columns,
+      startDrag,
+      onDrop,
       getColorIndex(index: number) {
         return getColor(`-${index}${toBin(index)}`);
       },
