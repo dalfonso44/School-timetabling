@@ -1,8 +1,14 @@
 <template>
-  <q-page padding class="bg-white">
-    <div class="q-pa-md row justify-center items-center">
+  <q-page
+    class="items-center row"
+    :style="`background-image: url(${CONFIG_IMAGE});`"
+    padding
+  >
+    <div class="q-pa-md row justify-center items-center full-width full-height">
       <q-form ref="form">
-        <q-card class="col-10 row justify-center items-start bg-grey-2">
+        <q-card
+          class="col-10 row justify-center items-start bg-custom-transparent"
+        >
           <q-card-section class="col-12 q-mb-md test-center">
             <p class="text-h5 q-mb-sm">Agregar configuaración de horario</p>
 
@@ -18,7 +24,9 @@
                 use-input
                 use-chips
                 multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
+                hide-bottom-space
                 input-debounce="0"
                 @new-value="createValue"
               />
@@ -26,7 +34,7 @@
 
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-grey-3"
+                class="bg-transparent"
                 label="Validaciones"
                 filled
                 v-model="config.config.validationFunctions"
@@ -61,6 +69,7 @@
                 use-input
                 use-chips
                 multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
                 input-debounce="0"
                 @new-value="createValue"
@@ -77,6 +86,7 @@
                 use-input
                 use-chips
                 multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
                 input-debounce="0"
                 @new-value="createValue"
@@ -128,7 +138,7 @@ import { validationFunctionMapped } from 'src/components/base/hooks/validations.
 import { Schedule, MyBasicSquedule } from 'src/components/base/models/basic';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import CONFIG_IMAGE from 'src/assets/config.jpg';
 export default {
   setup() {
     const router = useRouter();
@@ -176,7 +186,8 @@ export default {
         //    new-value-mode) is to add the value even if it would
         //    be a duplicate
       },
-      form
+      form,
+      CONFIG_IMAGE
     };
   }
 };
