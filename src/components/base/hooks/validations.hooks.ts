@@ -27,7 +27,10 @@ export const twoSubjectInSameRoom = (
   }
 
   for (let i = 0; i < schedules.length; i++) {
-    if (schedules[i].subject != baseScheduleChange.subject) {
+    if (
+      schedules[i].subject != baseScheduleChange.subject &&
+      schedules[i].id != baseScheduleChange.id
+    ) {
       Notify.create({
         type: 'negative',
         message: `No se puede impartir ${schedules[i].subject} y ${baseScheduleChange.subject} al mismo tiempo`
@@ -56,7 +59,10 @@ export const classType = (sch: Schedule, baseScheduleChange: BaseSchedule) => {
   }
 
   for (let i = 0; i < schedules.length; i++) {
-    if (schedules[i].cp != baseScheduleChange.cp) {
+    if (
+      schedules[i].cp != baseScheduleChange.cp &&
+      schedules[i].id != baseScheduleChange.id
+    ) {
       Notify.create({
         type: 'negative',
         message: `No se puede impartir una cp y una conferencia al mismo tiempo`
