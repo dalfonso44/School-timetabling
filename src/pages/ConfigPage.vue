@@ -71,6 +71,7 @@
                 multiple
                 :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
+                hide-bottom-space
                 input-debounce="0"
                 @new-value="createValue"
               />
@@ -88,6 +89,7 @@
                 multiple
                 :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
+                hide-bottom-space
                 input-debounce="0"
                 @new-value="createValue"
               /> </q-card-section
@@ -102,6 +104,7 @@
                 multiple
                 :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
                 hide-dropdown-icon
+                hide-bottom-space
                 input-debounce="0"
                 @new-value="createValue"
               />
