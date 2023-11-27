@@ -298,9 +298,7 @@
               :class="{
                 'cursor-pointer': !editing
               }"
-              :input-class="`text-center text-${
-                props.row[`${item}_custom_color`] ? 'white' : 'dark'
-              }`"
+              :input-class="`text-center`"
               :rules="[verifyVerbose]"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />

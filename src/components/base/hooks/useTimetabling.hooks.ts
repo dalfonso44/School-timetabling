@@ -129,6 +129,10 @@ export const useScheduleTimetabling = () => {
     // timeSave(school_data.value);
     schedule.value.config.groupsOptions.push(group);
     selected_group.value = group;
+    Notify.create({
+      type: 'positive',
+      message: `El horario ${group} fue creado y salvado correctamente`
+    });
   };
 
   return {
