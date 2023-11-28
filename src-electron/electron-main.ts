@@ -28,9 +28,6 @@ function createWindow() {
     height: 600,
     useContentSize: true,
     fullscreen: true,
-    skipTaskbar: true,
-    resizable: true,
-    autoHideMenuBar: true,
     frame: false,
     webPreferences: {
       contextIsolation: true,

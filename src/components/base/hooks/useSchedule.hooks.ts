@@ -7,6 +7,8 @@ const { saveData: timeSave } = persistanceSchedule;
 export const getVerbose = (bs: BaseSchedule | undefined) => {
   if (!bs) return '';
   if (!bs.room || bs.room == '_') return bs.subject;
+  if (!!bs.description)
+    return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room} ${bs.description}`;
   return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
 };
 

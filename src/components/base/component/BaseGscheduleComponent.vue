@@ -449,6 +449,9 @@ export default {
       if (spl.length == 1) {
         if (props.sch.config.subjectsWithoutRooms.includes(spl[0])) return true;
       }
+      if (spl.length > 3) {
+        if (spl[3][0] == '(' && spl[3][spl[3].length - 1] == ')') return true;
+      }
       if (spl.length != 3) return 'Campo incompleto';
       if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
       return true;
