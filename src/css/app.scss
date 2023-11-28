@@ -1,7 +1,14 @@
 // app global css in SCSS form
 
 .my-custom-table {
-  .q-table th, .q-table td {
+  .q-table th,
+  .q-table td {
     padding: 3px 7px !important;
+  }
+}
+
+@media print {
+  .page-break {
+    page-break-before: always;
   }
 }

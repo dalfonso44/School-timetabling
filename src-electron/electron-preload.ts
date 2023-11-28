@@ -27,3 +27,34 @@
  *   }
  * }
  */
+
+import { contextBridge } from 'electron';
+import { BrowserWindow } from '@electron/remote';
+
+contextBridge.exposeInMainWorld('myWindowAPI', {
+  print(name: string, handler: () => void) {
+    console.log('hi !!!!!!!', BrowserWindow.getFocusedWindow()?.webContents);
+    if (BrowserWindow != null) {
+      BrowserWindow.getFocusedWindow()
+        ?.webContents.printToPDF({
+          printBackground: true,
+          preferCSSPageSize: true,
+          pageSize: 'A4',
+          landscape: true
+        })
+        .then((value) => {
+          console.log(value);
+          const filename = decodeURI(`${name}.pdf`);
+          const url = window.URL.createObjectURL(new Blob([value]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+          link.remove();
+          handler();
+        });
+    }
+  }
+});

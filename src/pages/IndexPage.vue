@@ -20,8 +20,10 @@
       @on-print="onPrint"
       @on-export="onExport"
       @on-import="onImport"
+      class="page-break"
+      v-if="!printing"
     />
-    <div id="printID" class="full-width">
+    <div id="printID" class="full-width page-break">
       <sschedule-component
         :rooms_school_data="school_data[selected_year].rooms"
         :sch="sch"
@@ -41,7 +43,7 @@
           :selected_color="selected_color"
           @update-group="selected_group = $event"
           :readonly="true"
-          class="full-height"
+          class="full-height page-break"
         />
       </div>
     </div>
@@ -103,6 +105,13 @@ export default defineComponent({
       onPrint() {
         printing.value = true;
         nextTick(() => {
+          const eApi = (window as any).myWindowAPI;
+          if (eApi) {
+            eApi?.print(sch.config.scheduleName || 'Horario', () => {
+              printing.value = false;
+            });
+            return;
+          }
           const toPrint = document.getElementById('printID')?.innerHTML;
           let stylesHtml = '';
           document
@@ -129,11 +138,14 @@ export default defineComponent({
     ${toPrint}
   </body>
 </html>`);
+          console.log(' >>>', WinPrint);
 
           WinPrint?.document.close();
           WinPrint?.focus();
+          console.log('___', eApi);
           setTimeout(() => {
-            WinPrint?.print();
+            (WinPrint as any).print();
+
             setTimeout(() => {
               WinPrint?.close();
               printing.value = false;
