@@ -154,6 +154,22 @@
           </q-btn>
 
           <q-btn
+            color="blue-10"
+            icon="note_add"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Agregar asignatura' : undefined"
+            dense
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="show_new_subject = true"
+          >
+            <q-tooltip class="bg-blue-10 text-white">
+              Agregar asignatura
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
             color="info"
             icon="cloud_upload"
             :round="$q.screen.lt.lg"
@@ -332,6 +348,14 @@
       @on-next="$emit('create-group', $event)"
       @on-close="show_new_group = false"
     />
+
+    <input-dialog
+      :title="'Agrega una nueva asignatura'"
+      :label="'Asignatura'"
+      :show="show_new_subject"
+      @on-next="$emit('add-subject', $event)"
+      @on-close="show_new_subject = false"
+    />
   </div>
 </template>
 
@@ -387,6 +411,7 @@ export default {
     'update-year',
     'create-year',
     'create-group',
+    'add-subject',
     'update-color',
     'on-print',
     'on-export',
@@ -395,6 +420,7 @@ export default {
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
+    const showNewSubject = ref(false);
     const editing = ref(true);
     const importFile = ref(null);
 
@@ -432,6 +458,7 @@ export default {
       verifyVerbose,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
+      show_new_subject: showNewSubject,
       columns,
 
       onSave() {

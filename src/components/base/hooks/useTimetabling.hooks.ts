@@ -138,6 +138,10 @@ export const useScheduleTimetabling = () => {
     });
   };
 
+  const add_subject = (subject: string) => {
+    schedule.value.config.subjectsWithoutRooms?.push(subject);
+  };
+
   const refreshView = () => {
     school_data.value[selected_year.value].groups =
       default_group_schedule_object(selected_year.value);
@@ -155,6 +159,7 @@ export const useScheduleTimetabling = () => {
     selected_group,
     add_group,
     add_year,
+    add_subject,
     onChangeBase,
     onChangeYear(year: string) {
       selected_year.value = year;
