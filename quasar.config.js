@@ -176,6 +176,11 @@ module.exports = configure(function (/* ctx */) {
       hideSplashscreen: true
     },
 
+    sourceFiles: {
+      electronMain: 'src-electron/electron-main',
+      electronPreload: 'src-electron/electron-preload'
+    },
+
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
     electron: {
       // extendElectronMainConf (esbuildConf)

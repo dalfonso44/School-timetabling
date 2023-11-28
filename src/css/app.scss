@@ -10,3 +10,9 @@
 .bg-custom-transparent {
   background-color: rgba(131, 131, 131, 0.5);
 }
+
+@media print {
+  .page-break {
+    page-break-before: always;
+  }
+}
