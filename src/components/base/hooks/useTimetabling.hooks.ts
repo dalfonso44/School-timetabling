@@ -213,6 +213,7 @@ export const useScheduleTimetabling = () => {
     }) {
       const hour = schedule.value.config.hoursOptions[payload.hour_index];
       const id = `${payload.year}-${hour}-${payload.group}-${payload.column}`;
+      const desc = '(' + payload.value.split('(')[1];
       const li = payload.value.split(' ');
       const [subject, cp, room] = li.length == 1 ? [li[0], 'c', '_'] : li;
       const baseSchedule: BaseSchedule = {
@@ -222,7 +223,8 @@ export const useScheduleTimetabling = () => {
         hour: hour,
         room: room,
         subject: subject,
-        year: payload.year
+        year: payload.year,
+        description: desc
       };
 
       if (!validationFunction(schedule.value, baseSchedule)) return;

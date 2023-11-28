@@ -31,6 +31,8 @@ export interface BaseSchedule {
 
   /** verification code */
   id?: string;
+
+  description?: string;
 }
 
 export interface Schedule {
