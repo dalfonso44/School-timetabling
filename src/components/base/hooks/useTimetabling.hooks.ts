@@ -185,7 +185,7 @@ export const useScheduleTimetabling = () => {
           timeExport(data, schedule.value);
         })
         .onCancel(() => {
-          // console.log('>>>> Cancel')
+          console.log('>>>> Cancel');
         })
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
