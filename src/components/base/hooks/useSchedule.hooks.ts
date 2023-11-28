@@ -1,9 +1,12 @@
 import { computed, ref } from 'vue';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
+import { persistanceSchedule } from './usePersistanceSchedule.hooks';
+
+const { saveData: timeSave } = persistanceSchedule;
 
 export const getVerbose = (bs: BaseSchedule | undefined) => {
   if (!bs) return '';
-  if (!bs.room) return bs.subject;
+  if (!bs.room || bs.room == '_') return bs.subject;
   return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
 };
 
@@ -42,6 +45,7 @@ export const useScheduleHandler = (sch: Schedule) => {
 
   const ensureSchedulePersistence = () => {
     schedule.value.schedule = Object.values(mappedBaseSchedule.value);
+    timeSave(schedule.value);
   };
 
   const onChangeBase = (id: string, value: BaseSchedule) => {

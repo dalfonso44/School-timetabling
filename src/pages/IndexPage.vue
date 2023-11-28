@@ -14,6 +14,7 @@
       @on-clear="onClear"
       @create-year="add_year"
       @create-group="add_group"
+      @add-subject="add_subject"
       @update-base="onUpdateBase"
       @update="school_data[selected_year].groups = $event"
       @update-color="($event) => (selected_color = $event)"
@@ -74,6 +75,7 @@ export default defineComponent({
       updateBaseSch,
       add_group,
       add_year,
+      add_subject,
       onSave,
       onClear,
       onChangeYear,
@@ -96,6 +98,7 @@ export default defineComponent({
       onChangeBase,
       add_group,
       add_year,
+      add_subject,
       onSave,
       onClear,
       onChangeYear,

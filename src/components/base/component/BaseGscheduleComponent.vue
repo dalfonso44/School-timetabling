@@ -152,33 +152,48 @@
           >
             <q-tooltip class="bg-accent text-white"> Nuevo grupo </q-tooltip>
           </q-btn>
+
+          <q-btn
+            color="blue-10"
+            icon="note_add"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Agregar asignatura' : undefined"
+            dense
+            no-caps
+            rounded
+            class="q-mr-sm"
+            @click="show_new_subject = true"
+          >
+            <q-tooltip class="bg-blue-10 text-white">
+              Agregar asignatura
+            </q-tooltip>
+          </q-btn>
+
           <q-btn
             color="info"
             icon="cloud_upload"
             :round="$q.screen.lt.lg"
-            :label="!$q.screen.lt.lg ? 'Exportar horario' : undefined"
+            :label="!$q.screen.lt.lg ? 'Exportar' : undefined"
             no-caps
             dense
             rounded
             class="q-mr-sm"
             @click="onExport"
           >
-            <q-tooltip class="bg-info text-white"> Exportar horario </q-tooltip>
+            <q-tooltip class="bg-info text-white"> Exportar </q-tooltip>
           </q-btn>
           <q-btn
             color="positive"
             icon="cloud_download"
             :round="$q.screen.lt.lg"
-            :label="!$q.screen.lt.lg ? 'Importar horario' : undefined"
+            :label="!$q.screen.lt.lg ? 'Importar' : undefined"
             dense
             no-caps
             rounded
             class="q-mr-sm"
             @click="alert = true"
           >
-            <q-tooltip class="bg-positive text-white">
-              Importar horario
-            </q-tooltip>
+            <q-tooltip class="bg-positive text-white"> Importar </q-tooltip>
           </q-btn>
           <q-dialog v-model="alert">
             <q-card>
@@ -202,6 +217,14 @@
               </q-card-section>
 
               <q-card-actions align="right">
+                <q-btn
+                  flat
+                  label="Cancel"
+                  color="primary"
+                  @click="alert = false"
+                  v-close-popup
+                />
+
                 <q-btn
                   flat
                   label="OK"
@@ -231,7 +254,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn
+          <!-- <q-btn
             color="primary"
             icon="archive"
             :round="$q.screen.lt.lg"
@@ -243,7 +266,7 @@
             @click="onSave"
           >
             <q-tooltip class="bg-primary text-white"> Salvar </q-tooltip>
-          </q-btn>
+          </q-btn> -->
           <q-btn
             color="warning"
             icon="close"
@@ -302,9 +325,7 @@
               :class="{
                 'cursor-pointer': !editing
               }"
-              :input-class="`text-center text-${
-                props.row[`${item}_custom_color`] ? 'white' : 'dark'
-              }`"
+              :input-class="`text-center`"
               :rules="[verifyVerbose]"
               @update:model-value="onUpdate(props.rowIndex, item, $event)"
             />
@@ -330,6 +351,14 @@
       :show="show_new_group"
       @on-next="$emit('create-group', $event)"
       @on-close="show_new_group = false"
+    />
+
+    <input-dialog
+      :title="'Agrega una nueva asignatura'"
+      :label="'Asignatura'"
+      :show="show_new_subject"
+      @on-next="$emit('add-subject', $event)"
+      @on-close="show_new_subject = false"
     />
   </div>
 </template>
@@ -386,6 +415,7 @@ export default {
     'update-year',
     'create-year',
     'create-group',
+    'add-subject',
     'update-color',
     'on-print',
     'on-export',
@@ -394,6 +424,7 @@ export default {
   setup(props, { emit }) {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
+    const showNewSubject = ref(false);
     const editing = ref(true);
     const importFile = ref(null);
 
@@ -440,6 +471,7 @@ export default {
       verifyVerbose,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
+      show_new_subject: showNewSubject,
       columns,
       onkeydown(event: any) {
         console.log('>>>', event);

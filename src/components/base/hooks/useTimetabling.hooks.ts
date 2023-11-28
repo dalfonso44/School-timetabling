@@ -129,6 +129,25 @@ export const useScheduleTimetabling = () => {
     // timeSave(school_data.value);
     schedule.value.config.groupsOptions.push(group);
     selected_group.value = group;
+
+    refreshView();
+
+    Notify.create({
+      type: 'positive',
+      message: `El horario ${group} fue creado y salvado correctamente`
+    });
+  };
+
+  const add_subject = (subject: string) => {
+    schedule.value.config.subjectsWithoutRooms?.push(subject);
+  };
+
+  const refreshView = () => {
+    school_data.value[selected_year.value].groups =
+      default_group_schedule_object(selected_year.value);
+    school_data.value[selected_year.value].rooms = empty_school_state(
+      selected_year.value
+    );
   };
 
   return {
@@ -140,6 +159,7 @@ export const useScheduleTimetabling = () => {
     selected_group,
     add_group,
     add_year,
+    add_subject,
     onChangeBase,
     onChangeYear(year: string) {
       selected_year.value = year;
@@ -170,7 +190,7 @@ export const useScheduleTimetabling = () => {
           timeExport(data, schedule.value);
         })
         .onCancel(() => {
-          // console.log('>>>> Cancel')
+          console.log('>>>> Cancel');
         })
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
@@ -215,11 +235,7 @@ export const useScheduleTimetabling = () => {
 
       onChangeBase(id, sch);
 
-      school_data.value[selected_year.value].groups =
-        default_group_schedule_object(selected_year.value);
-      school_data.value[selected_year.value].rooms = empty_school_state(
-        selected_year.value
-      );
+      refreshView();
     }
   };
 };
