@@ -130,16 +130,20 @@ export const useScheduleTimetabling = () => {
     schedule.value.config.groupsOptions.push(group);
     selected_group.value = group;
 
-    school_data.value[selected_year.value].groups =
-      default_group_schedule_object(selected_year.value);
-    school_data.value[selected_year.value].rooms = empty_school_state(
-      selected_year.value
-    );
+    refreshView();
 
     Notify.create({
       type: 'positive',
       message: `El horario ${group} fue creado y salvado correctamente`
     });
+  };
+
+  const refreshView = () => {
+    school_data.value[selected_year.value].groups =
+      default_group_schedule_object(selected_year.value);
+    school_data.value[selected_year.value].rooms = empty_school_state(
+      selected_year.value
+    );
   };
 
   return {
@@ -226,11 +230,7 @@ export const useScheduleTimetabling = () => {
 
       onChangeBase(id, sch);
 
-      school_data.value[selected_year.value].groups =
-        default_group_schedule_object(selected_year.value);
-      school_data.value[selected_year.value].rooms = empty_school_state(
-        selected_year.value
-      );
+      refreshView();
     }
   };
 };
