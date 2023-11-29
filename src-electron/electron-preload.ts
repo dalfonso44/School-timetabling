@@ -38,7 +38,6 @@ contextBridge.exposeInMainWorld('myWindowAPI', {
       BrowserWindow.getFocusedWindow()
         ?.webContents.printToPDF({
           printBackground: true,
-          preferCSSPageSize: true,
           pageSize: 'A4',
           landscape: true
         })
