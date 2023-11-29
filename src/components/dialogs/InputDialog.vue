@@ -16,7 +16,7 @@
             :label="label"
             v-model="value"
             autofocus
-            :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
+            :rules="rules"
           />
         </q-form>
       </q-card-section>
@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { PropType, defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'InputDialog',
@@ -54,6 +54,11 @@ export default defineComponent({
 
     label: {
       type: String,
+      required: true
+    },
+
+    rules: {
+      type: Array as PropType<((value: string) => true | string)[]>,
       required: true
     }
   },

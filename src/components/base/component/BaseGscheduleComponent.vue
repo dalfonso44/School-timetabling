@@ -49,7 +49,7 @@
           </q-select>
 
           <q-select
-            :class="`q-ml-md col-md-3 col-sm-4 col-12 ${
+            :class="`q-ml-md col-md-4 col-sm-4 col-12 ${
               $q.screen.xs && 'q-mt-sm'
             }`"
             outlined
@@ -340,6 +340,7 @@
     <input-dialog
       :title="'Crea un nuevo horario'"
       :label="'Nombre'"
+      :rules="[correctFormat]"
       @on-next="$emit('create-year', $event)"
       :show="show_new_year"
       @on-close="show_new_year = false"
@@ -348,6 +349,7 @@
     <input-dialog
       :title="'Crea un nuevo grupo'"
       :label="'Grupo'"
+      :rules="[(val) => !!val || 'Campo requerido']"
       :show="show_new_group"
       @on-next="$emit('create-group', $event)"
       @on-close="show_new_group = false"
@@ -356,6 +358,7 @@
     <input-dialog
       :title="'Agrega una nueva asignatura'"
       :label="'Asignatura'"
+      :rules="[(val) => !!val || 'Campo requerido']"
       :show="show_new_subject"
       @on-next="$emit('add-subject', $event)"
       @on-close="show_new_subject = false"
@@ -370,6 +373,7 @@ import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { useRouter } from 'vue-router';
 import { Dialog } from 'quasar';
+import { number } from '@intlify/core-base';
 
 export default {
   props: {
@@ -429,6 +433,12 @@ export default {
     const importFile = ref(null);
 
     const router = useRouter();
+
+    const correctFormat = (val: string) => {
+      if (/^\d{4} s1|2$/.test(val) || /^\d{4}-\d{4} s1|2$/.test(val))
+        return true;
+      return 'Formato incorrecto';
+    };
 
     // Wxample of how to use vue-router for change the route inside the setup logic
     // router.push('/config');
@@ -491,6 +501,7 @@ export default {
       editing,
       importFile,
       verifyVerbose,
+      correctFormat,
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       show_new_subject: showNewSubject,
