@@ -26,12 +26,19 @@
     />
 
     <div id="printID" class="full-width page-break q-py-md">
-      <sschedule-component
-        :rooms_school_data="school_data[selected_year].rooms"
-        :sch="sch"
-        @update="school_data[selected_year].rooms = $event"
-        @change-schedule="updateBaseSch"
-      />
+      <q-expansion-item
+        v-model="expandedRooms"
+        class="q-my-md"
+        label="Distribución de aulas"
+      >
+        <sschedule-component
+          :rooms_school_data="school_data[selected_year].rooms"
+          :sch="sch"
+          @update="school_data[selected_year].rooms = $event"
+          @change-schedule="updateBaseSch"
+        />
+      </q-expansion-item>
+
       <q-expansion-item
         v-model="expandedSubjects"
         class="q-my-md"
@@ -79,6 +86,8 @@ export default defineComponent({
     const selected_color = ref('rgb(0,0,0)');
     const printing = ref(false);
     const expandedSubjects = ref(true);
+    const expandedRooms = ref(true);
+
     const {
       sch,
       school_data,
@@ -112,6 +121,8 @@ export default defineComponent({
       selected_color,
       printing,
       expandedSubjects,
+      expandedRooms,
+
       updateBaseSch,
       onChangeBase,
       add_group,

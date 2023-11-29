@@ -373,7 +373,6 @@ import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { useRouter } from 'vue-router';
 import { Dialog } from 'quasar';
-import { number } from '@intlify/core-base';
 
 export default {
   props: {
