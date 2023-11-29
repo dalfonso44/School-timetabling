@@ -1,9 +1,9 @@
 {
-  "name": "quasar-timetabling",
+  "name": "horario_matcom",
   "version": "0.0.1",
-  "description": "School timetabling",
-  "productName": "School timetabling",
-  "author": "AlainCartaya <alaincs40@gmail.com>",
+  "description": "Horario MATCOM",
+  "productName": "Horario MATCOM",
+  "author": "DiamisAlfonso <diamisap2000@gmail.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",

@@ -27,8 +27,9 @@ function createWindow() {
     width: 1000,
     height: 600,
     useContentSize: true,
-    fullscreen: true,
-    frame: false,
+    skipTaskbar: true,
+    // maximizable: false,
+    autoHideMenuBar: true,
     webPreferences: {
       contextIsolation: true,
       sandbox: false,
@@ -40,6 +41,7 @@ function createWindow() {
   enable(mainWindow.webContents);
 
   mainWindow.loadURL(process.env.APP_URL);
+  mainWindow.maximize();
 
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
