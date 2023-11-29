@@ -1,7 +1,11 @@
 import { Dialog, Notify } from 'quasar';
 import { computed, ref } from 'vue';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
-import { BaseSchedule, MyBasicSquedule } from '../models/basic';
+import {
+  BaseSchedule,
+  MyBasicSquedule,
+  SubjectDefinition
+} from '../models/basic';
 import { useScheduleHandler } from './useSchedule.hooks';
 import { validationFunction } from './validations.hooks';
 
@@ -157,6 +161,7 @@ export const useScheduleTimetabling = () => {
     year_keys,
     selected_year,
     selected_group,
+    schedule,
     add_group,
     add_year,
     add_subject,
@@ -231,10 +236,14 @@ export const useScheduleTimetabling = () => {
         description: desc
       };
 
+      console.log(' xxx ');
+
       if (!validationFunction(schedule.value, baseSchedule)) return;
 
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
+
+      console.log('||', schedule.value.config.subjectsByProfessors);
     },
     updateBaseSch(id: string, sch: BaseSchedule) {
       if (!validationFunction(schedule.value, sch)) return;
@@ -242,6 +251,17 @@ export const useScheduleTimetabling = () => {
       onChangeBase(id, sch);
 
       refreshView();
+    },
+    onChangeSubject(key: string, value: SubjectDefinition) {
+      schedule.value.config.subjectsByProfessors[key] = value;
+      schedule.value.config.subjectsByProfessors = {
+        ...schedule.value.config.subjectsByProfessors
+      };
+      timeSave(schedule.value);
+      console.log(' -', schedule.value.config.subjectsByProfessors);
+      schedule.value.config.subjectsByProfessors = {
+        ...schedule.value.config.subjectsByProfessors
+      };
     }
   };
 };

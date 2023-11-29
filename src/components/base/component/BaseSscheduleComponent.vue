@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md full-width">
+  <div class=" full-width">
     <q-table
       style="max-width: 100%"
       class="my-custom-table"
@@ -76,7 +76,7 @@
             /> -->
             <!-- <span v-html="props.row[item]"></span> -->
             <template
-              v-for="(sch, i) in props.row[item] || []"
+              v-for="(base, i) in props.row[item] || []"
               :key="`badge-${i}-${item}`"
             >
               <q-badge
@@ -90,15 +90,23 @@
                   :id="`drag-${i}-${item}`"
                   class="cursor-pointer"
                   draggable="true"
-                  @dragstart="startDrag($event, sch)"
+                  @dragstart="startDrag($event, base)"
                 >
-                  {{ sch.group }}
+                  {{ base.group }}
                 </div>
                 <q-tooltip
                   class="text-white font-subtitle1"
-                  :style="`background-color: ${getColor(sch.group)}`"
+                  :style="`background-color: ${getColor(base.group)}`"
                 >
-                  {{ getVerbose(sch) }}
+                  {{ getVerbose(base) }}
+                  <br />
+                  {{ !base.cp ? 'c' : 'cp' }},
+                  {{
+                    base.subject
+                      ? sch.config.subjectsByProfessors[base.subject]
+                          .professors[!base.cp ? 'c' : 'cp']
+                      : ''
+                  }}
                 </q-tooltip>
               </q-badge>
               <br />
@@ -115,7 +123,7 @@ import { getColor } from '../hooks/utils.hooks';
 import { getVerbose } from '../hooks/useSchedule.hooks';
 import { QTableColumn } from 'quasar';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
-import { ref } from 'vue';
+import { PropType, ref } from 'vue';
 
 export default {
   props: {
@@ -124,7 +132,7 @@ export default {
       required: true
     },
     sch: {
-      type: Object,
+      type: Object as PropType<Schedule>,
       required: true
     }
   },
@@ -137,17 +145,21 @@ export default {
           .filter((hour: string) => hour != 'Receso')
           .map((hour: string) => `${day}-${hour}`);
       })
-      .reduce((prev: string, curr: string) => [...prev, ...curr], []);
+      .reduce((prev, curr) => [...prev, ...curr], []);
 
     console.log(dotDaysXHours);
 
     const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },
-      ...dotDaysXHours.map((dot: string) => ({
-        name: dot,
-        align: 'center',
-        field: dot
-      }))
+      ...dotDaysXHours.map(
+        (dot) =>
+          ({
+            name: dot,
+            align: 'center',
+            label: dot,
+            field: dot
+          } as QTableColumn)
+      )
     ];
 
     const toBin = (x: number): string => {

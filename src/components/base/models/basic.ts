@@ -7,6 +7,14 @@ export interface ValidationFunction {
   handler: (sch: Schedule, baseScheduleChange: BaseSchedule) => boolean;
 }
 
+export interface SubjectDefinition {
+  name: string;
+  professors: {
+    c: string[];
+    cp: string[];
+  };
+}
+
 export interface BaseSchedule {
   /** Subject related course ex: EDA */
   subject: string;
@@ -59,13 +67,16 @@ export interface Schedule {
 
     /*subjects thaught in other place */
     subjectsWithoutRooms?: string[];
+
+    validationFunctions: string[];
+
+    subjectsByProfessors: Dictionary<SubjectDefinition>;
+
     /* teachers who teach the subjects*/
     professors?: string[];
 
-    subjectsByProfessor?: Dictionary<string>;
     hoursClassBySubject?: Dictionary<string>;
 
-    validationFunctions: string[];
     scheduleName?: string;
   };
 }
@@ -99,6 +110,7 @@ export const MyBasicSquedule: Schedule = {
     yearsOptions: ['2023'],
     hoursOptions: ['1', '2', '3', 'Receso', '4', '5', '6'],
     validationFunctions: ['twoSubjectInSameRoom', 'classType'],
-    subjectsWithoutRooms: ['EF', 'PL']
+    subjectsWithoutRooms: ['EF', 'PL'],
+    subjectsByProfessors: {}
   }
 };

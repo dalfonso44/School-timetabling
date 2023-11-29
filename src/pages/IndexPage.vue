@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row items-center justify-evenly">
+  <q-page class="row items-center justify-evenly q-pa-sm">
     <gschedule-component
       :sch="sch"
       :school_data="school_data[selected_year].groups"
@@ -24,13 +24,26 @@
       class="page-break"
       v-if="!printing"
     />
-    <div id="printID" class="full-width page-break">
+
+    <div id="printID" class="full-width page-break q-py-md">
       <sschedule-component
         :rooms_school_data="school_data[selected_year].rooms"
         :sch="sch"
         @update="school_data[selected_year].rooms = $event"
         @change-schedule="updateBaseSch"
       />
+      <q-expansion-item
+        v-model="expandedSubjects"
+        class="q-my-md"
+        label="Profesores & Asignaturas"
+      >
+        <acronym-table
+          class="page-break"
+          :subject-definitions="schedule.config.subjectsByProfessors"
+          @change-subject="onChangeSubject"
+        />
+      </q-expansion-item>
+
       <div class="full-width" v-if="printing">
         <gschedule-component
           v-for="group in sch.config.groupsOptions"
@@ -55,16 +68,17 @@
 import { defineComponent, nextTick } from 'vue';
 import GscheduleComponent from 'components/base/component/BaseGscheduleComponent.vue';
 import SscheduleComponent from 'components/base/component/BaseSscheduleComponent.vue';
+import AcronymTable from 'components/base/component/BaseAcronymTableComponent.vue';
 import { useScheduleTimetabling } from 'components/base/hooks/useTimetabling.hooks';
 import { ref } from 'vue';
 
 export default defineComponent({
   name: 'TimetablingPage',
-  components: { GscheduleComponent, SscheduleComponent },
+  components: { GscheduleComponent, SscheduleComponent, AcronymTable },
   setup() {
     const selected_color = ref('rgb(0,0,0)');
     const printing = ref(false);
-
+    const expandedSubjects = ref(true);
     const {
       sch,
       school_data,
@@ -72,6 +86,7 @@ export default defineComponent({
       year_keys,
       selected_year,
       selected_group,
+      schedule,
       updateBaseSch,
       add_group,
       add_year,
@@ -82,18 +97,21 @@ export default defineComponent({
       onUpdateBase,
       onChangeBase,
       onExport,
-      onImport
+      onImport,
+      onChangeSubject
     } = useScheduleTimetabling();
     // const;
     return {
       sch,
       school_data,
+      schedule,
       group_keys,
       year_keys,
       selected_year,
       selected_group,
       selected_color,
       printing,
+      expandedSubjects,
       updateBaseSch,
       onChangeBase,
       add_group,
@@ -105,6 +123,7 @@ export default defineComponent({
       onUpdateBase,
       onExport,
       onImport,
+      onChangeSubject,
       onPrint() {
         printing.value = true;
         nextTick(() => {

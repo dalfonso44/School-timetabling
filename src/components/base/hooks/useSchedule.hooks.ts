@@ -46,10 +46,31 @@ export const useScheduleHandler = (sch: Schedule) => {
   //   mappedBaseSchedule.value[value.id] = value;
   // });
 
+  const ensureSubjectDefinition = (base: BaseSchedule) => {
+    if (!schedule.value.config.subjectsByProfessors)
+      schedule.value.config.subjectsByProfessors = {};
+    if (
+      base.subject &&
+      !schedule.value.config.subjectsByProfessors[base.subject]
+    ) {
+      schedule.value.config.subjectsByProfessors[base.subject] = {
+        name: '',
+        professors: {
+          c: [],
+          cp: []
+        }
+      };
+    }
+  };
+
   const ensureSchedulePersistence = () => {
     schedule.value.schedule = Object.values(mappedBaseSchedule.value);
     timeSave(schedule.value);
+
+    schedule.value.schedule.map((base) => ensureSubjectDefinition(base));
   };
+
+  schedule.value.schedule.map((base) => ensureSubjectDefinition(base));
 
   const onChangeBase = (id: string, value: BaseSchedule) => {
     console.log('on change >', id, value);
@@ -62,6 +83,10 @@ export const useScheduleHandler = (sch: Schedule) => {
     }
     mappedBaseSchedule.value[newId] = value;
     ensureSchedulePersistence();
+    ensureSubjectDefinition(value);
+    schedule.value.config.subjectsByProfessors = {
+      ...schedule.value.config.subjectsByProfessors
+    };
   };
 
   const addBase = (value: BaseSchedule) => {

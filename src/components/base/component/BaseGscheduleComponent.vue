@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md full-width">
+  <div class="full-width">
     <q-table
       :title="`Horario ${selected_group}`"
       :rows="school_data[selected_group]"
