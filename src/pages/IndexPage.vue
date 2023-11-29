@@ -47,6 +47,8 @@
         <acronym-table
           class="page-break"
           :subject-definitions="schedule.config.subjectsByProfessors"
+          :selected_group="selected_group"
+          :selected_year="selected_year"
           @change-subject="onChangeSubject"
         />
       </q-expansion-item>

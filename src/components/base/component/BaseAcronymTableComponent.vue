@@ -81,7 +81,15 @@ export default {
   emits: ['change-subject'],
   props: {
     subjectDefinitions: {
-      type: Object as PropType<Dictionary<SubjectDefinition>>,
+      type: Object as PropType<Dictionary<Dictionary<SubjectDefinition>>>,
+      required: true
+    },
+    selected_group: {
+      type: String,
+      required: true
+    },
+    selected_year: {
+      type: String,
       required: true
     }
   },
@@ -100,7 +108,9 @@ export default {
     ];
 
     const rows = computed(() => {
-      return Object.entries(props.subjectDefinitions).map(([abb, def]) => {
+      return Object.entries(
+        props.subjectDefinitions[props.selected_year] || {}
+      ).map(([abb, def]) => {
         return {
           abb: abb,
           name: def.name,
@@ -140,7 +150,7 @@ export default {
           !li[li.length - 1]
         ) {
           const payload: SubjectDefinition = {
-            ...props.subjectDefinitions[key]
+            ...props.subjectDefinitions[props.selected_year][key]
           };
           payload.professors[upkey] = li
             .map((y: string) => y.trim())
@@ -151,7 +161,7 @@ export default {
       changeName(key: string, value: any) {
         console.log(' change subject name on Acronym', key, value);
         emit('change-subject', key, {
-          ...props.subjectDefinitions[key],
+          ...props.subjectDefinitions[props.selected_year][key],
           name: value
         });
       }

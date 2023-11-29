@@ -49,11 +49,13 @@ export const useScheduleHandler = (sch: Schedule) => {
   const ensureSubjectDefinition = (base: BaseSchedule) => {
     if (!schedule.value.config.subjectsByProfessors)
       schedule.value.config.subjectsByProfessors = {};
+    if (!schedule.value.config.subjectsByProfessors[base.year])
+      schedule.value.config.subjectsByProfessors[base.year] = {};
     if (
       base.subject &&
-      !schedule.value.config.subjectsByProfessors[base.subject]
+      !schedule.value.config.subjectsByProfessors[base.year][base.subject]
     ) {
-      schedule.value.config.subjectsByProfessors[base.subject] = {
+      schedule.value.config.subjectsByProfessors[base.year][base.subject] = {
         name: '',
         professors: {
           c: [],

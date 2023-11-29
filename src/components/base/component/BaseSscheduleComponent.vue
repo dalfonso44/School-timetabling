@@ -1,5 +1,5 @@
 <template>
-  <div class=" full-width">
+  <div class="full-width">
     <q-table
       style="max-width: 100%"
       class="my-custom-table"
@@ -101,12 +101,12 @@
                   {{ getVerbose(base) }}
                   <br />
                   {{ !base.cp ? 'c' : 'cp' }},
-                  {{
+                  <!-- {{
                     base.subject
                       ? sch.config.subjectsByProfessors[base.subject]
                           .professors[!base.cp ? 'c' : 'cp']
                       : ''
-                  }}
+                  }} -->
                 </q-tooltip>
               </q-badge>
               <br />
