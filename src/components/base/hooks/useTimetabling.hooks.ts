@@ -213,7 +213,11 @@ export const useScheduleTimetabling = () => {
     }) {
       const hour = schedule.value.config.hoursOptions[payload.hour_index];
       const id = `${payload.year}-${hour}-${payload.group}-${payload.column}`;
-      const desc = '(' + payload.value.split('(')[1];
+      const desc =
+        payload.value.split(' ').length > 3
+          ? '(' + payload.value.split('(')[1]
+          : undefined;
+
       const li = payload.value.split(' ');
       const [subject, cp, room] = li.length == 1 ? [li[0], 'c', '_'] : li;
       const baseSchedule: BaseSchedule = {
