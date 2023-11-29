@@ -445,16 +445,35 @@ export default {
 
     const verifyVerbose = (value: string) => {
       if (!value) return true;
-      const spl = value.trim().split(' ');
+      const ERROR_MSG = 'Formato incorrecto';
+      const valueClean = value.trimStart();
+      const spl = valueClean.split(' ');
+      console.log(' hereeeeeeeeeeeee', `|${value}|`, spl);
+
       if (spl.length == 1) {
         if (props.sch.config.subjectsWithoutRooms.includes(spl[0])) return true;
+        return ERROR_MSG;
       }
+
+      if (spl.length < 3) return ERROR_MSG;
+
+      if (spl.length >= 3) {
+        if ((spl[1] != 'cp' && spl[1] != 'c') || !spl[2]) return ERROR_MSG;
+      }
+
       if (spl.length > 3) {
-        if (spl[3][0] == '(' && spl[3][spl[3].length - 1] == ')') return true;
+        const io = valueClean.indexOf('(');
+        const ic = valueClean.indexOf(')');
+        console.log(' --->', io, ic, spl, valueClean);
+        if (io >= 0 && ic >= 0 && io < ic && ic == valueClean.length - 1)
+          return true;
+
+        return ERROR_MSG;
       }
-      if (spl.length != 3) return 'Campo incompleto';
-      if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
+      //ToDO> change here
       return true;
+      // return 'Campo incompleto';
+      // if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
     };
 
     const fields = ref(
