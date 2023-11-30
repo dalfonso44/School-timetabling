@@ -99,14 +99,15 @@
                   :style="`background-color: ${getColor(base.group)}`"
                 >
                   {{ getVerbose(base) }}
-                  <!-- <br />
+                  <br />
                   {{ !base.cp ? 'c' : 'cp' }}:
                   {{
                     base.subject
-                      ? sch.config.subjectsByProfessors[base.subject]
-                          .professors[!base.cp ? 'c' : 'cp']
+                      ? sch.config.subjectsByProfessors[base.year][base.group][
+                          base.subject
+                        ].professors[!base.cp ? 'c' : 'cp']
                       : ''
-                  }} -->
+                  }}
                 </q-tooltip>
               </q-badge>
               <br />

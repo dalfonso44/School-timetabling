@@ -1,7 +1,6 @@
 import { computed, ref } from 'vue';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
-import { default_years } from 'src/hooks/timetabling.hooks';
 
 const { saveData: timeSave } = persistanceSchedule;
 
