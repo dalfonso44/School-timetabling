@@ -136,6 +136,7 @@
 
 <script lang="ts">
 import { config } from 'process';
+import { useScheduleHandler } from 'src/components/base/hooks/useSchedule.hooks';
 import { persistanceSchedule } from 'src/components/base/hooks/usePersistanceSchedule.hooks';
 import { validationFunctionMapped } from 'src/components/base/hooks/validations.hooks';
 import { Schedule, MyBasicSquedule } from 'src/components/base/models/basic';
@@ -148,6 +149,7 @@ export default {
     const config = ref<Schedule>({
       ...(persistanceSchedule.loadData() || MyBasicSquedule)
     });
+
     config.value.schedule = [];
     const form = ref(null as any);
     return {
@@ -171,6 +173,7 @@ export default {
         form.value.validate().then((ack: boolean) => {
           if (ack) {
             persistanceSchedule.saveData(config.value);
+
             router.push({ name: 'home' }).then(() => {
               window.location.reload();
             });

@@ -121,6 +121,11 @@ export const useScheduleTimetabling = () => {
     schedule.value.config.yearsOptions.push(year);
     selected_year.value = year;
     selected_group.value = group_keys.value[0];
+
+    if (!schedule.value.config.subjectsByProfessors[year]) {
+      schedule.value.config.subjectsByProfessors[year] = {};
+    }
+
     Notify.create({
       type: 'positive',
       message: `El horario ${year} fue creado y salvado correctamente`
@@ -231,7 +236,7 @@ export const useScheduleTimetabling = () => {
         group: payload.group,
         hour: hour,
         room: room,
-        subject: subject,
+        subject: subject.toUpperCase(),
         year: payload.year,
         description: desc
       };

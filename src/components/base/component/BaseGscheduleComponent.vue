@@ -373,6 +373,7 @@ import { QTableColumn } from 'quasar';
 import { getColor } from '../hooks/utils.hooks';
 import { useRouter } from 'vue-router';
 import { Dialog } from 'quasar';
+import { useScheduleHandler } from '../hooks/useSchedule.hooks';
 
 export default {
   props: {

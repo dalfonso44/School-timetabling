@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue';
 import { BaseSchedule, Dictionary, Schedule } from '../models/basic';
 import { persistanceSchedule } from './usePersistanceSchedule.hooks';
+import { default_years } from 'src/hooks/timetabling.hooks';
 
 const { saveData: timeSave } = persistanceSchedule;
 
@@ -77,6 +78,14 @@ export const useScheduleHandler = (sch: Schedule) => {
 
     schedule.value.schedule.map((base) => ensureSubjectDefinition(base));
   };
+
+  if (!schedule.value.config.subjectsByProfessors)
+    schedule.value.config.subjectsByProfessors = {};
+  schedule.value.config.yearsOptions.forEach((x) => {
+    if (!schedule.value.config.subjectsByProfessors[x]) {
+      schedule.value.config.subjectsByProfessors[x] = {};
+    }
+  });
 
   schedule.value.schedule.map((base) => ensureSubjectDefinition(base));
 
