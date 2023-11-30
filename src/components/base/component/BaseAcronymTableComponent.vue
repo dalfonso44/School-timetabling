@@ -166,7 +166,9 @@ export default {
       changeName(key: string, value: any) {
         console.log(' change subject name on Acronym', key, value);
         emit('change-subject', key, {
-          ...props.subjectDefinitions[props.selected_year][key],
+          ...props.subjectDefinitions[props.selected_year][
+            props.selected_group
+          ][key],
           name: value
         });
       }

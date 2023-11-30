@@ -99,9 +99,9 @@
                   :style="`background-color: ${getColor(base.group)}`"
                 >
                   {{ getVerbose(base) }}
-                  <br />
-                  {{ !base.cp ? 'c' : 'cp' }},
-                  <!-- {{
+                  <!-- <br />
+                  {{ !base.cp ? 'c' : 'cp' }}:
+                  {{
                     base.subject
                       ? sch.config.subjectsByProfessors[base.subject]
                           .professors[!base.cp ? 'c' : 'cp']
