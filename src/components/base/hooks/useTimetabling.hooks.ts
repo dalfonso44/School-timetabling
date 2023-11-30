@@ -253,8 +253,9 @@ export const useScheduleTimetabling = () => {
       refreshView();
     },
     onChangeSubject(key: string, value: SubjectDefinition) {
-      schedule.value.config.subjectsByProfessors[selected_year.value][key] =
-        value;
+      schedule.value.config.subjectsByProfessors[selected_year.value][
+        selected_group.value
+      ][key] = value;
       timeSave(schedule.value);
       console.log('c', schedule.value.config.subjectsByProfessors);
       schedule.value.config.subjectsByProfessors = {

@@ -434,8 +434,13 @@ export default {
     const router = useRouter();
 
     const correctFormat = (val: string) => {
-      if (/^\d{4} s1|2$/.test(val) || /^\d{4}-\d{4} s1|2$/.test(val))
-        return true;
+      const value = val.trim().split(' ');
+      if (value.length == 2 && (value[1] == 's1' || value[1] == 's2')) {
+        const v = value[0].split('-');
+        if (!isNaN(Number(v[0])) && v[0].length == 4) return true;
+        if (v.length == 2 && !isNaN(Number(v[1])) && v[1].length == 4)
+          return true;
+      }
       return 'Formato incorrecto';
     };
 

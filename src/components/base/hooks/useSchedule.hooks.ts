@@ -51,11 +51,17 @@ export const useScheduleHandler = (sch: Schedule) => {
       schedule.value.config.subjectsByProfessors = {};
     if (!schedule.value.config.subjectsByProfessors[base.year])
       schedule.value.config.subjectsByProfessors[base.year] = {};
+    if (!schedule.value.config.subjectsByProfessors[base.year][base.group])
+      schedule.value.config.subjectsByProfessors[base.year][base.group] = {};
     if (
       base.subject &&
-      !schedule.value.config.subjectsByProfessors[base.year][base.subject]
+      !schedule.value.config.subjectsByProfessors[base.year][base.group][
+        base.subject
+      ]
     ) {
-      schedule.value.config.subjectsByProfessors[base.year][base.subject] = {
+      schedule.value.config.subjectsByProfessors[base.year][base.group][
+        base.subject
+      ] = {
         name: '',
         professors: {
           c: [],

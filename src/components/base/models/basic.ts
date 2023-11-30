@@ -70,7 +70,7 @@ export interface Schedule {
 
     validationFunctions: string[];
 
-    subjectsByProfessors: Dictionary<Dictionary<SubjectDefinition>>;
+    subjectsByProfessors: Dictionary<Dictionary<Dictionary<SubjectDefinition>>>;
 
     /* teachers who teach the subjects*/
     professors?: string[];

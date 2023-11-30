@@ -81,7 +81,9 @@ export default {
   emits: ['change-subject'],
   props: {
     subjectDefinitions: {
-      type: Object as PropType<Dictionary<Dictionary<SubjectDefinition>>>,
+      type: Object as PropType<
+        Dictionary<Dictionary<Dictionary<SubjectDefinition>>>
+      >,
       required: true
     },
     selected_group: {
@@ -109,7 +111,8 @@ export default {
 
     const rows = computed(() => {
       return Object.entries(
-        props.subjectDefinitions[props.selected_year] || {}
+        props.subjectDefinitions[props.selected_year][props.selected_group] ||
+          {}
       ).map(([abb, def]) => {
         return {
           abb: abb,
@@ -150,7 +153,9 @@ export default {
           !li[li.length - 1]
         ) {
           const payload: SubjectDefinition = {
-            ...props.subjectDefinitions[props.selected_year][key]
+            ...props.subjectDefinitions[props.selected_year][
+              props.selected_group
+            ][key]
           };
           payload.professors[upkey] = li
             .map((y: string) => y.trim())
