@@ -18,7 +18,6 @@
           <q-td key="name" :props="props">
             <q-input
               :model-value="rows[props.rowIndex].name"
-              autofocus
               type="text"
               dense
               :key="`${props.rowIndex}-name`"
@@ -33,7 +32,6 @@
           <q-td key="ctch" :props="props">
             <q-input
               :model-value="rows[props.rowIndex].ctch"
-              autofocus
               type="textarea"
               autogrow
               dense
@@ -48,7 +46,6 @@
           <q-td key="cptch" :props="props">
             <q-input
               :model-value="rows[props.rowIndex].cptch"
-              autofocus
               type="textarea"
               autogrow
               dense
@@ -143,7 +140,6 @@ export default {
       rows,
       fields,
       changeCtch(key: string, value: any, upkey: 'c' | 'cp') {
-        console.log(' change subject name on Acronym', key, value);
         value = value.trim();
         const li = value.trim().split(';');
         if (
@@ -164,7 +160,6 @@ export default {
         }
       },
       changeName(key: string, value: any) {
-        console.log(' change subject name on Acronym', key, value);
         emit('change-subject', key, {
           ...props.subjectDefinitions[props.selected_year][
             props.selected_group

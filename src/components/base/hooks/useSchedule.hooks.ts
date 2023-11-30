@@ -9,7 +9,6 @@ export const getVerbose = (bs: BaseSchedule | undefined) => {
   if (!bs.room || bs.room == '_') return bs.subject;
   if (bs.description != undefined)
     return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room} ${bs.description}`;
-  console.log(bs.description);
   return `${bs.subject} ${bs.cp ? 'cp' : 'c'} ${bs.room}`;
 };
 
@@ -90,9 +89,7 @@ export const useScheduleHandler = (sch: Schedule) => {
   schedule.value.schedule.map((base) => ensureSubjectDefinition(base));
 
   const onChangeBase = (id: string, value: BaseSchedule) => {
-    console.log('on change >', id, value);
     const oldValue = mappedBaseSchedule.value[id];
-    console.log('old value', oldValue);
     if (!!oldValue) delete mappedBaseSchedule.value[id];
     const newId = getID(value);
     if (mappedBaseSchedule.value[newId]) {

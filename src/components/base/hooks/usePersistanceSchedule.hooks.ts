@@ -31,8 +31,6 @@ export const usePersistanceScheduleDB = (key: string) => {
       // Remove anchor from body
       document.body.removeChild(a);
 
-      console.log(JSON.stringify(obj));
-
       Notify.create({
         message: 'Horario exportado con éxito !!!',
         type: 'positive'

@@ -148,8 +148,6 @@ export default {
       })
       .reduce((prev, curr) => [...prev, ...curr], []);
 
-    console.log(dotDaysXHours);
-
     const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },
       ...dotDaysXHours.map(
@@ -172,18 +170,10 @@ export default {
     const moveSch = ref({} as BaseSchedule);
 
     const startDrag = (ev: any, sch: BaseSchedule) => {
-      console.log('start drag', ev, sch);
       moveSch.value = sch;
     };
 
     const onDrop = (ev: any, place: string, row_index: number) => {
-      console.log(
-        'on drop',
-        ev,
-        place,
-        row_index,
-        props.rooms_school_data[row_index]
-      );
       const [day, hour] = place.split('-');
       const bs = moveSch.value;
       const id = `${bs.year}-${bs.hour}-${bs.group}-${bs.day}`;

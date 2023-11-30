@@ -446,9 +446,6 @@ export default {
       return 'Formato incorrecto';
     };
 
-    // Wxample of how to use vue-router for change the route inside the setup logic
-    // router.push('/config');
-
     const columns: QTableColumn[] = [
       { name: 'turn', align: 'center', field: 'turn', label: '' },
       ...props.sch.config.daysOptions.map((day: string) => ({
@@ -464,7 +461,6 @@ export default {
       const ERROR_MSG = 'Formato incorrecto';
       const valueClean = value.trimStart();
       const spl = valueClean.split(' ');
-      console.log(' hereeeeeeeeeeeee', `|${value}|`, spl);
 
       if (spl.length == 1) {
         if (props.sch.config.subjectsWithoutRooms.includes(spl[0])) return true;
@@ -486,7 +482,6 @@ export default {
       if (spl.length > 3) {
         const io = valueClean.indexOf('(');
         const ic = valueClean.indexOf(')');
-        console.log(' --->', io, ic, spl, valueClean);
         if (io >= 0 && ic >= 0 && io < ic && ic == valueClean.length - 1)
           return true;
 
@@ -502,7 +497,7 @@ export default {
       )
     );
     const indexFocus = ref([0, 0]);
-    console.log('>>>|', fields);
+
     return {
       fields,
       indexFocus,
@@ -517,8 +512,6 @@ export default {
       show_new_subject: showNewSubject,
       columns,
       onkeydown(event: any) {
-        console.log('>>>', event);
-        console.log(':::', fields.value);
         const n = props.school_data[props.selected_group].length;
         const m = props.sch.config.daysOptions.length;
         if (
@@ -557,7 +550,6 @@ export default {
           fields.value[indexFocus.value[0]][indexFocus.value[1]]?.focus();
       },
       onfocus(i: number, j: number) {
-        console.log('>>>', i, j);
         indexFocus.value[0] = i;
         indexFocus.value[1] = j;
       },
@@ -586,14 +578,7 @@ export default {
             }))
           ];
           newList[row][column] = value.trim();
-          console.log(
-            '>>>>',
-            props.selected_year,
-            props.selected_group,
-            row,
-            column,
-            value
-          );
+
           emit('update-base', {
             year: props.selected_year,
             group: props.selected_group,

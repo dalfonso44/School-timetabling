@@ -200,7 +200,7 @@ export const useScheduleTimetabling = () => {
           timeExport(data, schedule.value);
         })
         .onCancel(() => {
-          console.log('>>>> Cancel');
+          // console.log('>>>> Cancel');
         })
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
@@ -241,14 +241,10 @@ export const useScheduleTimetabling = () => {
         description: desc
       };
 
-      console.log(' xxx ');
-
       if (!validationFunction(schedule.value, baseSchedule)) return;
 
       onChangeBase(id, baseSchedule);
       school_data.value[payload.year].rooms = empty_school_state(payload.year);
-
-      console.log('||', schedule.value.config.subjectsByProfessors);
     },
     updateBaseSch(id: string, sch: BaseSchedule) {
       if (!validationFunction(schedule.value, sch)) return;
@@ -262,7 +258,6 @@ export const useScheduleTimetabling = () => {
         selected_group.value
       ][key] = value;
       timeSave(schedule.value);
-      console.log('c', schedule.value.config.subjectsByProfessors);
       schedule.value.config.subjectsByProfessors = {
         ...schedule.value.config.subjectsByProfessors
       };
