@@ -27,19 +27,6 @@
 
     <div id="printID" class="full-width page-break q-py-md">
       <q-expansion-item
-        v-model="expandedRooms"
-        class="q-my-md"
-        label="Distribución de aulas"
-      >
-        <sschedule-component
-          :rooms_school_data="school_data[selected_year].rooms"
-          :sch="sch"
-          @update="school_data[selected_year].rooms = $event"
-          @change-schedule="updateBaseSch"
-        />
-      </q-expansion-item>
-
-      <q-expansion-item
         v-model="expandedSubjects"
         class="q-my-md"
         label="Profesores & Asignaturas"
@@ -50,6 +37,19 @@
           :selected_group="selected_group"
           :selected_year="selected_year"
           @change-subject="onChangeSubject"
+        />
+      </q-expansion-item>
+
+      <q-expansion-item
+        v-model="expandedRooms"
+        class="q-my-md"
+        label="Distribución de aulas"
+      >
+        <sschedule-component
+          :rooms_school_data="school_data[selected_year].rooms"
+          :sch="schedule"
+          @update="school_data[selected_year].rooms = $event"
+          @change-schedule="updateBaseSch"
         />
       </q-expansion-item>
 

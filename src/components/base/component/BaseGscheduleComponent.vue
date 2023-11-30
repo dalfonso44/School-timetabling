@@ -474,7 +474,13 @@ export default {
       if (spl.length < 3) return ERROR_MSG;
 
       if (spl.length >= 3) {
-        if ((spl[1] != 'cp' && spl[1] != 'c') || !spl[2]) return ERROR_MSG;
+        if (
+          (spl[1] != 'cp' && spl[1] != 'c') ||
+          !spl[2] ||
+          props.sch.config.roomsOptions.filter((x: string) => x == spl[2])
+            .length < 1
+        )
+          return ERROR_MSG;
       }
 
       if (spl.length > 3) {
@@ -486,10 +492,8 @@ export default {
 
         return ERROR_MSG;
       }
-      //ToDO> change here
+
       return true;
-      // return 'Campo incompleto';
-      // if (spl[1] != 'cp' && spl[1] != 'c') return 'Formato incorrecto';
     };
 
     const fields = ref(
