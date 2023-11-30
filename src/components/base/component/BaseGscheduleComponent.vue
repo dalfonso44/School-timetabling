@@ -313,6 +313,7 @@
             <q-input
               v-if="props.rowIndex != 3 && !readonly"
               type="text"
+              autogrow
               dense
               :ref="(field) => (fields[props.rowIndex][j] = field)"
               :key="`${props.rowIndex}${item}`"
