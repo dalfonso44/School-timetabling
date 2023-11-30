@@ -364,6 +364,8 @@
       @on-next="$emit('add-subject', $event)"
       @on-close="show_new_subject = false"
     />
+
+    <slot name="bottom"></slot>
   </div>
 </template>
 

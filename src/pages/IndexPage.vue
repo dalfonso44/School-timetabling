@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row items-center justify-evenly q-pa-sm">
+  <q-page class="row items-start justify-evenly q-pa-sm">
     <gschedule-component
       :sch="schedule"
       :school_data="school_data[selected_year].groups"
@@ -23,27 +23,33 @@
       @on-import="onImport"
       class="page-break"
       v-if="!printing"
-    />
+    >
+      <template #bottom>
+        <q-expansion-item
+          v-model="expandedSubjects"
+          class="q-mt-md"
+          default-opened
+          dense
+          :label="`Profesores & Asignaturas - ${selected_group}`"
+        >
+          <acronym-table
+            class="page-break"
+            :subject-definitions="schedule.config.subjectsByProfessors"
+            :selected_group="selected_group"
+            :selected_year="selected_year"
+            @change-subject="onChangeSubject"
+          />
+        </q-expansion-item>
+      </template>
+    </gschedule-component>
 
-    <div id="printID" class="full-width page-break q-py-md">
-      <q-expansion-item
-        v-model="expandedSubjects"
-        class="q-my-md"
-        label="Profesores & Asignaturas"
-      >
-        <acronym-table
-          class="page-break"
-          :subject-definitions="schedule.config.subjectsByProfessors"
-          :selected_group="selected_group"
-          :selected_year="selected_year"
-          @change-subject="onChangeSubject"
-        />
-      </q-expansion-item>
-
+    <div id="printID" class="full-width page-break">
       <q-expansion-item
         v-model="expandedRooms"
-        class="q-my-md"
-        label="Distribución de aulas"
+        default-opened
+        class="q-mt-md"
+        dense
+        :label="`Distribución de aulas ${selected_year}`"
       >
         <sschedule-component
           :rooms_school_data="school_data[selected_year].rooms"
@@ -67,7 +73,17 @@
           @update-group="selected_group = $event"
           :readonly="true"
           class="full-height page-break"
-        />
+        >
+          <template #bottom>
+            <acronym-table
+              :subject-definitions="schedule.config.subjectsByProfessors"
+              class="q-mt-md"
+              :selected_group="group"
+              :selected_year="selected_year"
+              @change-subject="onChangeSubject"
+            />
+          </template>
+        </gschedule-component>
       </div>
     </div>
   </q-page>
