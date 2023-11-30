@@ -29,7 +29,7 @@
           no-caps
           v-close-popup
           label="Crear"
-          :disable="!value"
+          :disable="!value || !correct(value)"
           @click="onCreate($event)"
         />
       </q-card-actions>
@@ -64,6 +64,13 @@ export default defineComponent({
   },
   emits: ['onNext', 'onClose'],
   setup(props, { emit }) {
+    const correct = (value: string) => {
+      let result = true;
+      props.rules.forEach((x) => {
+        if (x(value) != true) result = false;
+      });
+      return result;
+    };
     const value = ref('');
     const formR = ref(null as any);
 
@@ -81,6 +88,7 @@ export default defineComponent({
 
     return {
       value,
+      correct,
       onCreate,
       formR,
       resetValidation
