@@ -125,6 +125,7 @@ export const useScheduleHandler = (sch: Schedule) => {
     addBase,
     deleteBase,
     mappedBaseSchedule,
-    mappedRoomSchedule
+    mappedRoomSchedule,
+    getID
   };
 };

@@ -23,6 +23,7 @@ export const useScheduleTimetabling = () => {
   const {
     mappedBaseSchedule,
     mappedRoomSchedule,
+    getID,
     getVerbose,
     onChangeBase,
     schedule
@@ -59,7 +60,7 @@ export const useScheduleTimetabling = () => {
   const empty_school_state = (year: string) =>
     sch.config.roomsOptions.map((v) => {
       return {
-        turn: `[ ${v} ]`,
+        turn: `${v}`,
         ...dotDaysXHours.reduce(
           (prev, value) => ({
             ...prev,
@@ -248,6 +249,18 @@ export const useScheduleTimetabling = () => {
     },
     updateBaseSch(id: string, sch: BaseSchedule) {
       if (!validationFunction(schedule.value, sch)) return;
+
+      const old = mappedBaseSchedule.value[getID(sch)];
+
+      if (!!old) {
+        console.log('>', old, id, getID(sch));
+        Notify.create({
+          type: 'warning',
+          position: 'top-right',
+          message: 'Movimiento incorrecto'
+        });
+        return;
+      }
 
       onChangeBase(id, sch);
 

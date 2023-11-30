@@ -2,7 +2,7 @@
   <div class="full-width">
     <q-table
       style="max-width: 100%"
-      class="my-custom-table"
+      class="my-custom-table text-caption"
       :rows="rooms_school_data"
       row-key="name"
       :columns="columns"
@@ -44,7 +44,7 @@
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td key="turn" :props="props">
+          <q-td key="turn" class="text-caption" :props="props">
             {{ props.row.turn }}
           </q-td>
 
@@ -62,29 +62,20 @@
             "
             dropzone
             :id="`td-${item}`"
+            class="text-caption"
             @drop="onDrop($event, item, props.rowIndex)"
             @dragover="$event.preventDefault()"
           >
-            <!-- <q-input
-              type="text"
-              :style="`width: ${
-                props.row[item] && props.row[item].length > 3 ? '50px' : '100%'
-              } !important; margin: auto !important`"
-              :model-value="props.row[item]"
-              @update:model-value="onUpdate(props.rowIndex, item, $event)"
-              dense
-            /> -->
-            <!-- <span v-html="props.row[item]"></span> -->
             <template
               v-for="(base, i) in props.row[item] || []"
               :key="`badge-${i}-${item}`"
             >
               <q-badge
-                :style="`border-color: white`"
+                :style="`border-color: white; font-weight: 600`"
                 square
                 outline
                 text-color="white"
-                :class="`q-px-sm q-py-xs ${i != 0 && 'q-mt-xs'}`"
+                :class="`q-px-xs  ${i != 0 && 'q-mt-xs'}`"
               >
                 <div
                   :id="`drag-${i}-${item}`"
@@ -100,14 +91,7 @@
                 >
                   {{ getVerbose(base) }}
                   <br />
-                  {{ !base.cp ? 'c' : 'cp' }}:
-                  {{
-                    base.subject
-                      ? sch.config.subjectsByProfessors[base.year][base.group][
-                          base.subject
-                        ].professors[!base.cp ? 'c' : 'cp']
-                      : ''
-                  }}
+                  {{ showProfessors(base) }}
                 </q-tooltip>
               </q-badge>
               <br />
@@ -172,6 +156,30 @@ export default {
     const startDrag = (ev: any, sch: BaseSchedule) => {
       moveSch.value = sch;
     };
+    const showProfessors = (base: BaseSchedule) => {
+      const clase = !base.cp ? 'c' : 'cp';
+      if (
+        !!base.subject &&
+        props.sch.config.subjectsByProfessors[base.year][base.group][
+          base.subject
+        ].professors[clase]?.length > 0
+      )
+        return props.sch.config.subjectsByProfessors[base.year][base.group][
+          base.subject
+        ].professors[clase].reduce((prev, curr) => `${prev}${curr}; `, '');
+
+      return '';
+    };
+
+    // const rooms_school_data = computed(() => {
+    //   return props.sch.config.roomsOptions.map((x) => {
+    //     const row: Dictionary<BaseSchedule[]> = {};
+    //     dotDaysXHours.forEach((y) => {
+    //       row[`${y}`] = [];
+    //     });
+    //     return row;
+    //   });
+    // });
 
     const onDrop = (ev: any, place: string, row_index: number) => {
       const [day, hour] = place.split('-');
@@ -197,6 +205,7 @@ export default {
       columns,
       startDrag,
       onDrop,
+      showProfessors,
       getColorIndex(index: number) {
         return getColor(`-${index}${toBin(index)}`);
       },

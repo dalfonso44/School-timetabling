@@ -40,7 +40,7 @@ export const empty_group_state = ['1', '2', '3', 'Receso', '4', '5', '6'].map(
 const empty_school_state = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(
   (v) => {
     return {
-      turn: `[ ${v} ]`,
+      turn: `${v}`,
       monday: '',
       tuesday: '',
       wednesday: '',
