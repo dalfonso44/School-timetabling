@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron';
+import { app, BrowserWindow, nativeTheme, nativeImage } from 'electron';
 import { initialize, enable } from '@electron/remote/main';
 import path from 'path';
 import os from 'os';
@@ -37,6 +37,14 @@ function createWindow() {
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
   });
+  mainWindow.setThumbarButtons([
+    {
+      icon: nativeImage.createFromPath(path.join(__dirname, 'icons/icon.png')),
+      click() {
+        console.log('button1 clicked');
+      }
+    }
+  ]);
 
   enable(mainWindow.webContents);
 
