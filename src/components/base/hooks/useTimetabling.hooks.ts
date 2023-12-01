@@ -251,13 +251,36 @@ export const useScheduleTimetabling = () => {
       if (!validationFunction(schedule.value, sch)) return;
 
       const old = mappedBaseSchedule.value[getID(sch)];
+      const hour = id.split('-')[1];
+      const day = id.split('-')[3];
+      if (!!old && old.hour == hour && old.day == day) {
+        onChangeBase(id, sch);
+
+        refreshView();
+        return;
+      }
+      if (
+        !!old &&
+        !!schedule.value.config.subjectsWithoutRooms &&
+        schedule.value.config.subjectsWithoutRooms?.filter(
+          (x: string) => x == old.subject
+        ).length > 0
+      ) {
+        Notify.create({
+          type: 'warning',
+          position: 'top-right',
+          message: `Movimiento incorrecto. En ese turno se está dando ${old.subject}`
+        });
+        return;
+      }
 
       if (!!old) {
         console.log('>', old, id, getID(sch));
         Notify.create({
           type: 'warning',
           position: 'top-right',
-          message: 'Movimiento incorrecto'
+          message:
+            'Movimiento incorrecto. Un grupo no puede  estar en dos aulas al mismo momento'
         });
         return;
       }
