@@ -13,6 +13,14 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="abb" :props="props">
+            <q-btn
+              flat
+              round
+              color="negative"
+              icon="delete"
+              size="sm"
+              @click="removeRow(rows[props.rowIndex].abb)"
+            />
             {{ rows[props.rowIndex].abb }}
           </q-td>
           <q-td key="name" :props="props">
@@ -75,7 +83,7 @@ import { QTableColumn } from 'quasar';
 
 export default {
   name: 'BaseAcronymTableComponent',
-  emits: ['change-subject'],
+  emits: ['change-subject', 'delete-subject'],
   props: {
     subjectDefinitions: {
       type: Object as PropType<
@@ -165,6 +173,13 @@ export default {
             props.selected_group
           ][key],
           name: value
+        });
+      },
+      removeRow(key: string) {
+        emit('delete-subject', key, {
+          ...props.subjectDefinitions[props.selected_year][
+            props.selected_group
+          ][key]
         });
       }
     };

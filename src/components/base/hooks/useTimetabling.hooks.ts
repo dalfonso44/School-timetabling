@@ -297,6 +297,11 @@ export const useScheduleTimetabling = () => {
       schedule.value.config.subjectsByProfessors = {
         ...schedule.value.config.subjectsByProfessors
       };
+    },
+    onDeleteSubject(key: string) {
+      delete schedule.value.config.subjectsByProfessors[selected_year.value][
+        selected_group.value
+      ][key];
     }
   };
 };

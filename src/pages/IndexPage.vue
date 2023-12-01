@@ -38,6 +38,7 @@
             :selected_group="selected_group"
             :selected_year="selected_year"
             @change-subject="onChangeSubject"
+            @delete-subject="onDeleteSubject"
           />
         </q-expansion-item>
       </template>
@@ -81,6 +82,7 @@
               :selected_group="group"
               :selected_year="selected_year"
               @change-subject="onChangeSubject"
+              @delete-subject="onDeleteSubject"
             />
           </template>
         </gschedule-component>
@@ -125,7 +127,8 @@ export default defineComponent({
       onChangeBase,
       onExport,
       onImport,
-      onChangeSubject
+      onChangeSubject,
+      onDeleteSubject
     } = useScheduleTimetabling();
     // const;
     return {
@@ -153,6 +156,7 @@ export default defineComponent({
       onExport,
       onImport,
       onChangeSubject,
+      onDeleteSubject,
       onPrint() {
         printing.value = true;
         nextTick(() => {
