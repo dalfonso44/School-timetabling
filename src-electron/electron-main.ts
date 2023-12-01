@@ -22,12 +22,16 @@ function createWindow() {
   /**
    * Initial window options
    */
+  console.log(
+    " path.resolve(__dirname, 'icons/icon.ico') ",
+    path.resolve(__dirname, 'icons/icon.ico')
+  );
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+    icon: nativeImage.createFromPath(path.resolve(__dirname, 'icons/icon.png')), // tray icon
     width: 1000,
     height: 600,
     useContentSize: true,
-    skipTaskbar: true,
+    // skipTaskbar: true,
     // maximizable: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -37,14 +41,14 @@ function createWindow() {
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
   });
-  mainWindow.setThumbarButtons([
-    {
-      icon: nativeImage.createFromPath(path.join(__dirname, 'icons/icon.png')),
-      click() {
-        console.log('button1 clicked');
-      }
-    }
-  ]);
+  // mainWindow.setThumbarButtons([
+  //   {
+  //     // icon: nativeImage.createFromPath(path.join(__dirname, 'icons/icon.png')),
+  //     click() {
+  //       console.log('button1 clicked');
+  //     }
+  //   }
+  // ]);
 
   enable(mainWindow.webContents);
 
