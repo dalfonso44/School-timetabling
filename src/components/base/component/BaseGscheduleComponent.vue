@@ -58,7 +58,7 @@
             :model-value="selected_year"
             @update:model-value="$emit('update-year', $event)"
             :options="year_keys"
-            label="Año"
+            label="Horario"
           />
         </div>
 
@@ -157,7 +157,7 @@
             color="blue-10"
             icon="note_add"
             :round="$q.screen.lt.lg"
-            :label="!$q.screen.lt.lg ? 'Agregar asignatura' : undefined"
+            :label="!$q.screen.lt.lg ? 'Asignatura externa' : undefined"
             dense
             no-caps
             rounded
@@ -165,7 +165,7 @@
             @click="show_new_subject = true"
           >
             <q-tooltip class="bg-blue-10 text-white">
-              Agregar asignatura
+              Asignatura externa
             </q-tooltip>
           </q-btn>
 
@@ -357,7 +357,7 @@
     />
 
     <input-dialog
-      :title="'Agrega una nueva asignatura'"
+      :title="'Agrega una nueva asignatura externa'"
       :label="'Asignatura'"
       :rules="[(val) => !!val || 'Campo requerido']"
       :show="show_new_subject"
@@ -560,8 +560,22 @@ export default {
         // timeTableData.saveData(rows.value);
       },
       onClear() {
-        emit('on-clear');
-        // rows.value = emptyState;
+        Dialog.create({
+          title: 'Limpiar Datos',
+          message: 'Desea borrar todos los datos',
+          cancel: true,
+          persistent: true
+        })
+          .onOk((data) => {
+            emit('on-clear');
+            // rows.value = emptyState;
+          })
+          .onCancel(() => {
+            // console.log('>>>> Cancel');
+          })
+          .onDismiss(() => {
+            // console.log('I am triggered on both OK and Cancel')
+          });
       },
       onExport() {
         emit('on-export');

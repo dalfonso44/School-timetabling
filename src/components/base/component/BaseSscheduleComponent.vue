@@ -17,7 +17,7 @@
           <q-th colspan="1"></q-th>
           <template :key="days" v-for="(days, index) in sch.config.daysOptions">
             <q-th
-              colspan="6"
+              :colspan="sch.config.hoursOptions.length - 1"
               :class="'text-white'"
               :style="`background-color: ${getColorIndex(index)}`"
               >{{ days }}</q-th

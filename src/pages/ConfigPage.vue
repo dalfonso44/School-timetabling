@@ -17,7 +17,7 @@
           <div class="col-md-6 col-12 row justify-center items-start">
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-grey-3"
+                class="bg-custom-transparent"
                 label="Días"
                 filled
                 v-model="config.config.daysOptions"
@@ -34,7 +34,24 @@
 
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-transparent"
+                class="bg-custom-transparent"
+                label="Turnos"
+                filled
+                v-model="config.config.hoursOptions"
+                use-input
+                use-chips
+                multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
+                hide-dropdown-icon
+                hide-bottom-space
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
+
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-custom-transparent"
                 label="Validaciones"
                 filled
                 v-model="config.config.validationFunctions"
@@ -62,7 +79,7 @@
 
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-grey-3"
+                class="bg-custom-transparent"
                 label="Aulas"
                 filled
                 v-model="config.config.roomsOptions"
@@ -80,23 +97,8 @@
           <div class="col-md-6 col-12 row justify-center items-start">
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-grey-3"
-                label="Grupos"
-                filled
-                v-model="config.config.groupsOptions"
-                use-input
-                use-chips
-                multiple
-                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
-                hide-dropdown-icon
-                hide-bottom-space
-                input-debounce="0"
-                @new-value="createValue"
-              /> </q-card-section
-            ><q-card-section class="col-12 q-pa-md">
-              <q-select
-                class="bg-grey-3"
-                label="Años"
+                class="bg-custom-transparent"
+                label="Horario"
                 filled
                 v-model="config.config.yearsOptions"
                 use-input
@@ -111,7 +113,23 @@
             </q-card-section>
             <q-card-section class="col-12 q-pa-md">
               <q-select
-                class="bg-grey-3"
+                class="bg-custom-transparent"
+                label="Grupos"
+                filled
+                v-model="config.config.groupsOptions"
+                use-input
+                use-chips
+                multiple
+                :rules="[(v) => (!!v && v.length > 0) || 'Field is required']"
+                hide-dropdown-icon
+                hide-bottom-space
+                input-debounce="0"
+                @new-value="createValue"
+              />
+            </q-card-section>
+            <q-card-section class="col-12 q-pa-md">
+              <q-select
+                class="bg-custom-transparent"
                 label="Asignaturas que se impartenen otros edificios"
                 filled
                 v-model="config.config.subjectsWithoutRooms"
