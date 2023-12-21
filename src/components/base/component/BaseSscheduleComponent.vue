@@ -17,7 +17,11 @@
           <q-th colspan="1"></q-th>
           <template :key="days" v-for="(days, index) in sch.config.daysOptions">
             <q-th
-              :colspan="sch.config.hoursOptions.length - 1"
+              :colspan="
+                sch.config.hoursOptions.indexOf('Receso') > -1
+                  ? sch.config.hoursOptions.length - 1
+                  : sch.config.hoursOptions.length
+              "
               :class="'text-white'"
               :style="`background-color: ${getColorIndex(index)}`"
               >{{ days }}</q-th

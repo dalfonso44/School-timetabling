@@ -469,17 +469,35 @@ export default {
         return ERROR_MSG;
       }
 
-      if (spl.length < 3) return ERROR_MSG;
+      //if (spl.length < 3) return ERROR_MSG;
 
-      if (spl.length >= 3) {
-        if (
-          (spl[1] != 'cp' && spl[1] != 'c') ||
-          !spl[2] ||
-          props.sch.config.roomsOptions.filter((x: string) => x == spl[2])
-            .length < 1
-        )
+      if (spl.length >= 2) {
+        if (props.sch.config.subjectsWithoutRooms.includes(spl[0])) {
+          const io = valueClean.indexOf('(');
+          const ic = valueClean.indexOf(')');
+          if (io >= 0 && ic >= 0 && io < ic && ic == valueClean.length - 1)
+            return true;
+
           return ERROR_MSG;
+        } else {
+          if (
+            (spl[1] != 'cp' && spl[1] != 'c') ||
+            !spl[2] ||
+            props.sch.config.roomsOptions.filter((x: string) => x == spl[2])
+              .length < 1
+          )
+            return ERROR_MSG;
+        }
       }
+      // if (spl.length >= 3) {
+      //   if (
+      //     (spl[1] != 'cp' && spl[1] != 'c') ||
+      //     !spl[2] ||
+      //     props.sch.config.roomsOptions.filter((x: string) => x == spl[2])
+      //       .length < 1
+      //  )
+      //     return ERROR_MSG;
+      // }
 
       if (spl.length > 3) {
         const io = valueClean.indexOf('(');

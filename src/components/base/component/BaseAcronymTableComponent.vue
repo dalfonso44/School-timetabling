@@ -151,10 +151,11 @@ export default {
         value = value.trim();
         const li = value.trim().split(';');
         if (
-          value.length > 1 &&
-          value[value.length - 1] == ';' &&
-          li.length > 0 &&
-          !li[li.length - 1]
+          (value.length > 1 &&
+            value[value.length - 1] == ';' &&
+            li.length > 0 &&
+            !li[li.length - 1]) ||
+          value == ''
         ) {
           const payload: SubjectDefinition = {
             ...props.subjectDefinitions[props.selected_year][

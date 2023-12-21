@@ -224,13 +224,16 @@ export const useScheduleTimetabling = () => {
     }) {
       const hour = schedule.value.config.hoursOptions[payload.hour_index];
       const id = `${payload.year}-${hour}-${payload.group}-${payload.column}`;
-      const desc =
-        payload.value.split(' ').length > 3
-          ? '(' + payload.value.split('(')[1]
-          : undefined;
 
       const li = payload.value.split(' ');
       const [subject, cp, room] = li.length == 1 ? [li[0], 'c', '_'] : li;
+      const desc =
+        payload.value.split(' ').length > 3 ||
+        (!!schedule.value.config.subjectsWithoutRooms &&
+          schedule.value.config.subjectsWithoutRooms.indexOf(subject) > -1)
+          ? '(' + payload.value.split('(')[1]
+          : undefined;
+      console.log(desc);
       const baseSchedule: BaseSchedule = {
         cp: cp == 'cp',
         day: payload.column,
