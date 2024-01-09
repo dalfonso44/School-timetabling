@@ -152,6 +152,40 @@
           >
             <q-tooltip class="bg-accent text-white"> Nuevo grupo </q-tooltip>
           </q-btn>
+          <q-btn
+            color="pink-5"
+            icon="remove_circle"
+            :round="$q.screen.lt.lg"
+            :label="!$q.screen.lt.lg ? 'Eliminar grupo' : undefined"
+            no-caps
+            rounded
+            dense
+            class="q-mr-sm"
+            @click="show_delete_group = true"
+          >
+            <q-tooltip class="bg-pink-5 text-white"> Eliminar grupo </q-tooltip>
+          </q-btn>
+          <q-dialog v-model="show_delete_group" persistent>
+            <q-card style="min-width: 350px">
+              <q-card-section>
+                <div class="text-h6">Seleccione el grupo a eliminar</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
+                <q-select v-model="deleteGroup" :options="group_keys" />
+              </q-card-section>
+
+              <q-card-actions align="right" class="text-primary">
+                <q-btn flat label="Cancelar" v-close-popup />
+                <q-btn
+                  flat
+                  label="Eliminar grupo"
+                  @click="onDeleteGroup"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
 
           <q-btn
             color="blue-10"
@@ -422,6 +456,7 @@ export default {
     'update-year',
     'create-year',
     'create-group',
+    'delete-group',
     'add-subject',
     'update-color',
     'on-print',
@@ -432,8 +467,10 @@ export default {
     const showNewTime = ref(false);
     const showNewGroup = ref(false);
     const showNewSubject = ref(false);
+    const showDeleteGroup = ref(false);
     const editing = ref(true);
     const importFile = ref(null);
+    const deleteGroup = ref(null);
 
     const router = useRouter();
 
@@ -521,6 +558,7 @@ export default {
     return {
       fields,
       indexFocus,
+      deleteGroup,
       alert: ref(false),
       card: ref(false),
       editing,
@@ -530,6 +568,7 @@ export default {
       show_new_year: showNewTime,
       show_new_group: showNewGroup,
       show_new_subject: showNewSubject,
+      show_delete_group: showDeleteGroup,
       columns,
       onkeydown(event: any) {
         const n = props.school_data[props.selected_group].length;
@@ -600,6 +639,9 @@ export default {
       },
       onImport() {
         emit('on-import', importFile.value);
+      },
+      onDeleteGroup() {
+        emit('delete-group', deleteGroup.value);
       },
       getColor,
 

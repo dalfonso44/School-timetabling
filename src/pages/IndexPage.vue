@@ -13,6 +13,7 @@
       @on-save="onSave"
       @on-clear="onClear"
       @create-year="add_year"
+      @delete-group="deleteGroup"
       @create-group="add_group"
       @add-subject="add_subject"
       @update-base="onUpdateBase"
@@ -118,6 +119,7 @@ export default defineComponent({
       schedule,
       updateBaseSch,
       add_group,
+      deleteGroup,
       add_year,
       add_subject,
       onSave,
@@ -147,6 +149,7 @@ export default defineComponent({
       updateBaseSch,
       onChangeBase,
       add_group,
+      deleteGroup,
       add_year,
       add_subject,
       onSave,

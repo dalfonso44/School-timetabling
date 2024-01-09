@@ -132,6 +132,13 @@ export const useScheduleTimetabling = () => {
       message: `El horario ${year} fue creado y salvado correctamente`
     });
   };
+  const deleteGroup = (group: string) => {
+    delete school_data.value[selected_year.value].groups[group];
+    delete schedule.value.config.groupsOptions[
+      schedule.value.config.groupsOptions.indexOf(group)
+    ];
+    selected_group.value = schedule.value.config.groupsOptions[1];
+  };
 
   //adds new group and saves it
   const add_group = (group: string) => {
@@ -169,6 +176,7 @@ export const useScheduleTimetabling = () => {
     selected_group,
     schedule,
     add_group,
+    deleteGroup,
     add_year,
     add_subject,
     onChangeBase,
