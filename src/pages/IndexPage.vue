@@ -207,8 +207,8 @@ export default defineComponent({
             setTimeout(() => {
               WinPrint?.close();
               printing.value = false;
-            }, 200);
-          }, 200);
+            }, 1000);
+          }, 2000);
         });
       }
     };

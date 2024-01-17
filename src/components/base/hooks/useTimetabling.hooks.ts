@@ -26,7 +26,8 @@ export const useScheduleTimetabling = () => {
     getID,
     getVerbose,
     onChangeBase,
-    schedule
+    schedule,
+    deleteBase
   } = useScheduleHandler(sch);
 
   // Create data viz
@@ -132,12 +133,24 @@ export const useScheduleTimetabling = () => {
       message: `El horario ${year} fue creado y salvado correctamente`
     });
   };
+
   const deleteGroup = (group: string) => {
     delete school_data.value[selected_year.value].groups[group];
-    delete schedule.value.config.groupsOptions[
-      schedule.value.config.groupsOptions.indexOf(group)
-    ];
-    selected_group.value = schedule.value.config.groupsOptions[1];
+
+    schedule.value.config.groupsOptions.splice(
+      schedule.value.config.groupsOptions.indexOf(group),
+      1
+    );
+    selected_group.value = schedule.value.config.groupsOptions[0];
+
+    const n: BaseSchedule[] = [];
+    schedule.value.schedule.map((base) => {
+      if (base.group != group) n.push(base);
+    });
+
+    schedule.value.schedule = n;
+
+    refreshView();
   };
 
   //adds new group and saves it

@@ -13,11 +13,11 @@
     >
       <template v-slot:top v-if="!readonly">
         <div
-          class="row col-sm-6 col-md-5 col-lg-4 col-12 items-center justify-start q-px-sm"
+          class="row col-sm-6 col-md-5 col-lg-3 col-12 items-center justify-start q-px-sm"
         >
           Horario
           <q-select
-            class="q-ml-md col-md-3 col-sm-4 col-12"
+            class="q-ml-md col-md-3 col-lg-4 col-sm-4 col-12"
             outlined
             rounded
             dense
@@ -49,7 +49,7 @@
           </q-select>
 
           <q-select
-            :class="`q-ml-md col-md-4 col-sm-4 col-12 ${
+            :class="`q-ml-md col-md-3 col-lg-4 col-sm-4 col-12 ${
               $q.screen.xs && 'q-mt-sm'
             }`"
             outlined
@@ -64,7 +64,7 @@
 
         <q-space />
         <div
-          :class="`row col-sm-6 col-md-7 col-lg-8 col-12 items-center justify-end q-px-sm ${
+          :class="`row col-sm-6 col-md-7 col-lg-9 col-12 items-center justify-end q-px-sm ${
             $q.screen.xs && 'q-pt-sm'
           }`"
         >
@@ -179,7 +179,8 @@
                 <q-btn flat label="Cancelar" v-close-popup />
                 <q-btn
                   flat
-                  label="Eliminar grupo"
+                  label="Eliminar"
+                  :disabled="!deleteGroup"
                   @click="onDeleteGroup"
                   v-close-popup
                 />
@@ -275,7 +276,7 @@
             color="orange"
             icon="settings"
             :round="$q.screen.lt.lg"
-            :label="!$q.screen.lt.lg ? 'Configuraciones' : undefined"
+            :label="!$q.screen.lt.lg ? 'Ajustes' : undefined"
             no-caps
             outline
             dense
@@ -283,9 +284,7 @@
             class="q-mr-sm"
             @click="onConfig"
           >
-            <q-tooltip class="bg-orange text-white">
-              Configuraciones
-            </q-tooltip>
+            <q-tooltip class="bg-orange text-white"> Ajustes </q-tooltip>
           </q-btn>
 
           <!-- <q-btn
@@ -642,6 +641,7 @@ export default {
       },
       onDeleteGroup() {
         emit('delete-group', deleteGroup.value);
+        deleteGroup.value = null;
       },
       getColor,
 
